@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sajar BD - Organization Portal</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root { --primary-blue: #007bff; --success: #28a745; }
+        body { font-family: 'Arial', sans-serif; background: #f0f2f5; display: flex; flex-direction: column; align-items: center; padding: 20px; margin-bottom: 100px; }
+        
+        #company-list { width: 100%; max-width: 400px; margin-bottom: 30px; }
+        .company-item { 
+            background: #fff; padding: 15px; margin: 10px 0; border-radius: 10px; 
+            text-align: center; font-weight: bold; cursor: pointer; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: 0.3s;
+            border: 1px solid var(--primary-blue); color: var(--primary-blue);
+        }
+        .company-item:hover { background: var(--primary-blue); color: white; }
+
+        #search-container { display: none; margin-bottom: 20px; width: 100%; max-width: 330px; }
+        #search-input { width: 100%; padding: 12px; border-radius: 25px; border: 2px solid var(--primary-blue); outline: none; text-align: center; font-size: 16px; }
+
+        #card-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; width: 100%; }
+        .card-wrapper { display: none; flex-direction: column; align-items: center; gap: 10px; }
+
+        .card { width: 330px; background: #fff; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); overflow: hidden; border: 1px solid #ddd; position: relative; padding-bottom: 10px; }
+        .header { background: var(--primary-blue); color: white; padding: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .header img { width: 40px; height: 40px; background: white; border-radius: 5px; padding: 2px; object-fit: contain; }
+        .company-title { font-size: 18px; font-weight: bold; }
+        
+        .user-name { text-align: center; margin: 20px 0 2px 0; color: #333; font-size: 22px; font-weight: bold; }
+        .designation { text-align: center; color: var(--primary-blue); font-size: 15px; font-weight: bold; margin-bottom: 15px; text-transform: uppercase; border-bottom: 1px dashed #ccc; padding-bottom: 10px; margin-left: 20px; margin-right: 20px; }
+        
+        .info { padding: 5px 25px; }
+        .info-row { display: flex; justify-content: space-between; margin-bottom: 8px; border-bottom: 1px solid #f0f0f0; padding-bottom: 4px; font-size: 14px; }
+        .label { font-weight: bold; color: #555; }
+        .value { color: #333; font-weight: 500; }
+        
+        .footer-area { display: flex; justify-content: space-around; align-items: flex-end; padding: 10px 20px 10px; }
+        .sig-box { text-align: center; width: 100%; }
+        .sig-box img { width: 80px; height: 35px; object-fit: contain; }
+        .sig-text { font-size: 10px; border-top: 1px solid #999; display: block; margin-top: 5px; color: #666; }
+
+        .download-btn { background: var(--success); color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-size: 14px; margin-bottom: 20px; }
+
+        .bottom-menu { position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; display: flex; justify-content: space-around; padding: 12px 0; box-shadow: 0 -2px 15px rgba(0,0,0,0.1); z-index: 1000; }
+        .menu-item { text-decoration: none; color: #555; font-weight: bold; font-size: 12px; display: flex; flex-direction: column; align-items: center; cursor: pointer; border: none; background: none; }
+        .menu-item span { font-size: 20px; margin-bottom: 2px; }
+
+        #status { font-weight: bold; margin-top: 50px; color: #555; }
+
+        #org-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: white; width: 100%; max-width: 350px; border-radius: 15px; overflow: hidden; animation: slideIn 0.3s; }
+        @keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <div id="company-list"></div>
+
+    <div id="search-container">
+        <input type="text" id="search-input" placeholder="কোম্পানির নাম লিখে খুঁজুন..." onkeyup="filterByCompanyName()">
+    </div>
+
+    <div id="status">ডাটা লোড হচ্ছে...</div>
+    <div id="card-container"></div>
+
+    <div id="org-modal" onclick="closeModal()">
+        <div class="modal-content" id="modal-body" onclick="event.stopPropagation()"></div>
+    </div>
+
+    <div class="bottom-menu">
+        <a href="index.html" onclick="location.reload()" class="menu-item"><span>🏠</span>Home</a>
+        <button class="menu-item" onclick="toggleSearch()"><span>🔍</span>Search</button>
+        <button class="menu-item" onclick="showOrgInfo()"><span>+</span>আপনার সংগঠন যুক্ত করুন</button>
+    </div>
+
+    <script>
+        const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQg7W9x2opR3Ilu00KgLFytzGK6w24tYn1V6r5DYKEg7pK_dqGBXEt3bN1mZImDCYKn5smc0twPl259/pub?output=csv";
+        let originalFirstRow = null;
+
+        fetch(url)
+            .then(res => res.text())
+            .then(csv => {
+                let rows = csv.split('\n').map(row => row.split(',').map(item => item.trim()));
+                let memberData = rows.slice(1);
+                
+                if(memberData.length > 0) {
+                    originalFirstRow = memberData[0]; // সংগঠন এর জন্য প্রথম তথ্য সেভ রাখা হলো
+                }
+
+                // সর্বশেষ তথ্য উপরে দেখানোর জন্য রিভার্স
+                memberData.reverse();
+
+                let companies = {};
+                memberData.forEach((cols) => {
+                    if (cols.length < 2 || !cols[0] || !cols[8] || cols[8] === "অন্যান্য কোম্পানি") return;
+                    const compName = cols[8];
+                    if (!companies[compName]) companies[compName] = [];
+                    companies[compName].push(cols);
+                });
+
+                const listContainer = document.getElementById('company-list');
+                const cardContainer = document.getElementById('card-container');
+                document.getElementById('status').style.display = 'none';
+
+                Object.keys(companies).forEach(name => {
+                    const btn = document.createElement('div');
+                    btn.className = 'company-item';
+                    btn.innerText = name;
+                    btn.onclick = () => showCompanyCards(name, companies[name]);
+                    listContainer.appendChild(btn);
+                });
+
+                window.showCompanyCards = function(selectedName, data) {
+                    listContainer.style.display = 'none';
+                    cardContainer.innerHTML = '';
+                    document.getElementById('search-container').style.display = 'block';
+
+                    data.forEach((cols, index) => {
+                        const wrapper = document.createElement('div');
+                        wrapper.className = 'card-wrapper';
+                        wrapper.style.display = 'flex';
+                        wrapper.setAttribute('data-company', cols[8]); // কোম্পানি নাম দিয়ে সার্চের জন্য
+
+                        wrapper.innerHTML = `
+                        <div class="card" id="card-${index}">
+                            <div class="header">
+                                <img src="${cols[9]}" alt="Logo" crossorigin="anonymous">
+                                <div class="company-title">${cols[8]}</div>
+                            </div>
+                            <div class="user-name">${cols[0]}</div>
+                            <div class="designation">${cols[2]}</div>
+                            <div class="info">
+                                <div class="info-row"><span class="label">হোয়াটসঅ্যাপ:</span> <span class="value">${cols[1]}</span></div>
+                                <div class="info-row"><span class="label">ফোন:</span> <span class="value">${cols[3]}</span></div>
+                                <div class="info-row"><span class="label">বিকাশ:</span> <span class="value">${cols[10]}</span></div>
+                                <div class="info-row"><span class="label">নগদ:</span> <span class="value">${cols[11]}</span></div>
+                                <div class="info-row"><span class="label">ব্যাংক:</span> <span class="value" style="color:red;">${cols[4]}</span></div>
+                                <div class="info-row" style="border:none;"><span class="label">ঠিকানা:</span> <span class="value">${cols[5]}</span></div>
+                            </div>
+                            <div class="footer-area">
+                                <div class="sig-box">
+                                    <img src="${cols[7]}" alt="Sign" crossorigin="anonymous">
+                                    <span class="sig-text">Authorized</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="download-btn" onclick="downloadCard('card-${index}', '${cols[0]}')">Download Card</button>
+                        `;
+                        cardContainer.appendChild(wrapper);
+                    });
+                }
+            })
+            .catch(err => {
+                document.getElementById('status').innerText = "ডাটা লোড হচ্ছে না।";
+            });
+
+        function showOrgInfo() {
+            if(!originalFirstRow) return;
+            const modal = document.getElementById('org-modal');
+            const body = document.getElementById('modal-body');
+            const cols = originalFirstRow;
+
+            body.innerHTML = `
+                <div class="header">
+                    <img src="${cols[9]}" alt="Logo">
+                    <div class="company-title">${cols[8]}</div>
+                </div>
+                <div style="padding:20px; text-align:center;">
+                    <h3 style="color:#333;">${cols[0]}</h3>
+                    <p style="color:var(--primary-blue); font-weight:bold; font-size:14px; margin-bottom:15px;">${cols[2]}</p>
+                    <div style="text-align:left; font-size:14px; border-top:1px solid #eee; padding-top:10px;">
+                        <p style="margin-bottom:5px;"><b>হোয়াটসঅ্যাপ:</b> ${cols[1]}</p>
+                        <p style="margin-bottom:5px;"><b>বিকাশ:</b> ${cols[10]}</p>
+                        <p style="margin-bottom:5px;"><b>নগদ:</b> ${cols[11]}</p>
+                        <p><b>ঠিকানা:</b> ${cols[5]}</p>
+                    </div>
+                    <button onclick="closeModal()" style="margin-top:20px; width:100%; padding:10px; background:#f44336; color:white; border:none; border-radius:5px; cursor:pointer;">বন্ধ করুন</button>
+                </div>
+            `;
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() { document.getElementById('org-modal').style.display = 'none'; }
+
+        function toggleSearch() {
+            const sc = document.getElementById('search-container');
+            sc.style.display = (sc.style.display === 'block') ? 'none' : 'block';
+            if(sc.style.display === 'block') document.getElementById('search-input').focus();
+        }
+
+        // কোম্পানি নাম অনুযায়ী সার্চ
+        function filterByCompanyName() {
+            const input = document.getElementById('search-input').value.toUpperCase();
+            const cards = document.getElementsByClassName('card-wrapper');
+            for (let i = 0; i < cards.length; i++) {
+                let companyName = cards[i].getAttribute('data-company');
+                cards[i].style.display = (companyName.toUpperCase().indexOf(input) > -1) ? "flex" : "none";
+            }
+        }
+
+        function downloadCard(cardId, name) {
+            const card = document.getElementById(cardId);
+            html2canvas(card, { useCORS: true, scale: 2 }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `${name}_Card.png`;
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+            });
+        }
+    </script>
+</body>
+</html>
+
+
+

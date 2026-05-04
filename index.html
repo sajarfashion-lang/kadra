@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>চিতোষী সেবায় স্বাগতম</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --primary: #32a852; --dark: #2c3e50; --fb: #1877f2; --red: #e41e3f; --light-bg: #f0f2f5; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Hind Siliguri', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--light-bg); width: 100%; overflow-x: hidden; }
+
+        /* হেডার অপ্টিমাইজেশন */
+        .header { 
+            background: var(--primary); 
+            color: white; 
+            padding: 0 10px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            height: 60px; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
+            width: 100%; 
+        }
+
+        .header-left { display: flex; align-items: center; gap: 6px; flex: 1; }
+        .logo-box { display: flex; align-items: center; gap: 5px; }
+        .logo-box img { height: 38px; width: 38px; object-fit: contain; background: #fff; border-radius: 6px; padding: 2px; }
+        .logo-box b { font-size: 14px; font-weight: 600; white-space: nowrap; color: #fff; }
+
+        .header-seba-btn { 
+            background: rgba(105, 05, 1005, 0.3); color: Yellow; text-decoration: none; 
+            padding: 6px 12px; border-radius: 20px; font-size: 14px; font-weight: 600; 
+            display: flex; align-items: center; gap: 5px; border: 4px solid rgba(555,555,555,0.3);
+            margin: 0 5px;
+        }
+
+        /* প্রোফাইল আইকন */
+        .profile-trigger {
+            font-size: 26px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+        }
+
+        /* প্রোমো কার্ড ও ব্যানার (আগের মতো) */
+        .main-banner { width: 100%; height: auto; display: none; overflow: hidden; }
+        .main-banner img { width: 100%; height: 100%; object-fit: cover; }
+        .promo-row { display: flex; gap: 10px; padding: 10px; background: #fff; overflow-x: auto; scrollbar-width: none; width: 100%; }
+        .promo-row::-webkit-scrollbar { display: none; }
+        .promo-card { min-width: 100px; flex: 1; aspect-ratio: 1/1; border-radius: 10px; overflow: hidden; border: 1px solid #ddd; flex-shrink: 0; }
+        .promo-card img { width: 100%; height: 100%; object-fit: cover; }
+        .sub-nav { background: var(--dark); padding: 10px; display: flex; gap: 8px; overflow-x: auto; position: sticky; top: 60px; z-index: 999; scrollbar-width: none; }
+
+        /* নেভিগেশন ও সাইডবার (আগের মতো) */
+        .sub-nav { background: var(--dark); padding: 10px; display: flex; gap: 5px; overflow-x: auto; position: sticky; top: 60px; z-index: 999; scrollbar-width: none; }
+        .sub-nav a { color: white; text-decoration: none; font-size: 12px; padding: 6px 15px; border-radius: 20px; border: 1px solid #444; white-space: nowrap; cursor: pointer; }
+        .sub-nav a.active { background: var(--fb); border-color: var(--fb); }
+
+        .sidebar { position: fixed; top: 0; left: -300px; width: 280px; height: 100%; background: white; z-index: 2000; transition: 0.3s; box-shadow: 2px 0 10px rgba(0,0,0,0.2); }
+        .sidebar.active { left: 0; }
+        .sidebar-header { background: var(--primary); color: white; padding: 30px 20px; text-align: center; }
+        .menu-item { display: flex; align-items: center; padding: 15px 20px; color: #333; border-bottom: 1px solid #eee; cursor: pointer; text-decoration: none; font-weight: 600; }
+        .menu-item i { width: 30px; font-size: 18px; color: var(--primary); }
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; z-index: 1500; }
+        .overlay.active { display: block; }
+
+        .main-content { width: 100%; max-width: 600px; margin: 0 auto; padding: 15px; }
+        .card { background: #fff; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #ddd; width: 100%; }
+
+        /* Auth UI */
+        .auth-container { background: #fff; padding: 25px 20px; border-radius: 15px; }
+        .input-box { position: relative; margin-bottom: 15px; }
+        .input-box i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--primary); }
+        .input-box input, .input-box select { width: 100%; padding: 12px 12px 12px 40px; border: 1.5px solid #eee; border-radius: 10px; outline: none; font-size: 14px; }
+        .auth-btn { width: 100%; padding: 14px; border: none; border-radius: 10px; background: linear-gradient(135deg, var(--primary), #28a745); color: white; font-weight: 600; cursor: pointer; }
+
+        .feed-card img { width: calc(100% + 30px); margin: 10px -15px; max-height: 400px; object-fit: cover; }
+        .user-info { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .user-info img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 1px solid #ddd; }
+        .post-actions { display: flex; border-top: 1px solid #eee; padding-top: 10px; margin-top: 10px; justify-content: space-around; }
+        .action-btn { background: none; border: none; color: #65676b; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 6px; }
+
+        .blood-card { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #eee; }
+        .blood-grp { background: var(--red); color: white; padding: 4px 8px; border-radius: 5px; font-weight: bold; }
+        .call-btn { color: white; background: #25d366; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border-radius: 50%; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-left">
+            <div onclick="toggleMenu()" style="cursor:pointer;"><i class="fas fa-bars" style="font-size: 22px;"></i></div>
+            <div class="logo-box">
+                <img id="mainLogo" src="https://via.placeholder.com/40">
+                <b id="siteName">চিতোষী সেবা</b>
+            </div>
+        </div>
+        <a href="seba.html" class="header-seba-btn"><i class="fas fa-th-large"></i>  সেবা🕵️‍♂️</a>
+        <div class="header-right">
+            <div onclick="toggleAuth()" style="font-size: 28px; cursor: pointer;"><i class="fas fa-user-circle"></i></div>
+        </div>
+    </header>
+
+    <div class="main-banner" id="bannerDiv"><img id="bannerImg" src=""></div>
+    
+    <div class="promo-row" id="promoRow">
+        <div class="promo-card"><img id="p1" src=""></div>
+        <div class="promo-card"><img id="p2" src=""></div>
+        <div class="promo-card"><img id="p3" src=""></div>
+    </div>
+
+    <nav class="sub-nav" id="catNav">
+        <a onclick="filter('হোম', this)" class="active">হোম</a>
+        <a onclick="filter('শিক্ষা', this)">শিক্ষা</a>
+        <a onclick="filter('ইসলামিক', this)">ইসলামিক</a>
+        <a onclick="filter('মানবিক', this)">মানবিক</a>
+        <a onclick="filter('সামাজিক', this)">সামাজিক</a>
+    </nav>
+
+    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+    
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header" id="sideProfile">
+            <i class="fas fa-user-circle" style="font-size: 55px;"></i>
+            <h3>স্বাগতম অতিথি</h3>
+        </div>
+        <div class="sidebar-menu">
+            <div class="menu-item" onclick="openProfile()"><i class="fas fa-user-shield"></i> প্রোফাইল</div>
+            <div class="menu-item" onclick="showMyPosts()"><i class="fas fa-clone"></i> আমার পোস্ট</div>
+            <div class="menu-item" onclick="showBloodList()"><i class="fas fa-tint"></i> জরুরি রক্ত</div>
+            <a href="Sa.html" class="menu-item"><i class="fas fa-hand-holding-heart"></i> সামাজিক ও ইসলামিক সংগঠন</a>
+            <a href="seba.html" class="menu-item"><i class="fas fa-th-large"></i> সেবা</a>
+            <div class="menu-item" onclick="location.reload()"><i class="fas fa-home"></i> হোম</div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div id="auth-box" style="display:none;" class="card auth-container">
+            <div id="login-ui">
+                <div style="text-align:center; margin-bottom:20px;"><h2>লগইন করুন</h2></div>
+                <div class="input-box"><i class="fas fa-phone-alt"></i><input type="text" id="lPhone" placeholder="ফোন নাম্বার"></div>
+                <div class="input-box"><i class="fas fa-lock"></i><input type="password" id="lPass" placeholder="পাসওয়ার্ড"></div>
+                <button class="auth-btn" onclick="login()">লগইন</button>
+                <div style="text-align:center; margin-top:15px;">অ্যাকাউন্ট নেই? <span onclick="showReg(true)" style="color:var(--fb); font-weight:600; cursor:pointer;">রেজিস্ট্রেশন</span></div>
+            </div>
+
+            <div id="reg-ui" style="display:none;">
+                <div style="text-align:center; margin-bottom:20px;"><h2>রেজিস্ট্রেশন</h2></div>
+                <div class="input-box"><i class="fas fa-user"></i><input type="text" id="rName" placeholder="পুরো নাম"></div>
+                <div class="input-box"><i class="fas fa-phone-alt"></i><input type="text" id="rPhone" placeholder="ফোন নাম্বার"></div>
+                <div class="input-box"><i class="fas fa-tint"></i>
+                    <select id="rBlood">
+                        <option value="">রক্তের গ্রুপ</option>
+                        <option value="A+">A+</option><option value="A-">A-</option>
+                        <option value="B+">B+</option><option value="B-">B-</option>
+                        <option value="O+">O+</option><option value="O-">O-</option>
+                        <option value="AB+">AB+</option><option value="AB-">AB-</option>
+                    </select>
+                </div>
+                <div class="input-box"><i class="fas fa-map-marker-alt"></i><input type="text" id="rAddress" placeholder="ঠিকানা"></div>
+                <div class="input-box"><i class="fas fa-key"></i><input type="password" id="rPass" placeholder="পাসওয়ার্ড"></div>
+                <div class="input-box"><i class="fas fa-image"></i><input type="text" id="rPhoto" placeholder="ছবির লিঙ্ক (ঐচ্ছিক)"></div>
+                <button class="auth-btn" onclick="register()">সম্পন্ন করুন</button>
+                <div style="text-align:center; margin-top:15px;"><span onclick="showReg(false)" style="cursor:pointer; color:var(--fb);">লগইনে ফিরে যান</span></div>
+            </div>
+
+            <div id="user-ui" style="display:none; text-align:center;">
+                <img id="uPic" src="" style="width:100px; height:100px; border-radius:50%; border:3px solid var(--primary); object-fit:cover; margin-bottom:10px;">
+                <h2 id="uName"></h2>
+                <p>রক্ত গ্রুপ: <b id="uBloodDisplay"></b></p>
+                <button class="auth-btn" style="background:var(--red); margin-top:15px;" onclick="logout()">লগ আউট</button>
+            </div>
+        </div>
+
+        <div id="post-box" style="display:none;" class="card">
+            <textarea id="pTxt" placeholder="কিছু লিখুন..." rows="3" style="width:100%; padding:12px; border:1px solid #eee; border-radius:10px; outline:none; resize:none;"></textarea>
+            <input type="text" id="pImg" placeholder="ছবির লিঙ্ক (ঐচ্ছিক)" style="width:100%; padding:10px; margin-top:10px; border:1px solid #eee; border-radius:8px;">
+            <div style="display:flex; gap:10px; margin-top:10px;">
+                <select id="pCat" style="flex:1; padding:10px; border-radius:8px; border:1px solid #eee;">
+                    <option value="শিক্ষা">শিক্ষা</option><option value="ইসলামিক">ইসলামিক</option><option value="মানবিক">মানবিক</option><option value="সামাজিক">সামাজিক</option>
+                </select>
+                <button onclick="addPost()" style="background:var(--fb); color:white; border:none; padding:10px 25px; border-radius:8px; font-weight:600;">পোস্ট</button>
+            </div>
+        </div>
+        <div id="blood-box" style="display:none;" class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                <h3>রক্তদাতা</h3>
+                <button onclick="closeBlood()" style="border:none; background:none; font-size:24px;">&times;</button>
+            </div>
+            <div id="bloodList">লোড হচ্ছে...</div>
+        </div>
+
+        <div id="loader" style="text-align:center; padding:20px; display:none;"><i class="fas fa-spinner fa-spin"></i></div>
+        <div id="feed"></div>
+    </main>
+
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby2muYN-XMHMuY4qptdXELrfEn7tkGBmkygWv7Rn9NHJs9IjmdyQu7pzCTEV-QM1fT_aA/exec"; 
+        let user = JSON.parse(localStorage.getItem('sajarUser'));
+        let allPosts = [];
+
+        window.onload = () => { if(user) updateUI(); fetchSettings(); fetchPosts(); };
+
+        async function fetchSettings() {
+            try {
+                const res = await fetch(`${SCRIPT_URL}?action=getSettings`);
+                const s = await res.json();
+                if(s.logo) document.getElementById('mainLogo').src = s.logo;
+                if(s.siteName) document.getElementById('siteName').innerText = s.siteName;
+                if(s.banner) { 
+                    document.getElementById('bannerDiv').style.display='block'; 
+                    document.getElementById('bannerImg').src = s.banner; 
+                }
+                document.getElementById('p1').src = s.p1 || "";
+                document.getElementById('p2').src = s.p2 || "";
+                document.getElementById('p3').src = s.p3 || "";
+            } catch(e){}
+        }
+
+        async function fetchPosts() {
+            document.getElementById('loader').style.display='block';
+            try {
+                const res = await fetch(`${SCRIPT_URL}?action=getPosts`);
+                allPosts = await res.json();
+                render(allPosts);
+            } catch(e){}
+            document.getElementById('loader').style.display='none';
+        }
+
+        // ১. পোস্ট রেন্ডার করার আপডেট ফাংশন
+function render(posts) {
+    const f = document.getElementById('feed');
+    f.innerHTML = posts.map((p, idx) => {
+        // যদি কমেন্ট না থাকে তবে খালি অ্যারে সেট করা
+        if(!p.comments) p.comments = []; 
+        
+        return `
+        <div class="card feed-card" style="margin-bottom: 20px;">
+            <div class="user-info">
+                <img src="${p.uImg || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}" onclick="showUserPosts('${p.name}')">
+                <div><b onclick="showUserPosts('${p.name}')" style="cursor:pointer;">${p.name}</b><br><small>${p.time}</small></div>
+            </div>
+            <div style="font-size:15px; line-height:1.5; padding: 5px 0;">${p.text}</div>
+            ${p.img ? `<img src="${p.img}" style="width:100%; border-radius:8px; margin-top:10px;">` : ''}
+            
+            <div class="post-actions" style="border-top: 1px solid #eee; margin-top: 10px;">
+                <button class="action-btn" onclick="toggleLike(this)"><i class="fas fa-thumbs-up"></i> লাইক</button>
+                <button class="action-btn" onclick="toggleCommentBox(${idx})"><i class="fas fa-comment"></i> কমেন্ট (${p.comments.length})</button>
+            </div>
+
+            <div id="cb-${idx}" style="display:none; margin-top: 10px; background: #f9f9f9; padding: 10px; border-radius: 8px;">
+                <div id="comment-list-${idx}">
+                    ${p.comments.map(c => `
+                        <div style="font-size: 13px; margin-bottom: 5px; border-bottom: 1px solid #eee; padding-bottom: 3px;">
+                            <b style="color: var(--fb);">${c.userName}:</b> ${c.text}
+                        </div>
+                    `).join('')}
+                </div>
+                <div style="display:flex; gap:5px; margin-top:10px;">
+                    <input type="text" id="ci-${idx}" placeholder="মতামত লিখুন..." style="flex:1; padding:8px; border:1px solid #ddd; border-radius:20px; outline:none;">
+                    <button onclick="submitComment(${idx})" style="background:var(--fb); color:white; border:none; padding:5px 15px; border-radius:20px;"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+// ২. কমেন্ট বক্স দেখানো বা লুকানো
+function toggleCommentBox(idx) {
+    const box = document.getElementById(`cb-${idx}`);
+    box.style.display = box.style.display === 'none' ? 'block' : 'none';
+}
+
+// ৩. লাইক বাটন ফাংশন
+function toggleLike(btn) {
+    btn.style.color = btn.style.color === 'rgb(24, 119, 242)' ? '#65676b' : '#1877f2';
+}
+
+// ৪. কমেন্ট সাবমিট করার ফাংশন
+async function submitComment(idx) {
+    if (!user) return alert("কমেন্ট করতে লগইন করুন!");
+    
+    const input = document.getElementById(`ci-${idx}`);
+    const text = input.value.trim();
+    
+    if (text === "") return;
+
+    // স্থানীয়ভাবে কমেন্ট যোগ করা (সাথে সাথে দেখানোর জন্য)
+    const newComment = {
+        userName: user.name,
+        text: text
+    };
+
+    allPosts[idx].comments.push(newComment);
+    
+    // UI আপডেট
+    input.value = "";
+    render(allPosts);
+    document.getElementById(`cb-${idx}`).style.display = 'block'; // বক্স খোলা রাখা
+
+    // গুগল শিটে সেভ করার জন্য (Optional: আপনার গুগল স্ক্রিপ্টে কমেন্ট সেভ করার মেকানিজম থাকতে হবে)
+    /*
+    await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: JSON.stringify({
+            action: "addComment",
+            postIndex: idx,
+            userName: user.name,
+            commentText: text
+        })
+    });
+    */
+}
+        async function login() {
+            const ph = document.getElementById('lPhone').value;
+            const ps = document.getElementById('lPass').value;
+            if(!ph || !ps) return alert("সব ঘর পূরণ করুন!");
+            const res = await fetch(`${SCRIPT_URL}?action=getUser&phone=${ph}`);
+            const data = await res.json();
+            if(data && data.pass == ps) { user = data; localStorage.setItem('sajarUser', JSON.stringify(data)); location.reload(); } else alert("ভুল তথ্য!");
+        }
+
+        async function register() {
+            const data = { action: "register", name: document.getElementById('rName').value, phone: document.getElementById('rPhone').value, blood: document.getElementById('rBlood').value, address: document.getElementById('rAddress').value, pass: document.getElementById('rPass').value, photo: document.getElementById('rPhoto').value };
+            if(!data.name || !data.phone || !data.blood || !data.pass) return alert("সব তথ্য দিন!");
+            await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
+            alert("সফল! লগইন করুন।"); location.reload();
+        }
+
+        function updateUI() {
+            document.getElementById('post-box').style.display='block';
+            document.getElementById('login-ui').style.display='none';
+            document.getElementById('user-ui').style.display='block';
+            document.getElementById('uName').innerText = user.name;
+            document.getElementById('uBloodDisplay').innerText = user.blood;
+            document.getElementById('uPic').src = user.photo || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+            document.getElementById('sideProfile').innerHTML = `<h3>${user.name}</h3><small>রক্ত গ্রুপ: ${user.blood}</small>`;
+        }
+
+        function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); }
+        function toggleAuth() { const b = document.getElementById('auth-box'); b.style.display = b.style.display==='none'?'block':'none'; }
+        function showReg(s) { document.getElementById('login-ui').style.display=s?'none':'block'; document.getElementById('reg-ui').style.display=s?'block':'none'; }
+        function logout() { localStorage.removeItem('sajarUser'); location.reload(); }
+        function openProfile() { toggleMenu(); toggleAuth(); }
+        function filter(cat, el) { document.querySelectorAll('#catNav a').forEach(a => a.classList.remove('active')); el.classList.add('active'); render(cat === 'হোম' ? allPosts : allPosts.filter(p => p.category === cat)); }
+        function closeBlood() { document.getElementById('blood-box').style.display = 'none'; document.getElementById('feed').style.display = 'block'; }
+        function showMyPosts() { toggleMenu(); render(allPosts.filter(p => p.name === user.name)); }
+
+        async function showBloodList() {
+            toggleMenu(); document.getElementById('blood-box').style.display = 'block'; document.getElementById('feed').style.display = 'none';
+            const res = await fetch(`${SCRIPT_URL}?action=getAllUsers`);
+            const data = await res.json();
+            document.getElementById('bloodList').innerHTML = data.map(m => `<div class="blood-card"><div><b>${m.name}</b></div><div style="display:flex; align-items:center; gap:10px;"><span class="blood-grp">${m.blood}</span><a href="tel:${m.phone}" class="call-btn"><i class="fas fa-phone-alt"></i></a></div></div>`).join('');
+        }
+
+        async function addPost() {
+            const txt = document.getElementById('pTxt').value;
+            if(!txt) return alert("কিছু লিখুন!");
+            const data = { action: "addPost", name: user.name, uImg: user.photo, text: txt, img: document.getElementById('pImg').value, category: document.getElementById('pCat').value, time: new Date().toLocaleString('bn-BD') };
+            await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
+            location.reload();
+        }
+    </script>
+</body>
+</html>
+
+

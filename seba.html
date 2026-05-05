@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sajar BD - Category Smart Portal</title>
+    <title>আমাদের সাথে থাকুন </title>
     <style>
         :root { --primary-blue: #007bff; --success: #28a745; --bg-gray: #f0f2f5; }
         body { font-family: 'Arial', sans-serif; background: var(--bg-gray); display: flex; flex-direction: column; align-items: center; padding: 15px; margin-bottom: 100px; }
@@ -70,13 +70,15 @@
                 <select id="form-cat" name="category" required>
                     <option value="" disabled selected>ক্যাটাগরি সিলেক্ট করুন</option>
                     <option value="ইলেকট্রনিক সার্ভিস">ইলেকট্রনিক সার্ভিস</option>
-                    <option value="গাড়ি">গাড়ি</option>
+                    <option value="গাড়ি এম্বুলেন্স">গাড়ি এম্বুলেন্স</option>
+<option value="সিএনজি">সিএনজি</option>
                     <option value="টেকনিশিয়ান">টেকনিশিয়ান</option>
+<option value="ভুমি ও প্রয়োজনীয় কাগজ পত্র">ভুমি ও প্রয়োজনীয় কাগজ পত্র</option>
                     <option value="অন্যান্য সেবা">অন্যান্য সেবা</option>
                     <option value="প্রবাসী সেবা">প্রবাসী সেবা</option>
                     <option value="অটো ডাইভার">অটো ডাইভার</option>
                     <option value="স্বাস্থ্য সেবা">স্বাস্থ্য সেবা</option>
-                    <option value="মিস্ত্রি">মিস্ত্রি</option>
+                    <option value="ঘরের মিস্ত্রি">ঘরের মিস্ত্রি</option>
                 </select>
                 <input type="text" id="form-area" name="area" placeholder="এরিয়া (যেমন: ঢাকা)" required>
                 <input type="text" name="name" placeholder="নাম" required>
@@ -147,7 +149,7 @@
             areas.forEach(area => {
                 const div = document.createElement('div');
                 div.className = 'list-item';
-                div.innerText = `📍 ${area}`;
+                div.innerText = `🤝 ${area}`;
                 div.onclick = () => renderCards(selectedCat, area);
                 listContainer.appendChild(div);
             });
@@ -248,5 +250,4 @@
     </script>
 </body>
 </html>
-
 

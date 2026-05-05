@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sajar BD - Organization Portal</title>
+    <title>আপনার প্রিয় সংগঠন এর তথ্য যুক্ত করুন</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        :root { --primary-blue: #007bff; --success: #28a745; }
+        :root { --primary-blue: #007bff; --success: #28a745; --fb-blue: #1877F2; --donate-red: #d9534f; }
         body { font-family: 'Arial', sans-serif; background: #f0f2f5; display: flex; flex-direction: column; align-items: center; padding: 20px; margin-bottom: 100px; }
         
         #company-list { width: 100%; max-width: 400px; margin-bottom: 30px; }
@@ -36,8 +36,17 @@
         .info-row { display: flex; justify-content: space-between; margin-bottom: 8px; border-bottom: 1px solid #f0f0f0; padding-bottom: 4px; font-size: 14px; }
         .label { font-weight: bold; color: #555; }
         .value { color: #333; font-weight: 500; }
+
+        .action-buttons { display: flex; justify-content: center; gap: 8px; padding: 10px 20px; }
+        .action-btn { 
+            flex: 1; text-decoration: none; text-align: center; font-size: 11px; font-weight: bold; 
+            color: white; padding: 8px 2px; border-radius: 5px; display: flex; flex-direction: column; align-items: center; cursor: pointer; border: none;
+        }
+        .btn-donation { background: var(--donate-red); }
+        .btn-facebook { background: var(--fb-blue); }
+        .btn-website { background: #333; }
         
-        .footer-area { display: flex; justify-content: space-around; align-items: flex-end; padding: 10px 20px 10px; }
+        .footer-area { display: flex; justify-content: space-around; align-items: flex-end; padding: 5px 20px 10px; }
         .sig-box { text-align: center; width: 100%; }
         .sig-box img { width: 80px; height: 35px; object-fit: contain; }
         .sig-text { font-size: 10px; border-top: 1px solid #999; display: block; margin-top: 5px; color: #666; }
@@ -87,10 +96,9 @@
                 let memberData = rows.slice(1);
                 
                 if(memberData.length > 0) {
-                    originalFirstRow = memberData[0]; // সংগঠন এর জন্য প্রথম তথ্য সেভ রাখা হলো
+                    originalFirstRow = memberData[0];
                 }
 
-                // সর্বশেষ তথ্য উপরে দেখানোর জন্য রিভার্স
                 memberData.reverse();
 
                 let companies = {};
@@ -119,10 +127,14 @@
                     document.getElementById('search-container').style.display = 'block';
 
                     data.forEach((cols, index) => {
+                        // শিটের কলাম অনুযায়ী ইনডেক্স (ধরে নিচ্ছি ১৩ ও ১৪ নম্বর কলামে ফেসবুক ও ওয়েবসাইট লিংক আছে)
+                        const fbLink = cols[12] || "#"; 
+                        const webLink = cols[13] || "#";
+
                         const wrapper = document.createElement('div');
                         wrapper.className = 'card-wrapper';
                         wrapper.style.display = 'flex';
-                        wrapper.setAttribute('data-company', cols[8]); // কোম্পানি নাম দিয়ে সার্চের জন্য
+                        wrapper.setAttribute('data-company', cols[8]);
 
                         wrapper.innerHTML = `
                         <div class="card" id="card-${index}">
@@ -140,6 +152,13 @@
                                 <div class="info-row"><span class="label">ব্যাংক:</span> <span class="value" style="color:red;">${cols[4]}</span></div>
                                 <div class="info-row" style="border:none;"><span class="label">ঠিকানা:</span> <span class="value">${cols[5]}</span></div>
                             </div>
+
+                            <div class="action-buttons">
+                                <button class="action-btn btn-donation" onclick="showPaymentInfo('${cols[10]}', '${cols[11]}', '${cols[4]}')"><span>💵</span>ডোনেশন</button>
+                                <a href="${fbLink}" target="_blank" class="action-btn btn-facebook"><span>🌐</span>ফেসবুক</a>
+                                <a href="${webLink}" target="_blank" class="action-btn btn-website"><span>🔗</span>ওয়েবসাইট</a>
+                            </div>
+
                             <div class="footer-area">
                                 <div class="sig-box">
                                     <img src="${cols[7]}" alt="Sign" crossorigin="anonymous">
@@ -147,8 +166,7 @@
                                 </div>
                             </div>
                         </div>
-                        <button class="download-btn" onclick="downloadCard('card-${index}', '${cols[0]}')">Download Card</button>
-                        `;
+                                                `;
                         cardContainer.appendChild(wrapper);
                     });
                 }
@@ -156,6 +174,11 @@
             .catch(err => {
                 document.getElementById('status').innerText = "ডাটা লোড হচ্ছে না।";
             });
+
+        // ডোনেশন পেমেন্ট তথ্য দেখানোর ফাংশন
+        window.showPaymentInfo = function(bkash, nagad, bank) {
+            alert(`পেমেন্ট তথ্য:\n\nবিকাশ: ${bkash}\nনগদ: ${nagad}\nব্যাংক: ${bank}`);
+        };
 
         function showOrgInfo() {
             if(!originalFirstRow) return;
@@ -173,9 +196,8 @@
                     <p style="color:var(--primary-blue); font-weight:bold; font-size:14px; margin-bottom:15px;">${cols[2]}</p>
                     <div style="text-align:left; font-size:14px; border-top:1px solid #eee; padding-top:10px;">
                         <p style="margin-bottom:5px;"><b>হোয়াটসঅ্যাপ:</b> ${cols[1]}</p>
-                        <p style="margin-bottom:5px;"><b>বিকাশ:</b> ${cols[10]}</p>
-                        <p style="margin-bottom:5px;"><b>নগদ:</b> ${cols[11]}</p>
-                        <p><b>ঠিকানা:</b> ${cols[5]}</p>
+                        <p style="margin-bottom:5px;"><b>ফোন নাম্বার:</b> ${cols[3]}</p>
+                                    <p><b>ঠিকানা:</b> ${cols[5]}</p>
                     </div>
                     <button onclick="closeModal()" style="margin-top:20px; width:100%; padding:10px; background:#f44336; color:white; border:none; border-radius:5px; cursor:pointer;">বন্ধ করুন</button>
                 </div>
@@ -191,7 +213,6 @@
             if(sc.style.display === 'block') document.getElementById('search-input').focus();
         }
 
-        // কোম্পানি নাম অনুযায়ী সার্চ
         function filterByCompanyName() {
             const input = document.getElementById('search-input').value.toUpperCase();
             const cards = document.getElementsByClassName('card-wrapper');
@@ -213,6 +234,3 @@
     </script>
 </body>
 </html>
-
-
-

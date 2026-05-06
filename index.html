@@ -141,7 +141,7 @@ style="color: #28a745;"><i class="fas fa-phone-alt prefix-icon"></i> যে ক�
             <div id="reg-ui" style="display:none;">
                 <h2 style="text-align:center; margin-bottom:20px;">রেজিস্ট্রেশন</h2>
                 <div class="input-box"><i class="fas fa-user prefix-icon"></i><input type="text" id="rName" placeholder="পুরো নাম"></div>
-                <div class="input-box"><i class="fas fa-phone-alt prefix-icon"></i><input type="text" id="rPhone" placeholder="ফোন নাম্বার (১১ সংখ্যা)"></div>
+                <div class="input-box"><i class="fas fa-phone-alt prefix-icon"></i><input type="text" id="rPhone" placeholder="ফোন নাম্বার"></div>
                 <div class="input-box"><i class="fas fa-tint prefix-icon"></i>
                     <select id="rBlood">
                         <option value="">রক্তের গ্রুপ</option>
@@ -300,7 +300,8 @@ if(rows[10]) document.getElementById('poLinkSide').innerText = rows[10][1].trim(
             const name = document.getElementById('rName').value.trim();
 
             if(!name || !phone || !pass || !conPass) return alert("সবগুলো ঘর পূরণ করুন!");
-            if(phone.length < 11) return alert("সঠিক ফোন নাম্বার দিন!");
+            if(phone.length < 7) return alert("সঠিক ফোন নাম্বার দিন!");
+if(pass.length < 6) return alert("সর্বনিম্ন ৬ সংখ্যার পাসওয়ার্ড দিন!");
             if(pass !== conPass) return alert("পাসওয়ার্ড দুটি মেলেনি!");
 
             if(phone.length === 10 && !phone.startsWith('0')) phone = '0' + phone;
@@ -317,7 +318,7 @@ if(rows[10]) document.getElementById('poLinkSide').innerText = rows[10][1].trim(
             const data = { 
                 action: "register", 
                 name: name, 
-                phone: "'" + phone, 
+                phone: phone, 
                 blood: document.getElementById('rBlood').value, 
                 address: document.getElementById('rAddress').value,
                 pass: pass,
@@ -380,4 +381,3 @@ if(rows[10]) document.getElementById('poLinkSide').innerText = rows[10][1].trim(
     </script>
 </body>
 </html>
-

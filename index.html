@@ -82,23 +82,13 @@
         </div>
     </header>
 
-    <div class="sheet-notice-area" id="sheetOptions">
-        <a id="opt1" href="#" class="notice-item" style="display:none;">
-            <b id="opt1Title"></b>
-            <span id="opt1Desc"></span>
-        </a>
-        <a id="opt2" href="#" class="notice-item" style="display:none;">
-            <b id="opt2Title"></b>
-            <span id="opt2Desc"></span>
-        </a>
-    </div>
-
+    <div class="main-banner" id="bannerDiv"><img id="bannerImg" src=""></div>
+    
     <div class="promo-row" id="promoRow">
         <div class="promo-card"><img id="p1" src=""></div>
         <div class="promo-card"><img id="p2" src=""></div>
         <div class="promo-card"><img id="p3" src=""></div>
     </div>
-
 
     <nav class="sub-nav" id="catNav">
         <a onclick="filter('হোম', this)" class="active">হোম</a>
@@ -247,42 +237,19 @@ style="color: #28a745;"><i class="fas fa-phone-alt prefix-icon"></i> যে ক�
                 const res = await fetch(SETTINGS_CSV);
                 const data = await res.text();
                 const rows = data.split('\n').map(row => row.split(','));
-                
                 if(rows[1]) document.getElementById('mainLogo').src = rows[1][1].trim();
                 if(rows[2]) document.getElementById('siteName').innerText = rows[2][1].trim();
-                
-                // বটম ব্যানার
-                if(rows[3] && rows[3][1].trim() !== "") {
+                if(rows[3]) {
                     document.getElementById('bannerDiv').style.display = 'block';
                     document.getElementById('bannerImg').src = rows[3][1].trim();
                 }
-
-                // গুগল শিট থেকে দুটি বিশেষ অপশন/নোটিশ সেকশন (ধরি row 11 ও 12 তে আছে)
-                // format: Column A = Title, Column B = Link or Description
-                let showNoticeArea = false;
-                if(rows[11] && rows[11][0].trim() !== "") {
-                    document.getElementById('opt1').style.display = 'block';
-                    document.getElementById('opt1Title').innerText = rows[11][0].trim();
-                    document.getElementById('opt1Desc').innerText = rows[11][1].trim();
-                    document.getElementById('opt1').href = rows[11][1].trim().includes('http') ? rows[11][1].trim() : "#";
-                    showNoticeArea = true;
-                }
-                if(rows[12] && rows[12][0].trim() !== "") {
-                    document.getElementById('opt2').style.display = 'block';
-                    document.getElementById('opt2Title').innerText = rows[12][0].trim();
-                    document.getElementById('opt2Desc').innerText = rows[12][1].trim();
-                    document.getElementById('opt2').href = rows[12][1].trim().includes('http') ? rows[12][1].trim() : "#";
-                    showNoticeArea = true;
-                }
-                if(showNoticeArea) document.getElementById('sheetOptions').style.display = 'flex';
-
                 if(rows[4]) document.getElementById('p1').src = rows[4][1].trim();
                 if(rows[5]) document.getElementById('p2').src = rows[5][1].trim();
                 if(rows[6]) document.getElementById('p3').src = rows[6][1].trim();
                 if(rows[7]) document.getElementById('quizLinkSide').href = rows[7][1].trim();
                 if(rows[8]) document.getElementById('downloadLinkSide').href = rows[8][1].trim();
-                if(rows[9]) document.getElementById('saLinkSide').href = rows[9][1].trim();
-                if(rows[10]) document.getElementById('poLinkSide').innerText = rows[10][1].trim();
+if(rows[9]) document.getElementById('saLinkSide').href = rows[9][1].trim();
+if(rows[10]) document.getElementById('poLinkSide').innerText = rows[10][1].trim();
 
             } catch(e) { console.log("Settings Error:", e); }
         }
@@ -416,10 +383,9 @@ function renderBloodList(data) {
     
     listDiv.innerHTML = data.map(m => `
         <div class="blood-card">
-           
-            <div><b>${m.name}</b><br><small>${m.phone || 'ফোন নাম্বার নেই'}</small><br>
-<small>${m.address || 'ঠিকানা নেই'}</small></div>
-          
+            <div>
+               <b>${m.name}</b><br><small>${m.phone || 'ফোন নাম্বার নেই'}</small><br><small>${m.address || 'ঠিকানা নেই'}</small>
+            </div>
             <div style="display:flex; align-items:center; gap:10px;">
                 <span class="blood-grp">${m.blood}</span>
                 <a href="tel:${m.phone}" class="call-btn"><i class="fas fa-phone-alt"></i></a>

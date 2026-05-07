@@ -82,13 +82,23 @@
         </div>
     </header>
 
-    <div class="main-banner" id="bannerDiv"><img id="bannerImg" src=""></div>
-    
+    <div class="sheet-notice-area" id="sheetOptions">
+        <a id="opt1" href="#" class="notice-item" style="display:none;">
+            <b id="opt1Title"></b>
+            <span id="opt1Desc"></span>
+        </a>
+        <a id="opt2" href="#" class="notice-item" style="display:none;">
+            <b id="opt2Title"></b>
+            <span id="opt2Desc"></span>
+        </a>
+    </div>
+
     <div class="promo-row" id="promoRow">
         <div class="promo-card"><img id="p1" src=""></div>
         <div class="promo-card"><img id="p2" src=""></div>
         <div class="promo-card"><img id="p3" src=""></div>
     </div>
+
 
     <nav class="sub-nav" id="catNav">
         <a onclick="filter('হোম', this)" class="active">হোম</a>
@@ -187,12 +197,19 @@ style="color: #28a745;"><i class="fas fa-phone-alt prefix-icon"></i> যে ক�
         </div>
 
         <div id="blood-box" style="display:none;" class="card">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-                <h3>রক্তদাতা</h3>
-                <button onclick="closeBlood()" style="border:none; background:none; font-size:24px;">&times;</button>
-            </div>
-            <div id="bloodList">লোড হচ্ছে...</div>
-        </div>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+        <h3>রক্তদাতা খুঁজুন</h3>
+        <button onclick="closeBlood()" style="border:none; background:none; font-size:24px;">&times;</button>
+    </div>
+    
+    <div class="input-box">
+        <i class="fas fa-search prefix-icon"></i>
+        <input type="text" id="bloodSearch" onkeyup="filterBlood()" placeholder="রক্তের গ্রুপ বা এলাকা লিখুন (যেমন: A+, ঢাকা)">
+    </div>
+
+    <div id="bloodList" style="max-height: 400px; overflow-y: auto;">লোড হচ্ছে...</div>
+</div>
+
 
         <div id="loader" style="text-align:center; padding:20px; display:none;"><i class="fas fa-spinner fa-spin"></i></div>
         <div id="feed"></div>
@@ -230,19 +247,42 @@ style="color: #28a745;"><i class="fas fa-phone-alt prefix-icon"></i> যে ক�
                 const res = await fetch(SETTINGS_CSV);
                 const data = await res.text();
                 const rows = data.split('\n').map(row => row.split(','));
+                
                 if(rows[1]) document.getElementById('mainLogo').src = rows[1][1].trim();
                 if(rows[2]) document.getElementById('siteName').innerText = rows[2][1].trim();
-                if(rows[3]) {
+                
+                // বটম ব্যানার
+                if(rows[3] && rows[3][1].trim() !== "") {
                     document.getElementById('bannerDiv').style.display = 'block';
                     document.getElementById('bannerImg').src = rows[3][1].trim();
                 }
+
+                // গুগল শিট থেকে দুটি বিশেষ অপশন/নোটিশ সেকশন (ধরি row 11 ও 12 তে আছে)
+                // format: Column A = Title, Column B = Link or Description
+                let showNoticeArea = false;
+                if(rows[11] && rows[11][0].trim() !== "") {
+                    document.getElementById('opt1').style.display = 'block';
+                    document.getElementById('opt1Title').innerText = rows[11][0].trim();
+                    document.getElementById('opt1Desc').innerText = rows[11][1].trim();
+                    document.getElementById('opt1').href = rows[11][1].trim().includes('http') ? rows[11][1].trim() : "#";
+                    showNoticeArea = true;
+                }
+                if(rows[12] && rows[12][0].trim() !== "") {
+                    document.getElementById('opt2').style.display = 'block';
+                    document.getElementById('opt2Title').innerText = rows[12][0].trim();
+                    document.getElementById('opt2Desc').innerText = rows[12][1].trim();
+                    document.getElementById('opt2').href = rows[12][1].trim().includes('http') ? rows[12][1].trim() : "#";
+                    showNoticeArea = true;
+                }
+                if(showNoticeArea) document.getElementById('sheetOptions').style.display = 'flex';
+
                 if(rows[4]) document.getElementById('p1').src = rows[4][1].trim();
                 if(rows[5]) document.getElementById('p2').src = rows[5][1].trim();
                 if(rows[6]) document.getElementById('p3').src = rows[6][1].trim();
                 if(rows[7]) document.getElementById('quizLinkSide').href = rows[7][1].trim();
                 if(rows[8]) document.getElementById('downloadLinkSide').href = rows[8][1].trim();
-if(rows[9]) document.getElementById('saLinkSide').href = rows[9][1].trim();
-if(rows[10]) document.getElementById('poLinkSide').innerText = rows[10][1].trim();
+                if(rows[9]) document.getElementById('saLinkSide').href = rows[9][1].trim();
+                if(rows[10]) document.getElementById('poLinkSide').innerText = rows[10][1].trim();
 
             } catch(e) { console.log("Settings Error:", e); }
         }
@@ -301,9 +341,9 @@ if(rows[10]) document.getElementById('poLinkSide').innerText = rows[10][1].trim(
 
             if(!name || !phone || !pass || !conPass) return alert("সবগুলো ঘর পূরণ করুন!");
             if(phone.length < 7) return alert("সঠিক ফোন নাম্বার দিন!");
-if(pass.length < 6) return alert("সর্বনিম্ন ৬ সংখ্যার পাসওয়ার্ড দিন!");
             if(pass !== conPass) return alert("পাসওয়ার্ড দুটি মেলেনি!");
 
+if(pass.length < 6) return alert("৬ সংখ্যার পাসওয়ার্ড দিন!");
             if(phone.length === 10 && !phone.startsWith('0')) phone = '0' + phone;
 
             document.getElementById('loader').style.display='block';
@@ -318,7 +358,7 @@ if(pass.length < 6) return alert("সর্বনিম্ন ৬ সংখ্�
             const data = { 
                 action: "register", 
                 name: name, 
-                phone: phone, 
+                phone: "'" + phone, 
                 blood: document.getElementById('rBlood').value, 
                 address: document.getElementById('rAddress').value,
                 pass: pass,
@@ -347,19 +387,58 @@ if(pass.length < 6) return alert("সর্বনিম্ন ৬ সংখ্�
             location.reload();
         }
 
-        async function showBloodList() {
-            toggleMenu(); document.getElementById('blood-box').style.display = 'block'; document.getElementById('feed').style.display = 'none';
-            const res = await fetch(`${SCRIPT_URL}?action=getAllUsers`);
-            const data = await res.json();
-            document.getElementById('bloodList').innerHTML = data.map(m => `
-                <div class="blood-card">
-                    <div><b>${m.name}</b><br><small>${m.phone || 'ফোন নাম্বার নেই'}</small><br><small>${m.address || 'ঠিকানা নেই'}</small></div>
-                    <div style="display:flex; align-items:center; gap:10px;">
-                        <span class="blood-grp">${m.blood}</span>
-                        <a href="tel:${m.phone}" class="call-btn"><i class="fas fa-phone-alt"></i></a>
-                    </div>
-                </div>`).join('');
-        }
+        let allDonors = []; // গ্লোবাল ভেরিয়েবল ডাটা সেভ রাখার জন্য
+
+async function showBloodList() {
+    toggleMenu(); 
+    document.getElementById('blood-box').style.display = 'block'; 
+    document.getElementById('feed').style.display = 'none';
+    
+    const listDiv = document.getElementById('bloodList');
+    listDiv.innerHTML = "লোড হচ্ছে...";
+
+    try {
+        const res = await fetch(`${SCRIPT_URL}?action=getAllUsers`);
+        allDonors = await res.json();
+        renderBloodList(allDonors);
+    } catch(e) {
+        listDiv.innerHTML = "ডাটা লোড করতে সমস্যা হয়েছে।";
+    }
+}
+
+// লিস্ট দেখানোর আলাদা ফাংশন (সার্চের সুবিধার জন্য)
+function renderBloodList(data) {
+    const listDiv = document.getElementById('bloodList');
+    if(data.length === 0) {
+        listDiv.innerHTML = "<p style='text-align:center; padding:20px;'>কোনো তথ্য পাওয়া যায়নি!</p>";
+        return;
+    }
+    
+    listDiv.innerHTML = data.map(m => `
+        <div class="blood-card">
+           
+            <div><b>${m.name}</b><br><small>${m.phone || 'ফোন নাম্বার নেই'}</small><br>
+<small>${m.address || 'ঠিকানা নেই'}</small></div>
+          
+            <div style="display:flex; align-items:center; gap:10px;">
+                <span class="blood-grp">${m.blood}</span>
+                <a href="tel:${m.phone}" class="call-btn"><i class="fas fa-phone-alt"></i></a>
+            </div>
+        </div>`).join('');
+}
+
+// সার্চ করার ফাংশন
+function filterBlood() {
+    const query = document.getElementById('bloodSearch').value.toLowerCase();
+    const filtered = allDonors.filter(donor => {
+        return (
+            donor.blood.toLowerCase().includes(query) || 
+            (donor.address && donor.address.toLowerCase().includes(query)) ||
+            donor.name.toLowerCase().includes(query)
+        );
+    });
+    renderBloodList(filtered);
+}
 
         function updateUI() {
             document.getElementById('post-box').style.display='block';

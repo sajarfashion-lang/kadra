@@ -17,6 +17,11 @@
         .logo-box { display: flex; align-items: center; gap: 5px; }
         .logo-box img { height: 35px; width: 35px; object-fit: contain; background: #fff; border-radius: 6px; padding: 2px; }
         .header-seba-btn { background: rgba(255, 255, 255, 0.2); color: yellow; text-decoration: none; padding: 6px 12px; border-radius: 20px; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 5px; border: 1px solid rgba(255,255,255,0.4); }
+/* নোটিশ স্টাইল */
+        .notice-bar { background: #fff8e1; border-bottom: 1px solid #ffe082; padding: 8px 10px; display: none; align-items: center; gap: 10px; overflow: hidden; }
+        .notice-bar b { background: var(--red); color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px; white-space: nowrap; z-index: 2; }
+        .notice-text { color: #333; font-size: 14px; white-space: nowrap; animation: marquee 15s linear infinite; width: 100%; }
+        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
         /* ব্যানার ও নেভিগেশন */
         .main-banner { width: 100%; height: auto; display: none; overflow: hidden; }
@@ -81,6 +86,10 @@
             <div onclick="toggleAuth()" style="font-size: 28px; cursor: pointer;"><i class="fas fa-user-circle"></i></div>
         </div>
     </header>
+ <div class="notice-bar" id="noticeBar">
+        <b>নোটিশ</b>
+        <div class="notice-text" id="noticeContent">স্বাগতম আমাদের পোর্টালে...</div>
+    </div>
 
     <div class="main-banner" id="bannerDiv"><img id="bannerImg" src=""></div>
     
@@ -246,13 +255,18 @@ style="color: #28a745;"><i class="fas fa-phone-alt prefix-icon"></i> যে ক�
                 if(rows[4]) document.getElementById('p1').src = rows[4][1].trim();
                 if(rows[5]) document.getElementById('p2').src = rows[5][1].trim();
                 if(rows[6]) document.getElementById('p3').src = rows[6][1].trim();
-                if(rows[7]) document.getElementById('quizLinkSide').href = rows[7][1].trim();
+                 if(rows[7]) document.getElementById('quizLinkSide').href = rows[7][1].trim();
                 if(rows[8]) document.getElementById('downloadLinkSide').href = rows[8][1].trim();
 if(rows[9]) document.getElementById('saLinkSide').href = rows[9][1].trim();
 if(rows[10]) document.getElementById('poLinkSide').innerText = rows[10][1].trim();
-
-            } catch(e) { console.log("Settings Error:", e); }
+                // নোটিশ (১১ নম্বর রো)
+                if(rows[11] && rows[11][1].trim() !== "") {
+                    document.getElementById('noticeBar').style.display = 'flex';
+                    document.getElementById('noticeContent').innerText = rows[11][1].trim();
+                }
+            } catch(e){}
         }
+
 
         async function fetchPosts() {
             document.getElementById('loader').style.display='block';

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আমাদের প্রতিনিধি সাথে কথা বলতে কল করুন</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; padding: 20px; }
+        
+        .header { text-align: center; margin-bottom: 30px; color: #1a73e8; }
+        
+        .container { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 20px; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+        }
+
+        .card { 
+            background: #fff; 
+            border-radius: 15px; 
+            padding: 20px; 
+            text-align: center; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+            transition: 0.3s;
+            border-top: 5px solid #28a745;
+        }
+
+        .card:hover { transform: translateY(-5px); box-shadow: 0 8px 16px rgba(0,0,0,0.2); }
+
+        .card h3 { color: #333; margin-bottom: 10px; font-size: 20px; }
+        .card p { color: #666; margin-bottom: 15px; font-weight: bold; }
+
+        .call-btn { 
+            display: inline-block; 
+            background: #28a745; 
+            color: #fff; 
+            text-decoration: none; 
+            padding: 10px 25px; 
+            border-radius: 25px; 
+            font-weight: bold; 
+            transition: 0.3s;
+        }
+
+        .call-btn:hover { background: #218838; }
+        
+        #loading { text-align: center; font-size: 18px; color: #666; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>স্বাগতম হেল্পলাইন</h1>
+</div>
+
+<div id="loading">অনুগ্রহ করে অপেক্ষা করুন...</div>
+<div class="container" id="card-container"></div>
+
+<script>
+    const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRsMEFdv-GlfpoS43HCgt_cuyWM6SivIru3mHTBHfVwhmWlg6wWdcVdA7mhWveAQl3c4tMVuzBpWQ4u/pub?output=csv";
+
+    async function fetchSheetData() {
+        try {
+            const response = await fetch(sheetUrl);
+            const data = await response.text();
+            const rows = data.split('\n').slice(1); // প্রথম সারি (Header) বাদ দিয়ে
+            
+            const container = document.getElementById('card-container');
+            const loading = document.getElementById('loading');
+            loading.style.display = 'none';
+
+            rows.forEach(row => {
+                const columns = row.split(',');
+                if (columns.length >= 2) {
+                    const name = columns[0].trim();
+const design =
+columns[1].trim();
+                    const phone = columns[2].trim();
+
+                    if(name && phone) {
+                        const card = `
+                            <div class="card">
+                                <h3>🇧🇩${name}</h3>
+                                <p> ${design}</p>
+<p> 📞${phone}</p>
+                                <a href="tel:${phone}" class="call-btn">Call Now</a>
+                            </div>
+                        `;
+                        container.innerHTML += card;
+                    }
+                }
+            });
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            document.getElementById('loading').innerText = 'তথ্য লোড করতে সমস্যা হয়েছে।';
+        }
+    }
+
+    fetchSheetData();
+</script>
+
+</body>
+</html>

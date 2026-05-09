@@ -116,18 +116,19 @@
         </div>
         <div class="sidebar-menu">
             <div class="menu-item" onclick="openProfile()"><i class="fas fa-user-shield"></i> প্রোফাইল</div>
+<div class="menu-item" onclick="showBloodList()"><i class="fas fa-tint"></i> জরুরি রক্ত</div>
             <a id="quizLinkSide" href="#" target="_blank" class="menu-item"><i class="fas fa-brain"></i> কুইজ খেলুন 🏆</a>
 <a href="sa.html" class="menu-item"><i class="fas fa-hand-holding-heart"></i> ইসলামিক ও সামাজিক সংগঠন</a>
-
-            <div class="menu-item" onclick="showBloodList()"><i class="fas fa-tint"></i> জরুরি রক্ত</div>
+<a href="sc.html" class="menu-item"><i class="fas fa-school"></i> শিক্ষা প্রতিষ্ঠান</a>
+           
             <a href="sb.html" class="menu-item"><i class="fas fa-hospital"></i> মেডিকেল এন্ড ব্যবসা প্রতিষ্ঠান</a>
+
 <a id="saLinkSide" href="#" target="_blank" class="menu-item"><i class="fas fa-shopping-bag"></i>কেনাকাটা করুন🛒</a>
 <div class="menu-item" onclick="location.reload()"><i class="fas fa-home"></i> হোম</div>
 <a id="downloadLinkSide" href="#" target="_blank" class="menu-item" style="color: #28a745;"><i class="fas fa-download"></i> অ্যাপ ডাউনলোড</a>
-<a id="poLinkSide" href="#" target="_blank" class="menu-item"
-style="color: #28a745;"><i class="fas fa-phone-alt prefix-icon"></i> যে কোনো প্রয়োজনে যোগাযোগ করুন</a>
-           
-        </div>
+<a href="card.html" target="_blank" class="menu-item"
+style="color: #28a745;"><i class="fas fa-phone-alt prefix-icon"></i> হেল্পলাইন</a>
+           </div>
     </aside>
 
     <main class="main-content">
@@ -258,7 +259,6 @@ style="color: #28a745;"><i class="fas fa-phone-alt prefix-icon"></i> যে ক�
                  if(rows[7]) document.getElementById('quizLinkSide').href = rows[7][1].trim();
                 if(rows[8]) document.getElementById('downloadLinkSide').href = rows[8][1].trim();
 if(rows[9]) document.getElementById('saLinkSide').href = rows[9][1].trim();
-if(rows[10]) document.getElementById('poLinkSide').innerText = rows[10][1].trim();
                 // নোটিশ (১১ নম্বর রো)
                 if(rows[11] && rows[11][1].trim() !== "") {
                     document.getElementById('noticeBar').style.display = 'flex';

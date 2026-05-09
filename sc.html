@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>আপনার প্রতিষ্ঠান এর তথ্য যুক্ত করুন</title>
+    <title>আপনার প্রিয় শিক্ষা প্রতিষ্ঠান এর তথ্য যুক্ত করুন</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root { --primary-blue: #007bff; --success: #28a745; --fb-blue: #1877F2; --donate-red: #d9534f; }
@@ -89,7 +89,7 @@
     </div>
 
     <script>
-        const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSU9UfdryT2QgERmkeD5g3oVXz06gHbzd34r_WE0BVnxQl1yQ4-dUiFAfp5KT4gIwvoKs5plyryVjlx/pub?output=csv";
+        const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTViaulmXNbSbzhBpG5O88no3s1tjMoJF0wTn1ZEH8n7Qjd9r75S3V0dwTaqqc3ui5Gl0d0ID1zHA8I/pub?output=csv";
         let originalFirstRow = null;
 
         fetch(url)
@@ -133,7 +133,7 @@
                         const fbLink = cols[12] || "#"; 
                         const webLink = cols[13] || "#";
                         // নতুন কলাম: ১৪ এবং ১৫ নম্বর ইনডেক্স থেকে নোটিশ নেয়া হচ্ছে
-                        const shortDesc = cols[14] || "কোনো বিশেষ ঘোষণা নেই।"; 
+                        const shortDesc = cols[14] || "নোটিশ"; 
                         const longDesc = cols[15] || "";
 
                         const wrapper = document.createElement('div');
@@ -156,13 +156,13 @@
 
                             <!-- নোটিশ অপশন -->
                             <div class="notice-section">
-                                <div class="notice-title"><span>📢</span> বিশেষ বার্তা:</div>
+                                <div class="notice-title"><span>📢</span> নোটিশ:</div>
                                 <div class="notice-short">${shortDesc}</div>
                                 <div class="notice-long">${longDesc}</div>
                             </div>
 
                             <div class="action-buttons">
-                                <button class="action-btn btn-donation" onclick="showPaymentInfo('${cols[10]}', '${cols[11]}', '${cols[4]}')"><span>💵</span>পেমেন্ট মাধ্যম</button>
+                                <button class="action-btn btn-donation" onclick="showPaymentInfo('${cols[10]}', '${cols[11]}', '${cols[4]}')"><span>🎓</span>প্রতিষ্ঠান প্রধান</button>
                                 <a href="${fbLink}" target="_blank" class="action-btn btn-facebook"><span>🌐</span>ফেসবুক</a>
                                 <a href="${webLink}" target="_blank" class="action-btn btn-website"><span>🔗</span>ওয়েবসাইট</a>
                             </div>
@@ -193,7 +193,7 @@
         }
 
         window.showPaymentInfo = function(bkash, nagad, bank) {
-            alert(`পেমেন্ট তথ্য:\n\nবিকাশ: ${bkash}\nনগদ: ${nagad}\nব্যাংক: ${bank}`);
+            alert(`পেমেন্ট তথ্য:\n\nপ্রতিষ্ঠান প্রধান: ${bkash}\nফোন: ${nagad}\nহোয়াটসঅ্যাপ: ${bank}`);
         };
 
         function showOrgInfo() {
@@ -225,3 +225,4 @@
     </script>
 </body>
 </html>
+

@@ -61,6 +61,20 @@
         .blood-grp { background: var(--red); color: white; padding: 4px 8px; border-radius: 5px; font-weight: bold; }
         .call-btn { color: white; background: #25d366; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border-radius: 50%; text-decoration: none; }
 
+        /* আরও দেখুন বাটন */
+        .load-more-btn { display: block; width: 100%; background: #fff; color: var(--primary); border: 2px solid var(--primary); text-align: center; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 15px; margin: 15px 0; transition: 0.2s; }
+        .load-more-btn:hover { background: var(--primary); color: #fff; }
+
+        /* চিতোষী সেবা ও ফুটার ব্যানার */
+        .chitoshi-info-box { background: linear-gradient(135deg, #ffffff, #f1f9f3); border-left: 5px solid var(--primary); padding: 15px; border-radius: 8px; margin-top: 25px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .chitoshi-info-box h3 { color: var(--dark); font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; }
+        .chitoshi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 13px; color: #555; }
+        .chitoshi-item { display: flex; align-items: center; gap: 6px; background: #fff; padding: 8px; border-radius: 6px; border: 1px solid #eaeaea; }
+        .chitoshi-item i { color: var(--primary); }
+        
+        .footer-banner-container { margin: 20px 0; display: none; width: 100%; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .footer-banner-container img { width: 100%; height: auto; display: block; }
+
         /* বটম মেনু স্টাইল */
         .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 1000; border-top: 1px solid #eee; }
         .nav-item { text-decoration: none; color: #555; display: flex; flex-direction: column; align-items: center; font-size: 12px; font-weight: 600; }
@@ -167,7 +181,28 @@
         </div>
 
         <div id="loader" style="text-align:center; padding:20px; display:none;"><i class="fas fa-spinner fa-spin"></i></div>
+        
+        <!-- মূল ফিড কন্টেইনার -->
         <div id="feed"></div>
+
+        <!-- আরও দেখুন বাটন -->
+        <button id="loadMoreBtn" class="load-more-btn" onclick="loadMorePosts()" style="display:none;">আরও দেখুন <i class="fas fa-chevron-down"></i></button>
+
+        <!-- চিতোষী সেবা তথ্য সেকশন (গুগল শিট থেকে ডাইনামিক লোড হবে) -->
+        <div class="chitoshi-info-box">
+            <h3><i class="fas fa-info-circle"></i> চিতোষী সেবা তথ্য ও হেল্পলাইন</h3>
+            <div class="chitoshi-grid">
+                <div class="chitoshi-item"><i class="fas fa-ambulance"></i> <span id="chitoshiInfo1">লোড হচ্ছে...</span></div>
+                <div class="chitoshi-item"><i class="fas fa-tint"></i> <span id="chitoshiInfo2">লোড হচ্ছে...</span></div>
+                <div class="chitoshi-item"><i class="fas fa-fire-extinguisher"></i> <span id="chitoshiInfo3">লোড হচ্ছে...</span></div>
+                <div class="chitoshi-item"><i class="fas fa-user-md"></i> <span id="chitoshiInfo4">লোড হচ্ছে...</span></div>
+            </div>
+        </div>
+
+        <!-- ফুটার ব্যানার (গুগল শিট থেকে লোড হবে) -->
+        <a id="footerBannerLink" href="#" target="_blank" class="footer-banner-container">
+            <img id="footerBannerImg" src="" alt="Footer Advertisement">
+        </a>
     </main>
 
     <!-- বটম মেনু (আইকন ক্লাস ডাইনামিকালি লোড হবে) -->
@@ -183,7 +218,10 @@
         
         let user = JSON.parse(localStorage.getItem('sajarUser'));
         let allPosts = [];
+        let displayedPosts = [];
         let allDonors = [];
+        let postLimit = 10;
+        let currentCategory = 'হোম';
 
         window.onload = () => { 
             updateUI(); 
@@ -225,7 +263,10 @@
             const cachedSettings = localStorage.getItem('cachedSettings');
             const cachedPosts = localStorage.getItem('cachedPosts');
             if (cachedSettings) applySettings(JSON.parse(cachedSettings));
-            if (cachedPosts) render(JSON.parse(cachedPosts));
+            if (cachedPosts) {
+                allPosts = JSON.parse(cachedPosts);
+                filterAndRender();
+            }
         }
 
         async function fetchSettings() {
@@ -261,8 +302,7 @@
                 if(rows[17]) document.getElementById('sajar').innerText = rows[17][1].trim();
                 if(rows[18]) document.getElementById('buss').innerText = rows[18][1].trim();
 
-                // বটম মেনু ডাইনামিক আইকন, নাম ও লিংক লোড (গুগল শিট থেকে)
-                // আপনার গুগল শিটে কলাম ৩ (Index 2) এ লিঙ্কের পাশে কলাম ৪ (Index 3) এ আইকন নাম লিখবেন (যেমন: fas fa-store)
+                // বটম মেনু ডাইনামিক আইকন, নাম ও লিংক লোড
                 if(rows[12]) { 
                     document.getElementById('bottomBtn1Text').innerText = rows[12][1].trim(); 
                     document.getElementById('bottomBtn1').href = rows[12][2].trim(); 
@@ -278,6 +318,20 @@
                     document.getElementById('bottomBtn3').href = rows[14][2].trim(); 
                     if(rows[14][3]) document.querySelector('#bottomBtn3 i').className = rows[14][3].trim();
                 }
+
+                // ফুটার ব্যানার লোড করার প্রসেস (গুগল শিটের row index ২০ থেকে)
+                if(rows[20] && rows[20][1] && rows[20][1].trim() !== "") {
+                    document.getElementById('footerBannerLink').style.display = 'block';
+                    document.getElementById('footerBannerImg').src = rows[20][1].trim();
+                    if(rows[20][2]) document.getElementById('footerBannerLink').href = rows[20][2].trim();
+                }
+
+                // চিতোষী সেবা তথ্যের ৪টি বক্স গুগল শিটের Row 21, 22, 23, 24 থেকে লোড
+                if(rows[21] && rows[21][1]) document.getElementById('chitoshiInfo1').innerText = rows[21][1].trim();
+                if(rows[22] && rows[22][1]) document.getElementById('chitoshiInfo2').innerText = rows[22][1].trim();
+                if(rows[23] && rows[23][1]) document.getElementById('chitoshiInfo3').innerText = rows[23][1].trim();
+                if(rows[24] && rows[24][1]) document.getElementById('chitoshiInfo4').innerText = rows[24][1].trim();
+
             } catch(e){}
         }
 
@@ -289,13 +343,40 @@
                 const res = await fetch(`${SCRIPT_URL}?action=getPosts`);
                 allPosts = await res.json();
                 localStorage.setItem('cachedPosts', JSON.stringify(allPosts)); // ক্যাশ সেভ
-                render(allPosts);
+                filterAndRender();
             } catch(e){}
             document.getElementById('loader').style.display='none';
         }
 
+        // ক্যাটাগরি ও লিমিট অনুযায়ী পোস্ট ফিল্টার করার ফাংশন
+        function filterAndRender() {
+            let filtered = currentCategory === 'হোম' ? allPosts : allPosts.filter(p => p.category === currentCategory);
+            
+            // পোস্ট কাটিং (১০ টি করে দেখাবে)
+            displayedPosts = filtered.slice(0, postLimit);
+            render(displayedPosts);
+
+            // আরও দেখুন বাটন শো/হাইড লজিক
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            if (filtered.length > postLimit) {
+                loadMoreBtn.style.display = 'block';
+            } else {
+                loadMoreBtn.style.display = 'none';
+            }
+        }
+
+        // "আরও দেখুন" বাটনে ক্লিক করলে এই ফাংশন চলবে
+        function loadMorePosts() {
+            postLimit += 10;
+            filterAndRender();
+        }
+
         function render(posts) {
             const f = document.getElementById('feed');
+            if(posts.length === 0) {
+                f.innerHTML = "<p style='text-align:center; padding:20px; background:#fff; border-radius:12px;'>কোনো পোস্ট পাওয়া যায়নি।</p>";
+                return;
+            }
             f.innerHTML = posts.map((p) => `
                 <div class="card feed-card">
                     <div class="user-info">
@@ -332,6 +413,7 @@
             toggleMenu(); 
             document.getElementById('blood-box').style.display = 'block'; 
             document.getElementById('feed').style.display = 'none';
+            document.getElementById('loadMoreBtn').style.display = 'none';
             const listDiv = document.getElementById('bloodList');
             listDiv.innerHTML = "লোড হচ্ছে...";
             try {
@@ -373,8 +455,15 @@
 
         function logout() { localStorage.removeItem('sajarUser'); location.reload(); }
         function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); }
-        function closeBlood() { document.getElementById('blood-box').style.display='none'; document.getElementById('feed').style.display='block'; }
-        function filter(cat, el) { document.querySelectorAll('#catNav a').forEach(a => a.classList.remove('active')); el.classList.add('active'); render(cat === 'হোম' ? allPosts : allPosts.filter(p => p.category === cat)); }
+        function closeBlood() { document.getElementById('blood-box').style.display='none'; document.getElementById('feed').style.display='block'; filterAndRender(); }
+        
+        function filter(cat, el) { 
+            document.querySelectorAll('#catNav a').forEach(a => a.classList.remove('active')); 
+            el.classList.add('active'); 
+            currentCategory = cat;
+            postLimit = 10; // নতুন ফিল্টারে আবার প্রথম ১০টি পোস্ট রিসেট
+            filterAndRender();
+        }
     </script>
 </body>
 </html>

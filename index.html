@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>সেবা নিন সেবা দিন</title>
+    <title>সেবা নিন সেবা দিন - হোম</title>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --primary: #32a852; --dark: #2c3e50; --fb: #1877f2; --red: #e41e3f; --light-bg: #f0f2f5; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Hind Siliguri', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--light-bg); width: 100%; overflow-x: hidden; }
+        body { background-color: var(--light-bg); width: 100%; overflow-x: hidden; padding-bottom: 60px; }
 
         /* হেডার */
         .header { background: var(--primary); color: white; padding: 0 10px; display: flex; justify-content: space-between; align-items: center; height: 60px; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
@@ -17,7 +17,8 @@
         .logo-box { display: flex; align-items: center; gap: 5px; }
         .logo-box img { height: 35px; width: 35px; object-fit: contain; background: #fff; border-radius: 6px; padding: 2px; }
         .header-seba-btn { background: rgba(255, 255, 255, 0.2); color: yellow; text-decoration: none; padding: 6px 12px; border-radius: 20px; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 5px; border: 1px solid rgba(255,255,255,0.4); }
-/* নোটিশ স্টাইল */
+
+        /* নোটিশ স্টাইল */
         .notice-bar { background: #fff8e1; border-bottom: 1px solid #ffe082; padding: 8px 10px; display: none; align-items: center; gap: 10px; overflow: hidden; }
         .notice-bar b { background: var(--red); color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px; white-space: nowrap; z-index: 2; }
         .notice-text { color: #333; font-size: 14px; white-space: nowrap; animation: marquee 15s linear infinite; width: 100%; }
@@ -33,31 +34,21 @@
         .sub-nav a { color: white; text-decoration: none; font-size: 12px; padding: 6px 15px; border-radius: 20px; border: 1px solid #444; white-space: nowrap; cursor: pointer; }
         .sub-nav a.active { background: var(--fb); border-color: var(--fb); }
 
-        /* সাইডবার */
-        .sidebar { position: fixed; top: 0; left: -300px; width: 280px; height: 100%; background: white; z-index: 2000; transition: 0.3s; box-shadow: 2px 0 10px rgba(0,0,0,0.2); }
+        /* সাইডবার (স্ক্রলিং ফিক্সড) */
+        .sidebar { position: fixed; top: 0; left: -300px; width: 280px; height: 100%; background: white; z-index: 2000; transition: 0.3s; box-shadow: 2px 0 8px rgba(0,0,0,0.2); display: flex; flex-direction: column; }
         .sidebar.active { left: 0; }
-        .sidebar-header { background: var(--primary); color: white; padding: 30px 20px; text-align: center; }
+        .sidebar-header { background: var(--primary); color: white; padding: 25px 18px; text-align: center; flex-shrink: 0; }
+        .sidebar-menu { flex: 1; overflow-y: auto; scrollbar-width: none; }
+        .sidebar-menu::-webkit-scrollbar { display: none; }
+        
         .menu-item { display: flex; align-items: center; padding: 15px 20px; color: #333; border-bottom: 1px solid #eee; cursor: pointer; text-decoration: none; font-weight: 600; }
-        .menu-item i { width: 30px; font-size: 18px; color: var(--primary); }
+        .menu-item i { width: 25px; font-size: 16px; color: var(--primary); }
         .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; z-index: 1500; }
         .overlay.active { display: block; }
 
         /* মেইন কন্টেন্ট */
         .main-content { width: 100%; max-width: 600px; margin: 0 auto; padding: 15px; }
         .card { background: #fff; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #ddd; }
-        
-        /* উন্নত Auth UI */
-        .auth-container { background: #fff; padding: 25px 20px; border-radius: 15px; }
-        .input-box { position: relative; margin-bottom: 15px; display: flex; align-items: center; }
-        .input-box i.prefix-icon { position: absolute; left: 14px; color: var(--primary); font-size: 16px; }
-        .input-box input, .input-box select { width: 100%; padding: 12px 45px 12px 42px; border: 1.5px solid #eee; border-radius: 10px; outline: none; font-size: 14px; transition: 0.3s; }
-        .input-box input:focus { border-color: var(--primary); }
-        
-        /* পাসওয়ার্ড দেখার আইকন স্টাইল */
-        .eye-btn { position: absolute; right: 14px; color: #888; cursor: pointer; padding: 5px; font-size: 16px; }
-        .eye-btn:hover { color: var(--primary); }
-
-        .auth-btn { width: 100%; padding: 14px; border: none; border-radius: 10px; background: linear-gradient(135deg, var(--primary), #28a745); color: white; font-weight: 600; cursor: pointer; font-size: 16px; }
 
         /* পোস্ট ও ফিড */
         .feed-card img { width: calc(100% + 30px); margin: 10px -15px; max-height: 400px; object-fit: cover; }
@@ -69,6 +60,15 @@
         .blood-card { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #eee; }
         .blood-grp { background: var(--red); color: white; padding: 4px 8px; border-radius: 5px; font-weight: bold; }
         .call-btn { color: white; background: #25d366; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border-radius: 50%; text-decoration: none; }
+
+        /* বটম মেনু স্টাইল */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 1000; border-top: 1px solid #eee; }
+        .nav-item { text-decoration: none; color: #555; display: flex; flex-direction: column; align-items: center; font-size: 12px; font-weight: 600; }
+        .nav-item i { font-size: 18px; margin-bottom: 4px; color: var(--primary); }
+        
+        .input-box { position: relative; margin-bottom: 15px; display: flex; align-items: center; }
+        .input-box i.prefix-icon { position: absolute; left: 14px; color: var(--primary); font-size: 16px; }
+        .input-box input { width: 100%; padding: 12px 15px 12px 42px; border: 1.5px solid #eee; border-radius: 10px; outline: none; font-size: 14px; }
     </style>
 </head>
 <body>
@@ -83,10 +83,11 @@
         </div>
         <a href="seba.html" class="header-seba-btn"><i class="fas fa-th-large"></i> সেবা</a>
         <div class="header-right">
-            <div onclick="toggleAuth()" style="font-size: 28px; cursor: pointer;"><i class="fas fa-user-circle"></i></div>
+            <div onclick="handleAuthClick()" style="font-size: 28px; cursor: pointer;" id="headerUserBtn"><i class="fas fa-user-circle"></i></div>
         </div>
     </header>
- <div class="notice-bar" id="noticeBar">
+
+    <div class="notice-bar" id="noticeBar">
         <b>নোটিশ</b>
         <div class="notice-text" id="noticeContent">স্বাগতম আমাদের পোর্টালে...</div>
     </div>
@@ -111,80 +112,36 @@
     
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header" id="sideProfile">
-            <i class="fas fa-user-circle" style="font-size: 55px;"></i>
+            <i class="fas fa-user-circle" style="font-size: 38px;"></i>
             <h3>স্বাগতম অতিথি</h3>
         </div>
         <div class="sidebar-menu">
-            <div class="menu-item" onclick="openProfile()"><i class="fas fa-user-shield"></i> প্রোফাইল</div>
-<div class="menu-item" onclick="showBloodList()"><i class="fas fa-tint"></i> জরুরি রক্ত</div>
-            <a id="quizLinkSide" href="#" target="_blank" class="menu-item"><i class="fas fa-brain"></i> কুইজ খেলুন 🏆</a>
-<a href="sa.html" class="menu-item"><i class="fas fa-hand-holding-heart"></i> ইসলামিক ও সামাজিক সংগঠন</a>
-<a href="sc.html" class="menu-item"><i class="fas fa-school"></i> শিক্ষা প্রতিষ্ঠান</a>
-           
-            <a href="sb.html" class="menu-item"><i class="fas fa-hospital"></i> মেডিকেল এন্ড ব্যবসা প্রতিষ্ঠান</a>
-
-<a id="saLinkSide" href="#" target="_blank" class="menu-item"><i class="fas fa-shopping-bag"></i>কেনাকাটা করুন🛒</a>
-<div class="menu-item" onclick="location.reload()"><i class="fas fa-home"></i> হোম</div>
-<a id="downloadLinkSide" href="#" target="_blank" class="menu-item" style="color: #28a745;"><i class="fas fa-download"></i> অ্যাপ ডাউনলোড</a>
-<a href="card.html" target="_blank" class="menu-item"
-style="color: #28a745;"><i class="fas fa-phone-alt prefix-icon"></i> হেল্পলাইন</a>
-           </div>
+            <div class="menu-item" onclick="handleAuthClickSide()"><i class="fas fa-user-shield"></i> প্রোফাইল / লগইন</div>
+            <div class="menu-item" onclick="showBloodList()"><i class="fas fa-tint"></i> <span id="blood">লিঙ্ক ১</span></div>
+            <a id="quizLinkSide" href="#" target="_blank" class="menu-item"><i class="fas fa-brain"></i> <span id="quiz">লিঙ্ক ১</span></a>
+            <a href="sa.html" class="menu-item"><i class="fas fa-hand-holding-heart"></i> ইসলামিক ও সামাজিক সংগঠন</a>
+            <a href="sc.html" class="menu-item"><i class="fas fa-school"></i> শিক্ষা প্রতিষ্ঠান</a>
+            <a href="sb.html" class="menu-item"><i class="fas fa-hospital"></i> <span id="buss">লিঙ্ক ১</span></a>
+            <a id="saLinkSide" href="#" target="_blank" class="menu-item"><i class="fas fa-shopping-bag"></i><span id="sajar">লিঙ্ক ১</span></a>
+            <div class="menu-item" onclick="location.reload()"><i class="fas fa-home"></i> হোম</div>
+            <a id="downloadLinkSide" href="#" target="_blank" class="menu-item" style="color: #28a745;"><i class="fas fa-download"></i> <span id="apps">লিঙ্ক ১</span></a>
+            <a href="card.html" target="_blank" class="menu-item" style="color: #28a745;"><i class="fas fa-phone-alt"></i> হেল্পলাইন</a>
+            <div class="menu-item" id="logoutBtnSide" style="display:none; color: var(--red);" onclick="logout()"><i class="fas fa-sign-out-alt"></i> লগ আউট</div>
+        </div>
     </aside>
 
     <main class="main-content">
-        <div id="auth-box" style="display:none;" class="card auth-container">
-            <div id="login-ui">
-                <h2 style="text-align:center; margin-bottom:20px;">লগইন করুন</h2>
-                <div class="input-box">
-                    <i class="fas fa-phone-alt prefix-icon"></i>
-                    <input type="text" id="lPhone" placeholder="ফোন নাম্বার">
-                </div>
-                <div class="input-box">
-                    <i class="fas fa-lock prefix-icon"></i>
-                    <input type="password" id="lPass" placeholder="পাসওয়ার্ড">
-                    <i class="fas fa-eye eye-btn" onclick="togglePass('lPass', this)"></i>
-                </div>
-                <button class="auth-btn" onclick="login()">লগইন</button>
-                <div style="text-align:center; margin-top:15px;">অ্যাকাউন্ট নেই? <span onclick="showReg(true)" style="color:var(--fb); font-weight:600; cursor:pointer;">রেজিস্ট্রেশন</span></div>
-            </div>
-
-            <div id="reg-ui" style="display:none;">
-                <h2 style="text-align:center; margin-bottom:20px;">রেজিস্ট্রেশন</h2>
-                <div class="input-box"><i class="fas fa-user prefix-icon"></i><input type="text" id="rName" placeholder="পুরো নাম"></div>
-                <div class="input-box"><i class="fas fa-phone-alt prefix-icon"></i><input type="text" id="rPhone" placeholder="ফোন নাম্বার"></div>
-                <div class="input-box"><i class="fas fa-tint prefix-icon"></i>
-                    <select id="rBlood">
-                        <option value="">রক্তের গ্রুপ</option>
-                        <option value="A+">A+</option><option value="A-">A-</option>
-                        <option value="B+">B+</option><option value="B-">B-</option>
-                        <option value="O+">O+</option><option value="O-">O-</option>
-                        <option value="AB+">AB+</option><option value="AB-">AB-</option>
-                    </select>
-                </div>
-                <div class="input-box"><i class="fas fa-map-marker-alt prefix-icon"></i><input type="text" id="rAddress" placeholder="ঠিকানা"></div>
-                <div class="input-box">
-                    <i class="fas fa-key prefix-icon"></i>
-                    <input type="password" id="rPass" placeholder="পাসওয়ার্ড">
-                    <i class="fas fa-eye eye-btn" onclick="togglePass('rPass', this)"></i>
-                </div>
-                <div class="input-box">
-                    <i class="fas fa-shield-alt prefix-icon"></i>
-                    <input type="password" id="rConPass" placeholder="কনফার্ম পাসওয়ার্ড">
-                    <i class="fas fa-eye eye-btn" onclick="togglePass('rConPass', this)"></i>
-                </div>
-                <div class="input-box"><i class="fas fa-image prefix-icon"></i><input type="text" id="rPhoto" placeholder="প্রোফাইল ছবির লিঙ্ক"></div>
-                <button class="auth-btn" onclick="register()">রেজিস্ট্রেশন সম্পন্ন করুন</button>
-                <div style="text-align:center; margin-top:15px;"><span onclick="showReg(false)" style="cursor:pointer; color:var(--fb);">লগইনে ফিরে যান</span></div>
-            </div>
-
-            <div id="user-ui" style="display:none; text-align:center;">
-                <img id="uPic" src="" style="width:100px; height:100px; border-radius:50%; border:3px solid var(--primary); object-fit:cover; margin-bottom:10px;">
+        <!-- প্রোফাইল কার্ড -->
+        <div id="profile-box" style="display:none;" class="card">
+            <div style="text-align: center; padding: 10px;">
+                <img id="uPic" src="" style="width:80px; height:80px; border-radius:50%; border:3px solid var(--primary); object-fit:cover; margin-bottom:10px;">
                 <h2 id="uName"></h2>
                 <p>রক্ত গ্রুপ: <b id="uBloodDisplay"></b></p>
-                <button class="auth-btn" style="background:var(--red); margin-top:15px;" onclick="logout()">লগ আউট</button>
+                <button onclick="logout()" style="background:var(--red); color:white; border:none; padding:8px 15px; border-radius:5px; margin-top:10px; cursor:pointer;">লগ আউট</button>
             </div>
         </div>
 
+        <!-- পোস্ট তৈরির বক্স -->
         <div id="post-box" style="display:none;" class="card">
             <textarea id="pTxt" placeholder="আপনার কিছু লিখুন..." rows="3" style="width:100%; padding:12px; border:1px solid #eee; border-radius:10px; outline:none; resize:none;"></textarea>
             <input type="text" id="pImg" placeholder="ছবির লিঙ্ক (ঐচ্ছিক)" style="width:100%; padding:10px; margin-top:10px; border:1px solid #eee; border-radius:8px;">
@@ -192,28 +149,33 @@ style="color: #28a745;"><i class="fas fa-phone-alt prefix-icon"></i> হেল�
                 <select id="pCat" style="flex:1; padding:10px; border-radius:8px; border:1px solid #eee;">
                     <option value="শিক্ষা">শিক্ষা</option><option value="ইসলামিক">ইসলামিক</option><option value="মানবিক">মানবিক</option><option value="সাধারণ">সাধারণ</option>
                 </select>
-                <button onclick="addPost()" style="background:var(--fb); color:white; border:none; padding:10px 25px; border-radius:8px; font-weight:600;">পোস্ট করুন</button>
+                <button onclick="addPost()" style="background:var(--fb); color:white; border:none; padding:10px 25px; border-radius:8px; font-weight:600; cursor:pointer;">পোস্ট করুন</button>
             </div>
         </div>
 
+        <!-- রক্তদাতা খোঁজার বক্স -->
         <div id="blood-box" style="display:none;" class="card">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-        <h3>রক্তদাতা খুঁজুন</h3>
-        <button onclick="closeBlood()" style="border:none; background:none; font-size:24px;">&times;</button>
-    </div>
-    
-    <div class="input-box">
-        <i class="fas fa-search prefix-icon"></i>
-        <input type="text" id="bloodSearch" onkeyup="filterBlood()" placeholder="রক্তের গ্রুপ বা এলাকা লিখুন (যেমন: A+, ঢাকা)">
-    </div>
-
-    <div id="bloodList" style="max-height: 400px; overflow-y: auto;">লোড হচ্ছে...</div>
-</div>
-
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                <h3>রক্তদাতা খুঁজুন</h3>
+                <button onclick="closeBlood()" style="border:none; background:none; font-size:24px; cursor:pointer;">&times;</button>
+            </div>
+            <div class="input-box">
+                <i class="fas fa-search prefix-icon"></i>
+                <input type="text" id="bloodSearch" onkeyup="filterBlood()" placeholder="রক্তের গ্রুপ বা এলাকা লিখুন (যেমন: A+, ঢাকা)">
+            </div>
+            <div id="bloodList" style="max-height: 400px; overflow-y: auto;">লোড হচ্ছে...</div>
+        </div>
 
         <div id="loader" style="text-align:center; padding:20px; display:none;"><i class="fas fa-spinner fa-spin"></i></div>
         <div id="feed"></div>
     </main>
+
+    <!-- বটম মেনু (আইকন ক্লাস ডাইনামিকালি লোড হবে) -->
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item" id="bottomBtn1"><i></i><span id="bottomBtn1Text">লোড হচ্ছে...</span></a>
+        <a href="#" class="nav-item" id="bottomBtn2"><i></i><span id="bottomBtn2Text">লোড হচ্ছে...</span></a>
+        <a href="#" class="nav-item" id="bottomBtn3"><i></i><span id="bottomBtn3Text">লোড হচ্ছে...</span></a>
+    </nav>
 
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby2muYN-XMHMuY4qptdXELrfEn7tkGBmkygWv7Rn9NHJs9IjmdyQu7pzCTEV-QM1fT_aA/exec";
@@ -221,25 +183,49 @@ style="color: #28a745;"><i class="fas fa-phone-alt prefix-icon"></i> হেল�
         
         let user = JSON.parse(localStorage.getItem('sajarUser'));
         let allPosts = [];
+        let allDonors = [];
 
         window.onload = () => { 
-            if(user) updateUI(); 
+            updateUI(); 
+            loadCachedData(); // সুপারফাস্ট লোডিং ট্রিক (ক্যাশেড ডাটা আগে দেখাবে)
             fetchSettings(); 
             fetchPosts(); 
         };
 
-        // পাসওয়ার্ড দেখানো এবং আইকন পরিবর্তনের উন্নত ফাংশন
-        function togglePass(inputId, icon) {
-            const field = document.getElementById(inputId);
-            if (field.type === "password") {
-                field.type = "text";
-                icon.classList.remove("fa-eye");
-                icon.classList.add("fa-eye-slash");
+        function handleAuthClick() {
+            if(user) {
+                const pBox = document.getElementById('profile-box');
+                pBox.style.display = pBox.style.display === 'none' ? 'block' : 'none';
             } else {
-                field.type = "password";
-                icon.classList.remove("fa-eye-slash");
-                icon.classList.add("fa-eye");
+                window.location.href = "auth.html";
             }
+        }
+
+        function handleAuthClickSide() {
+            toggleMenu();
+            handleAuthClick();
+        }
+
+        function updateUI() {
+            if(user) {
+                document.getElementById('post-box').style.display='block';
+                document.getElementById('uName').innerText = user.name;
+                document.getElementById('uBloodDisplay').innerText = user.blood;
+                document.getElementById('uPic').src = user.photo || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+                document.getElementById('sideProfile').innerHTML = `<h3>${user.name}</h3><small>রক্ত গ্রুপ: ${user.blood}</small>`;
+                document.getElementById('logoutBtnSide').style.display = 'flex';
+                if(user.photo) {
+                    document.getElementById('headerUserBtn').innerHTML = `<img src="${user.photo}" style="width:30px; height:30px; border-radius:50%; object-fit:cover;">`;
+                }
+            }
+        }
+
+        // ব্রাউজার ক্যাশ থেকে দ্রুত ডাটা রেন্ডার করার ফাংশন
+        function loadCachedData() {
+            const cachedSettings = localStorage.getItem('cachedSettings');
+            const cachedPosts = localStorage.getItem('cachedPosts');
+            if (cachedSettings) applySettings(JSON.parse(cachedSettings));
+            if (cachedPosts) render(JSON.parse(cachedPosts));
         }
 
         async function fetchSettings() {
@@ -247,6 +233,14 @@ style="color: #28a745;"><i class="fas fa-phone-alt prefix-icon"></i> হেল�
                 const res = await fetch(SETTINGS_CSV);
                 const data = await res.text();
                 const rows = data.split('\n').map(row => row.split(','));
+                localStorage.setItem('cachedSettings', JSON.stringify(rows)); // ক্যাশ সেভ
+                applySettings(rows);
+            } catch(e){}
+        }
+
+        // গুগল শিটের ডাটা UI-তে সেট করার মেইন ফাংশন
+        function applySettings(rows) {
+            try {
                 if(rows[1]) document.getElementById('mainLogo').src = rows[1][1].trim();
                 if(rows[2]) document.getElementById('siteName').innerText = rows[2][1].trim();
                 if(rows[3]) {
@@ -256,23 +250,45 @@ style="color: #28a745;"><i class="fas fa-phone-alt prefix-icon"></i> হেল�
                 if(rows[4]) document.getElementById('p1').src = rows[4][1].trim();
                 if(rows[5]) document.getElementById('p2').src = rows[5][1].trim();
                 if(rows[6]) document.getElementById('p3').src = rows[6][1].trim();
-                 if(rows[7]) document.getElementById('quizLinkSide').href = rows[7][1].trim();
-                if(rows[8]) document.getElementById('downloadLinkSide').href = rows[8][1].trim();
-if(rows[9]) document.getElementById('saLinkSide').href = rows[9][1].trim();
-                // নোটিশ (১১ নম্বর রো)
+                if(rows[19]) { document.getElementById('quiz').innerText = rows[19][1].trim(); document.getElementById('quizLinkSide').href = rows[19][2].trim(); }
+                if(rows[16]) { document.getElementById('apps').innerText = rows[16][1].trim(); document.getElementById('downloadLinkSide').href = rows[16][2].trim(); }
+                if(rows[9]) document.getElementById('saLinkSide').href = rows[9][1].trim();
                 if(rows[11] && rows[11][1].trim() !== "") {
                     document.getElementById('noticeBar').style.display = 'flex';
                     document.getElementById('noticeContent').innerText = rows[11][1].trim();
                 }
+                if(rows[15]) document.getElementById('blood').innerText = rows[15][1].trim();
+                if(rows[17]) document.getElementById('sajar').innerText = rows[17][1].trim();
+                if(rows[18]) document.getElementById('buss').innerText = rows[18][1].trim();
+
+                // বটম মেনু ডাইনামিক আইকন, নাম ও লিংক লোড (গুগল শিট থেকে)
+                // আপনার গুগল শিটে কলাম ৩ (Index 2) এ লিঙ্কের পাশে কলাম ৪ (Index 3) এ আইকন নাম লিখবেন (যেমন: fas fa-store)
+                if(rows[12]) { 
+                    document.getElementById('bottomBtn1Text').innerText = rows[12][1].trim(); 
+                    document.getElementById('bottomBtn1').href = rows[12][2].trim(); 
+                    if(rows[12][3]) document.querySelector('#bottomBtn1 i').className = rows[12][3].trim();
+                }
+                if(rows[13]) { 
+                    document.getElementById('bottomBtn2Text').innerText = rows[13][1].trim(); 
+                    document.getElementById('bottomBtn2').href = rows[13][2].trim(); 
+                    if(rows[13][3]) document.querySelector('#bottomBtn2 i').className = rows[13][3].trim();
+                }
+                if(rows[14]) { 
+                    document.getElementById('bottomBtn3Text').innerText = rows[14][1].trim(); 
+                    document.getElementById('bottomBtn3').href = rows[14][2].trim(); 
+                    if(rows[14][3]) document.querySelector('#bottomBtn3 i').className = rows[14][3].trim();
+                }
             } catch(e){}
         }
 
-
         async function fetchPosts() {
-            document.getElementById('loader').style.display='block';
+            if(!localStorage.getItem('cachedPosts')) {
+                document.getElementById('loader').style.display='block';
+            }
             try {
                 const res = await fetch(`${SCRIPT_URL}?action=getPosts`);
                 allPosts = await res.json();
+                localStorage.setItem('cachedPosts', JSON.stringify(allPosts)); // ক্যাশ সেভ
                 render(allPosts);
             } catch(e){}
             document.getElementById('loader').style.display='none';
@@ -280,7 +296,7 @@ if(rows[9]) document.getElementById('saLinkSide').href = rows[9][1].trim();
 
         function render(posts) {
             const f = document.getElementById('feed');
-            f.innerHTML = posts.map((p, idx) => `
+            f.innerHTML = posts.map((p) => `
                 <div class="card feed-card">
                     <div class="user-info">
                         <img src="${p.uImg || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}">
@@ -294,62 +310,6 @@ if(rows[9]) document.getElementById('saLinkSide').href = rows[9][1].trim();
                     </div>
                 </div>
             `).join('');
-        }
-
-        async function login() {
-            let ph = document.getElementById('lPhone').value.trim();
-            const ps = document.getElementById('lPass').value;
-            if(!ph || !ps) return alert("ফোন এবং পাসওয়ার্ড দিন!");
-            if(ph.length === 10 && !ph.startsWith('0')) ph = '0' + ph;
-
-            document.getElementById('loader').style.display='block';
-            const res = await fetch(`${SCRIPT_URL}?action=getUser&phone=${ph}`);
-            const data = await res.json();
-            document.getElementById('loader').style.display='none';
-
-            if(data && data.pass == ps) { 
-                user = data; 
-                localStorage.setItem('sajarUser', JSON.stringify(data)); 
-                location.reload(); 
-            } else alert("ভুল তথ্য! আবার চেষ্টা করুন।");
-        }
-
-        async function register() {
-            let phone = document.getElementById('rPhone').value.trim();
-            const pass = document.getElementById('rPass').value;
-            const conPass = document.getElementById('rConPass').value;
-            const name = document.getElementById('rName').value.trim();
-
-            if(!name || !phone || !pass || !conPass) return alert("সবগুলো ঘর পূরণ করুন!");
-            if(phone.length < 7) return alert("সঠিক ফোন নাম্বার দিন!");
-            if(pass !== conPass) return alert("পাসওয়ার্ড দুটি মেলেনি!");
-
-if(pass.length < 6) return alert("৬ সংখ্যার পাসওয়ার্ড দিন!");
-            if(phone.length === 10 && !phone.startsWith('0')) phone = '0' + phone;
-
-            document.getElementById('loader').style.display='block';
-            const checkRes = await fetch(`${SCRIPT_URL}?action=getUser&phone=${phone}`);
-            const checkData = await checkRes.json();
-            
-            if(checkData && checkData.phone) {
-                document.getElementById('loader').style.display='none';
-                return alert("এই নাম্বারে ইতিমধ্যে একটি অ্যাকাউন্ট আছে!");
-            }
-
-            const data = { 
-                action: "register", 
-                name: name, 
-                phone: "'" + phone, 
-                blood: document.getElementById('rBlood').value, 
-                address: document.getElementById('rAddress').value,
-                pass: pass,
-                photo: document.getElementById('rPhoto').value 
-            };
-
-            await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
-            alert("রেজিস্ট্রেশন সফল! এখন লগইন করুন।"); 
-            document.getElementById('loader').style.display='none';
-            showReg(false);
         }
 
         async function addPost() {
@@ -368,75 +328,55 @@ if(pass.length < 6) return alert("৬ সংখ্যার পাসওয়া�
             location.reload();
         }
 
-        let allDonors = []; // গ্লোবাল ভেরিয়েবল ডাটা সেভ রাখার জন্য
-
-async function showBloodList() {
-    toggleMenu(); 
-    document.getElementById('blood-box').style.display = 'block'; 
-    document.getElementById('feed').style.display = 'none';
-    
-    const listDiv = document.getElementById('bloodList');
-    listDiv.innerHTML = "লোড হচ্ছে...";
-
-    try {
-        const res = await fetch(`${SCRIPT_URL}?action=getAllUsers`);
-        allDonors = await res.json();
-        renderBloodList(allDonors);
-    } catch(e) {
-        listDiv.innerHTML = "ডাটা লোড করতে সমস্যা হয়েছে।";
-    }
-}
-
-// লিস্ট দেখানোর আলাদা ফাংশন (সার্চের সুবিধার জন্য)
-function renderBloodList(data) {
-    const listDiv = document.getElementById('bloodList');
-    if(data.length === 0) {
-        listDiv.innerHTML = "<p style='text-align:center; padding:20px;'>কোনো তথ্য পাওয়া যায়নি!</p>";
-        return;
-    }
-    
-    listDiv.innerHTML = data.map(m => `
-        <div class="blood-card">
-            <div>
-               <b>${m.name}</b><br><small>${m.phone || 'ফোন নাম্বার নেই'}</small><br><small>${m.address || 'ঠিকানা নেই'}</small>
-            </div>
-            <div style="display:flex; align-items:center; gap:10px;">
-                <span class="blood-grp">${m.blood}</span>
-                <a href="tel:${m.phone}" class="call-btn"><i class="fas fa-phone-alt"></i></a>
-            </div>
-        </div>`).join('');
-}
-
-// সার্চ করার ফাংশন
-function filterBlood() {
-    const query = document.getElementById('bloodSearch').value.toLowerCase();
-    const filtered = allDonors.filter(donor => {
-        return (
-            donor.blood.toLowerCase().includes(query) || 
-            (donor.address && donor.address.toLowerCase().includes(query)) ||
-            donor.name.toLowerCase().includes(query)
-        );
-    });
-    renderBloodList(filtered);
-}
-
-        function updateUI() {
-            document.getElementById('post-box').style.display='block';
-            document.getElementById('login-ui').style.display='none';
-            document.getElementById('user-ui').style.display='block';
-            document.getElementById('uName').innerText = user.name;
-            document.getElementById('uBloodDisplay').innerText = user.blood;
-            document.getElementById('uPic').src = user.photo || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
-            document.getElementById('sideProfile').innerHTML = `<h3>${user.name}</h3><small>রক্ত গ্রুপ: ${user.blood}</small>`;
+        async function showBloodList() {
+            toggleMenu(); 
+            document.getElementById('blood-box').style.display = 'block'; 
+            document.getElementById('feed').style.display = 'none';
+            const listDiv = document.getElementById('bloodList');
+            listDiv.innerHTML = "লোড হচ্ছে...";
+            try {
+                const res = await fetch(`${SCRIPT_URL}?action=getAllUsers`);
+                allDonors = await res.json();
+                renderBloodList(allDonors);
+            } catch(e) { listDiv.innerHTML = "ডাটা লোড করতে সমস্যা হয়েছে।"; }
         }
 
-        function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); }
-        function toggleAuth() { const b = document.getElementById('auth-box'); b.style.display = b.style.display==='none'?'block':'none'; }
-        function showReg(s) { document.getElementById('login-ui').style.display=s?'none':'block'; document.getElementById('reg-ui').style.display=s?'block':'none'; }
+        function renderBloodList(data) {
+            const listDiv = document.getElementById('bloodList');
+            if(data.length === 0) {
+                listDiv.innerHTML = "<p style='text-align:center; padding:20px;'>কোনো তথ্য পাওয়া যায়নি!</p>";
+                return;
+            }
+            listDiv.innerHTML = data.map(m => `
+                <div class="blood-card">
+                    <div>
+                       <b>${m.name}</b><br><small>${m.phone || 'ফোন নাম্বার নেই'}</small><br><small>${m.address || 'ঠিকানা নেই'}</small>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <span class="blood-grp">${m.blood}</span>
+                        <a href="tel:${m.phone}" class="call-btn"><i class="fas fa-phone-alt"></i></a>
+                    </div>
+                </div>`).join('');
+        }
+
+        function filterBlood() {
+            const query = document.getElementById('bloodSearch').value.toLowerCase();
+            const filtered = allDonors.filter(donor => {
+                return (
+                    donor.blood.toLowerCase().includes(query) || 
+                    (donor.address && donor.address.toLowerCase().includes(query)) ||
+                    donor.name.toLowerCase().includes(query)
+                );
+            });
+            renderBloodList(filtered);
+        }
+
         function logout() { localStorage.removeItem('sajarUser'); location.reload(); }
-        function openProfile() { toggleMenu(); toggleAuth(); }
+        function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); }
         function closeBlood() { document.getElementById('blood-box').style.display='none'; document.getElementById('feed').style.display='block'; }
         function filter(cat, el) { document.querySelectorAll('#catNav a').forEach(a => a.classList.remove('active')); el.classList.add('active'); render(cat === 'হোম' ? allPosts : allPosts.filter(p => p.category === cat)); }
     </script>
 </body>
 </html>
+
+

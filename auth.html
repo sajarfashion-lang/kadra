@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>প্রবেশ করুন - সেবা নিন সেবা দিন</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --primary: #32a852; --dark: #2c3e50; --fb: #1877f2; --red: #e41e3f; --light-bg: #f0f2f5; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Hind Siliguri', sans-serif; }
+        body { background-color: var(--light-bg); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 15px; }
+        
+        .auth-container { background: #fff; padding: 25px 20px; border-radius: 15px; width: 100%; max-width: 450px; border: 1px solid #ddd; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .input-box { position: relative; margin-bottom: 15px; display: flex; align-items: center; }
+        .input-box i.prefix-icon { position: absolute; left: 14px; color: var(--primary); font-size: 16px; }
+        .input-box input, .input-box select { width: 100%; padding: 12px 45px 12px 42px; border: 1.5px solid #eee; border-radius: 10px; outline: none; font-size: 14px; transition: 0.3s; }
+        .input-box input:focus { border-color: var(--primary); }
+        
+        .eye-btn { position: absolute; right: 14px; color: #888; cursor: pointer; padding: 5px; font-size: 16px; }
+        .eye-btn:hover { color: var(--primary); }
+        .auth-btn { width: 100%; padding: 14px; border: none; border-radius: 10px; background: linear-gradient(135deg, var(--primary), #28a745); color: white; font-weight: 600; cursor: pointer; font-size: 16px; }
+        
+        #loader { text-align: center; padding: 10px; display: none; font-size: 18px; color: var(--primary); }
+    </style>
+</head>
+<body>
+
+    <div class="auth-container">
+        <div id="loader"><i class="fas fa-spinner fa-spin"></i> অনুগ্রহ করে অপেক্ষা করুন...</div>
+
+        <!-- লগইন ইন্টারফেস -->
+        <div id="login-ui">
+            <h2 style="text-align:center; margin-bottom:20px;">লগইন করুন</h2>
+            <div class="input-box">
+                <i class="fas fa-phone-alt prefix-icon"></i>
+                <input type="text" id="lPhone" placeholder="ফোন নাম্বার">
+            </div>
+            <div class="input-box">
+                <i class="fas fa-lock prefix-icon"></i>
+                <input type="password" id="lPass" placeholder="পাসওয়ার্ড">
+                <i class="fas fa-eye eye-btn" onclick="togglePass('lPass', this)"></i>
+            </div>
+            <button class="auth-btn" onclick="login()">লগইন</button>
+            <div style="text-align:center; margin-top:15px;">অ্যাকাউন্ট নেই? <span onclick="showReg(true)" style="color:var(--fb); font-weight:600; cursor:pointer;">রেজিস্ট্রেশন</span></div>
+            <div style="text-align:center; margin-top:15px;"><a href="index.html" style="text-decoration:none; color:#666; font-size:14px;"><i class="fas fa-home"></i> হোম পেজে যান</a></div>
+        </div>
+
+        <!-- রেজিস্ট্রেশন ইন্টারফেস -->
+        <div id="reg-ui" style="display:none;">
+            <h2 style="text-align:center; margin-bottom:20px;">রেজিস্ট্রেশন</h2>
+            <div class="input-box"><i class="fas fa-user prefix-icon"></i><input type="text" id="rName" placeholder="পুরো নাম"></div>
+            <div class="input-box"><i class="fas fa-phone-alt prefix-icon"></i><input type="text" id="rPhone" placeholder="ফোন নাম্বার"></div>
+            <div class="input-box"><i class="fas fa-tint prefix-icon"></i>
+                <select id="rBlood">
+                    <option value="">রক্তের গ্রুপ</option>
+                    <option value="A+">A+</option><option value="A-">A-</option>
+                    <option value="B+">B+</option><option value="B-">B-</option>
+                    <option value="O+">O+</option><option value="O-">O-</option>
+                    <option value="AB+">AB+</option><option value="AB-">AB-</option>
+                </select>
+            </div>
+            <div class="input-box"><i class="fas fa-map-marker-alt prefix-icon"></i><input type="text" id="rAddress" placeholder="ঠিকানা"></div>
+            <div class="input-box">
+                <i class="fas fa-key prefix-icon"></i>
+                <input type="password" id="rPass" placeholder="পাসওয়ার্ড">
+                <i class="fas fa-eye eye-btn" onclick="togglePass('rPass', this)"></i>
+            </div>
+            <div class="input-box">
+                <i class="fas fa-shield-alt prefix-icon"></i>
+                <input type="password" id="rConPass" placeholder="কনফার্ম পাসওয়ার্ড">
+                <i class="fas fa-eye eye-btn" onclick="togglePass('rConPass', this)"></i>
+            </div>
+            <div class="input-box"><i class="fas fa-image prefix-icon"></i><input type="text" id="rPhoto" placeholder="প্রোফাইল ছবির লিঙ্ক"></div>
+            <button class="auth-btn" onclick="register()">রেজিস্ট্রেশন সম্পন্ন করুন</button>
+            <div style="text-align:center; margin-top:15px;"><span onclick="showReg(false)" style="cursor:pointer; color:var(--fb); font-weight:600;">লগইনে ফিরে যান</span></div>
+        </div>
+    </div>
+
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby2muYN-XMHMuY4qptdXELrfEn7tkGBmkygWv7Rn9NHJs9IjmdyQu7pzCTEV-QM1fT_aA/exec";
+
+        function togglePass(inputId, icon) {
+            const field = document.getElementById(inputId);
+            if (field.type === "password") {
+                field.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                field.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
+        }
+
+        function showReg(s) { 
+            document.getElementById('login-ui').style.display = s ? 'none' : 'block'; 
+            document.getElementById('reg-ui').style.display = s ? 'block' : 'none'; 
+        }
+
+        async function login() {
+            let ph = document.getElementById('lPhone').value.trim();
+            const ps = document.getElementById('lPass').value;
+            if(!ph || !ps) return alert("ফোন এবং পাসওয়ার্ড দিন!");
+            if(ph.length === 10 && !ph.startsWith('0')) ph = '0' + ph;
+
+            document.getElementById('loader').style.display='block';
+            try {
+                const res = await fetch(`${SCRIPT_URL}?action=getUser&phone=${ph}`);
+                const data = await res.json();
+                document.getElementById('loader').style.display='none';
+
+                if(data && data.pass == ps) { 
+                    localStorage.setItem('sajarUser', JSON.stringify(data)); 
+                    window.location.href = "index.html"; 
+                } else alert("ভুল তথ্য! আবার চেষ্টা করুন।");
+            } catch(e) {
+                document.getElementById('loader').style.display='none';
+                alert("যোগাযোগে সমস্যা হচ্ছে, আবার চেষ্টা করুন।");
+            }
+        }
+
+        async function register() {
+            let phone = document.getElementById('rPhone').value.trim();
+            const pass = document.getElementById('rPass').value;
+            const conPass = document.getElementById('rConPass').value;
+            const name = document.getElementById('rName').value.trim();
+
+            if(!name || !phone || !pass || !conPass) return alert("সবগুলো ঘর পূরণ করুন!");
+            if(phone.length < 7) return alert("সঠিক ফোন নাম্বার দিন!");
+            if(pass !== conPass) return alert("পাসওয়ার্ড দুটি মেলেনি!");
+            if(pass.length < 6) return alert("৬ সংখ্যার পাসওয়ার্ড দিন!");
+            if(phone.length === 10 && !phone.startsWith('0')) phone = '0' + phone;
+
+            document.getElementById('loader').style.display='block';
+            try {
+                const checkRes = await fetch(`${SCRIPT_URL}?action=getUser&phone=${phone}`);
+                const checkData = await checkRes.json();
+                
+                if(checkData && checkData.phone) {
+                    document.getElementById('loader').style.display='none';
+                    return alert("এই নাম্বারে ইতিমধ্যে একটি অ্যাকাউন্ট আছে!");
+                }
+
+                const data = { 
+                    action: "register", 
+                    name: name, 
+                    phone: "'" + phone, 
+                    blood: document.getElementById('rBlood').value, 
+                    address: document.getElementById('rAddress').value,
+                    pass: pass,
+                    photo: document.getElementById('rPhoto').value 
+                };
+
+                await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
+                alert("রেজিস্ট্রেশন সফল! এখন লগইন করুন।"); 
+                document.getElementById('loader').style.display='none';
+                showReg(false);
+            } catch(e) {
+                document.getElementById('loader').style.display='none';
+                alert("রেজিস্ট্রেশন ব্যর্থ হয়েছে।");
+            }
+        }
+    </script>
+</body>
+</html>

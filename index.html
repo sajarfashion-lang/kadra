@@ -48,7 +48,7 @@
 
         /* মেইন কন্টেন্ট */
         .main-content { width: 100%; max-width: 600px; margin: 0 auto; padding: 15px; }
-        .card { background: #fff; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #ddd; }
+        .card { background: #fff; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #ddd; contain-visibility: auto; contain-intrinsic-size: 150px; }
 
         /* পোস্ট ও ফিড */
         .feed-card img { width: calc(100% + 30px); margin: 10px -15px; max-height: 400px; object-fit: cover; }
@@ -139,7 +139,7 @@
             <a id="saLinkSide" href="#" target="_blank" class="menu-item"><i class="fas fa-shopping-bag"></i><span id="sajar">লিঙ্ক ১</span></a>
             <div class="menu-item" onclick="location.reload()"><i class="fas fa-home"></i> হোম</div>
             <a id="downloadLinkSide" href="#" target="_blank" class="menu-item" style="color: #28a745;"><i class="fas fa-download"></i> <span id="apps">লিঙ্ক ১</span></a>
-            <a href="card.html" target="_blank" class="menu-item" style="color: #28a745;"><i class="fas fa-phone-alt"></i> হেল্পライン</a>
+            <a href="card.html" target="_blank" class="menu-item" style="color: #28a745;"><i class="fas fa-phone-alt"></i> হেল্পলাইন</a>
             <div class="menu-item" id="logoutBtnSide" style="display:none; color: var(--red);" onclick="logout()"><i class="fas fa-sign-out-alt"></i> লগ আউট</div>
         </div>
     </aside>
@@ -175,7 +175,7 @@
             </div>
             <div class="input-box">
                 <i class="fas fa-search prefix-icon"></i>
-                <input type="text" id="bloodSearch" onkeyup="filterBlood()" placeholder="রক্তের গ্রুপ বা এলাকা লিখুন (যেমন: A+, ঢাকা)">
+                <input type="text" id="bloodSearch" onkeyup="debouncedFilterBlood()" placeholder="রক্তের গ্রুপ বা এলাকা লিখুন (যেমন: A+, ঢাকা)">
             </div>
             <div id="bloodList" style="max-height: 400px; overflow-y: auto;">লোড হচ্ছে...</div>
         </div>
@@ -214,8 +214,6 @@
 
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby2muYN-XMHMuY4qptdXELrfEn7tkGBmkygWv7Rn9NHJs9IjmdyQu7pzCTEV-QM1fT_aA/exec";
-        
-        // ⚠️ আপনার Firebase Realtime Database-এর URL এখানে বসান (শেষে /settings.json অবশ্যই রাখবেন)
         const FIREBASE_SETTINGS_URL = "https://chitoshi-sheba-default-rtdb.firebaseio.com/settings.json";
         
         let user = JSON.parse(localStorage.getItem('sajarUser'));
@@ -224,19 +222,40 @@
         let allDonors = [];
         let postLimit = 10;
         let currentCategory = 'হোম';
+        let searchTimeout;
+
+        // DOM Caching - যেন ব্রাউজারকে বারবার এলিমেন্ট খুঁজতে না হয় (গতি অনেক বাড়ে)
+        const dom = {
+            feed: document.getElementById('feed'),
+            loader: document.getElementById('loader'),
+            loadMoreBtn: document.getElementById('loadMoreBtn'),
+            bloodBox: document.getElementById('blood-box'),
+            bloodList: document.getElementById('bloodList'),
+            bloodSearch: document.getElementById('bloodSearch'),
+            postBox: document.getElementById('post-box'),
+            profileBox: document.getElementById('profile-box'),
+            uName: document.getElementById('uName'),
+            uBloodDisplay: document.getElementById('uBloodDisplay'),
+            uPic: document.getElementById('uPic'),
+            sideProfile: document.getElementById('sideProfile'),
+            logoutBtnSide: document.getElementById('logoutBtnSide'),
+            headerUserBtn: document.getElementById('headerUserBtn'),
+            sidebar: document.getElementById('sidebar'),
+            overlay: document.getElementById('overlay'),
+            catNavLinks: document.querySelectorAll('#catNav a')
+        };
 
         window.onload = () => { 
             updateUI(); 
             loadCachedData(); 
             
-            // প্যারালাল উপায়ে ব্যাকগ্রাউন্ডে নতুন তথ্য ফেচ করা হবে
-            Promise.all([fetchSettings(), fetchPosts(), fetchDonorsBackground()]).catch(e => console.log(e));
+            // সব নেটওয়ার্ক যেন প্যারালালে রকেটের মতো একসাথে রান করে
+            Promise.all([fetchSettings(), fetchPosts(), fetchDonorsBackground()]).catch(e => console.log("Fetch error:", e));
         };
 
         function handleAuthClick() {
             if(user) {
-                const pBox = document.getElementById('profile-box');
-                pBox.style.display = pBox.style.display === 'none' ? 'block' : 'none';
+                dom.profileBox.style.display = dom.profileBox.style.display === 'none' ? 'block' : 'none';
             } else {
                 window.location.href = "auth.html";
             }
@@ -249,14 +268,14 @@
 
         function updateUI() {
             if(user) {
-                document.getElementById('post-box').style.display='block';
-                document.getElementById('uName').innerText = user.name;
-                document.getElementById('uBloodDisplay').innerText = user.blood;
-                document.getElementById('uPic').src = user.photo || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
-                document.getElementById('sideProfile').innerHTML = `<h3>${user.name}</h3><small>রক্ত গ্রুপ: ${user.blood}</small>`;
-                document.getElementById('logoutBtnSide').style.display = 'flex';
+                dom.postBox.style.display = 'block';
+                dom.uName.innerText = user.name;
+                dom.uBloodDisplay.innerText = user.blood;
+                dom.uPic.src = user.photo || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+                dom.sideProfile.innerHTML = `<h3>${user.name}</h3><small>রক্ত গ্রুপ: ${user.blood}</small>`;
+                dom.logoutBtnSide.style.display = 'flex';
                 if(user.photo) {
-                    document.getElementById('headerUserBtn').innerHTML = `<img src="${user.photo}" style="width:30px; height:30px; border-radius:50%; object-fit:cover;">`;
+                    dom.headerUserBtn.innerHTML = `<img src="${user.photo}" style="width:30px; height:30px; border-radius:50%; object-fit:cover;">`;
                 }
             }
         }
@@ -276,7 +295,6 @@
             }
         }
 
-        // ফায়ারবেস থেকে সেটিংস ডেটা রকেট গতিতে ফেচ করার ফাংশন
         async function fetchSettings() {
             try {
                 const res = await fetch(FIREBASE_SETTINGS_URL);
@@ -288,7 +306,6 @@
             } catch(e){ console.log("Firebase settings fetch error:", e); }
         }
 
-        // ফায়ারবেস অবজেক্ট ডেটা সরাসরি UI-তে সেট করার অপ্টিমাইজড ফাংশন
         function applySettings(settings) {
             try {
                 if(settings.mainLogo) document.getElementById('mainLogo').src = settings.mainLogo.trim();
@@ -312,14 +329,14 @@
                 if(settings.sajar) document.getElementById('sajar').innerText = settings.sajar.trim();
                 if(settings.buss) document.getElementById('buss').innerText = settings.buss.trim();
 
+                const noticeBar = document.getElementById('noticeBar');
                 if(settings.noticeText && settings.noticeText.trim() !== "") {
-                    document.getElementById('noticeBar').style.display = 'flex';
+                    noticeBar.style.display = 'flex';
                     document.getElementById('noticeContent').innerText = settings.noticeText.trim();
                 } else {
-                    document.getElementById('noticeBar').style.display = 'none';
+                    noticeBar.style.display = 'none';
                 }
 
-                // বটম নেভিগেশন সেটিংস
                 if(settings.bottomBtn1Text) document.getElementById('bottomBtn1Text').innerText = settings.bottomBtn1Text.trim(); 
                 if(settings.bottomBtn1Link) document.getElementById('bottomBtn1').href = settings.bottomBtn1Link.trim(); 
                 if(settings.bottomBtn1Icon) {
@@ -341,14 +358,13 @@
                     if(icon3) icon3.className = settings.bottomBtn3Icon.trim();
                 }
 
-                // ফুটার ব্যানার
                 if(settings.footerBannerImg && settings.footerBannerImg.trim() !== "") {
-                    document.getElementById('footerBannerLink').style.display = 'block';
+                    const fLink = document.getElementById('footerBannerLink');
+                    fLink.style.display = 'block';
                     document.getElementById('footerBannerImg').src = settings.footerBannerImg.trim();
-                    if(settings.footerBannerLink) document.getElementById('footerBannerLink').href = settings.footerBannerLink.trim();
+                    if(settings.footerBannerLink) fLink.href = settings.footerBannerLink.trim();
                 }
 
-                // চিতোষী সেবা তথ্যের ৪টি বক্স
                 if(settings.chitoshiInfo1) document.getElementById('chitoshiInfo1').innerText = settings.chitoshiInfo1.trim();
                 if(settings.chitoshiInfo2) document.getElementById('chitoshiInfo2').innerText = settings.chitoshiInfo2.trim();
                 if(settings.chitoshiInfo3) document.getElementById('chitoshiInfo3').innerText = settings.chitoshiInfo3.trim();
@@ -359,15 +375,15 @@
 
         async function fetchPosts() {
             if(!localStorage.getItem('cachedPosts')) {
-                document.getElementById('loader').style.display='block';
+                dom.loader.style.display = 'block';
             }
             try {
                 const res = await fetch(`${SCRIPT_URL}?action=getPosts`);
                 allPosts = await res.json();
                 localStorage.setItem('cachedPosts', JSON.stringify(allPosts)); 
                 filterAndRender();
-            } catch(e){}
-            document.getElementById('loader').style.display='none';
+            } catch(e){ console.log("Posts fetch error:", e); }
+            dom.loader.style.display = 'none';
         }
 
         async function fetchDonorsBackground() {
@@ -375,16 +391,17 @@
                 const res = await fetch(`${SCRIPT_URL}?action=getAllUsers`);
                 allDonors = await res.json();
                 localStorage.setItem('cachedDonors', JSON.stringify(allDonors));
+                if (dom.bloodBox.style.display === 'block') {
+                    renderBloodList(allDonors);
+                }
             } catch(e){}
         }
 
         function filterAndRender() {
-            let filtered = currentCategory === 'হোম' ? allPosts : allPosts.filter(p => p.category === currentCategory);
+            const filtered = currentCategory === 'হোম' ? allPosts : allPosts.filter(p => p.category === currentCategory);
             displayedPosts = filtered.slice(0, postLimit);
             render(displayedPosts);
-
-            const loadMoreBtn = document.getElementById('loadMoreBtn');
-            loadMoreBtn.style.display = filtered.length > postLimit ? 'block' : 'none';
+            dom.loadMoreBtn.style.display = filtered.length > postLimit ? 'block' : 'none';
         }
 
         function loadMorePosts() {
@@ -393,30 +410,31 @@
         }
 
         function render(posts) {
-            const f = document.getElementById('feed');
             if(posts.length === 0) {
-                f.innerHTML = "<p style='text-align:center; padding:20px; background:#fff; border-radius:12px;'>কোনো পোস্ট পাওয়া যায়নি।</p>";
+                dom.feed.innerHTML = "<p style='text-align:center; padding:20px; background:#fff; border-radius:12px;'>কোনো পোস্ট পাওয়া যায়নি।</p>";
                 return;
             }
             
+            // Optimization: String concatenation performs 10x faster than repeating innerHTML +=
             let htmlString = "";
-            for (let i = 0; i < posts.length; i++) {
+            const total = posts.length;
+            for (let i = 0; i < total; i++) {
                 const p = posts[i];
                 htmlString += `
                     <div class="card feed-card">
                         <div class="user-info">
-                            <img src="${p.uImg || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}" loading="lazy">
+                            <img src="${p.uImg || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}" loading="lazy" alt="User image">
                             <div><b>${p.name}</b><br><small>${p.time}</small></div>
                         </div>
                         <div style="font-size:15px; margin-bottom:10px;">${p.text}</div>
-                        ${p.img ? `<img src="${p.img}" style="border-radius:8px;" loading="lazy">` : ''}
+                        ${p.img ? `<img src="${p.img}" style="border-radius:8px;" loading="lazy" alt="Post image">` : ''}
                         <div class="post-actions">
                             <button class="action-btn" onclick="this.style.color='#1877f2'"><i class="fas fa-thumbs-up"></i> লাইক</button>
                             <button class="action-btn"><i class="fas fa-comment"></i> কমেন্ট</button>
                         </div>
                     </div>`;
             }
-            f.innerHTML = htmlString;
+            dom.feed.innerHTML = htmlString;
         }
 
         async function addPost() {
@@ -450,27 +468,27 @@
 
         function showBloodList() {
             toggleMenu(); 
-            document.getElementById('blood-box').style.display = 'block'; 
-            document.getElementById('feed').style.display = 'none';
-            document.getElementById('loadMoreBtn').style.display = 'none';
+            dom.bloodBox.style.display = 'block'; 
+            dom.feed.style.display = 'none';
+            dom.loadMoreBtn.style.display = 'none';
             
             if(allDonors.length > 0) {
                 renderBloodList(allDonors);
             } else {
-                document.getElementById('bloodList').innerHTML = "লোড হচ্ছে...";
-                fetchDonorsBackground().then(() => renderBloodList(allDonors));
+                dom.bloodList.innerHTML = "<div style='text-align:center; padding:20px;'><i class='fas fa-spinner fa-spin'></i> লোড হচ্ছে...</div>";
+                fetchDonorsBackground();
             }
         }
 
         function renderBloodList(data) {
-            const listDiv = document.getElementById('bloodList');
             if(data.length === 0) {
-                listDiv.innerHTML = "<p style='text-align:center; padding:20px;'>কোনো তথ্য পাওয়া যায়নি!</p>";
+                dom.bloodList.innerHTML = "<p style='text-align:center; padding:20px;'>কোনো তথ্য পাওয়া যায়নি!</p>";
                 return;
             }
             
             let htmlString = "";
-            for (let i = 0; i < data.length; i++) {
+            const total = data.length;
+            for (let i = 0; i < total; i++) {
                 const m = data[i];
                 htmlString += `
                     <div class="blood-card">
@@ -483,11 +501,17 @@
                         </div>
                     </div>`;
             }
-            listDiv.innerHTML = htmlString;
+            dom.bloodList.innerHTML = htmlString;
+        }
+
+        // Debouncing Mechanism - টাইপ করার সময় সার্চবক্স যেন হ্যাং না করে
+        function debouncedFilterBlood() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(filterBlood, 200);
         }
 
         function filterBlood() {
-            const query = document.getElementById('bloodSearch').value.toLowerCase().trim();
+            const query = dom.bloodSearch.value.toLowerCase().trim();
             if(!query) { renderBloodList(allDonors); return; }
             
             const filtered = allDonors.filter(donor => {
@@ -501,8 +525,8 @@
         }
 
         function logout() { localStorage.clear(); location.reload(); }
-        function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); }
-        function closeBlood() { document.getElementById('blood-box').style.display='none'; document.getElementById('feed').style.display='block'; filterAndRender(); }
+        function toggleMenu() { dom.sidebar.classList.toggle('active'); dom.overlay.classList.toggle('active'); }
+        function closeBlood() { dom.bloodBox.style.display='none'; dom.feed.style.display='block'; filterAndRender(); }
         
         function filter(cat, el) { 
             document.querySelectorAll('#catNav a').forEach(a => a.classList.remove('active')); 

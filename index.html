@@ -139,7 +139,7 @@
             <a id="saLinkSide" href="#" target="_blank" class="menu-item"><i class="fas fa-shopping-bag"></i><span id="sajar">লিঙ্ক ১</span></a>
             <div class="menu-item" onclick="location.reload()"><i class="fas fa-home"></i> হোম</div>
             <a id="downloadLinkSide" href="#" target="_blank" class="menu-item" style="color: #28a745;"><i class="fas fa-download"></i> <span id="apps">লিঙ্ক ১</span></a>
-            <a href="card.html" target="_blank" class="menu-item" style="color: #28a745;"><i class="fas fa-phone-alt"></i> হেল্পলাইন</a>
+            <a href="card.html" target="_blank" class="menu-item" style="color: #28a745;"><i class="fas fa-phone-alt"></i> হেল্পライン</a>
             <div class="menu-item" id="logoutBtnSide" style="display:none; color: var(--red);" onclick="logout()"><i class="fas fa-sign-out-alt"></i> লগ আউট</div>
         </div>
     </aside>
@@ -214,7 +214,9 @@
 
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby2muYN-XMHMuY4qptdXELrfEn7tkGBmkygWv7Rn9NHJs9IjmdyQu7pzCTEV-QM1fT_aA/exec";
-        const SETTINGS_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRcySptJ_tfSb3BGUfyyELHjwK6xxr3VFAlmE9vOv6ret3L5s_RWLD2CtlB4lIikpIxejM0I1KEc0vN/pub?output=csv";
+        
+        // ⚠️ আপনার Firebase Realtime Database-এর URL এখানে বসান (শেষে /settings.json অবশ্যই রাখবেন)
+        const FIREBASE_SETTINGS_URL = "https://chitoshi-sheba-default-rtdb.firebaseio.com/settings.json";
         
         let user = JSON.parse(localStorage.getItem('sajarUser'));
         let allPosts = [];
@@ -223,12 +225,11 @@
         let postLimit = 10;
         let currentCategory = 'হোম';
 
-        // অ্যাপ ওপেন হওয়ার সাথে সাথে প্যারালাল ও ফাস্ট এক্সেস রান হবে
         window.onload = () => { 
             updateUI(); 
-            loadCachedData(); // ১ম ধাপ: ক্যাশেড ডাটা দিয়ে ইনস্ট্যান্ট UI জেনারেট
+            loadCachedData(); 
             
-            // ২য় ধাপ: ব্যাকগ্রাউন্ডে নেটওয়ার্ক থেকে ফ্রেশ ডাটা আনা (ইউজার বিন্দুমাত্র ধীরগতি ফিল করবে না)
+            // প্যারালাল উপায়ে ব্যাকগ্রাউন্ডে নতুন তথ্য ফেচ করা হবে
             Promise.all([fetchSettings(), fetchPosts(), fetchDonorsBackground()]).catch(e => console.log(e));
         };
 
@@ -260,7 +261,6 @@
             }
         }
 
-        // ব্রাউজার লোকাল ক্যাশ থেকে ডাটা রেন্ডার (সুপারফাস্ট টেকনিক)
         function loadCachedData() {
             const cachedSettings = localStorage.getItem('cachedSettings');
             const cachedPosts = localStorage.getItem('cachedPosts');
@@ -276,74 +276,85 @@
             }
         }
 
-        // সেটিংস ফেচ করা এবং অপ্টিমাইজড উপায়ে রিড করা
+        // ফায়ারবেস থেকে সেটিংস ডেটা রকেট গতিতে ফেচ করার ফাংশন
         async function fetchSettings() {
             try {
-                const res = await fetch(SETTINGS_CSV);
-                const data = await res.text();
-                
-                // Regex ব্যবহার করে CSV পার্সিং স্পীড বাড়ানো হয়েছে
-                const rows = data.split(/\r?\n/).map(row => {
-                    return row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(cell => cell.replace(/^"|"$/g, ''));
-                });
-
-                localStorage.setItem('cachedSettings', JSON.stringify(rows)); 
-                applySettings(rows);
-            } catch(e){}
+                const res = await fetch(FIREBASE_SETTINGS_URL);
+                const settings = await res.json();
+                if(settings) {
+                    localStorage.setItem('cachedSettings', JSON.stringify(settings)); 
+                    applySettings(settings);
+                }
+            } catch(e){ console.log("Firebase settings fetch error:", e); }
         }
 
-        function applySettings(rows) {
+        // ফায়ারবেস অবজেক্ট ডেটা সরাসরি UI-তে সেট করার অপ্টিমাইজড ফাংশন
+        function applySettings(settings) {
             try {
-                if(rows[1]) document.getElementById('mainLogo').src = rows[1][1].trim();
-                if(rows[2]) document.getElementById('siteName').innerText = rows[2][1].trim();
-                if(rows[3]) {
+                if(settings.mainLogo) document.getElementById('mainLogo').src = settings.mainLogo.trim();
+                if(settings.siteName) document.getElementById('siteName').innerText = settings.siteName.trim();
+                if(settings.bannerImg) {
                     document.getElementById('bannerDiv').style.display = 'block';
-                    document.getElementById('bannerImg').src = rows[3][1].trim();
+                    document.getElementById('bannerImg').src = settings.bannerImg.trim();
                 }
-                if(rows[4]) document.getElementById('p1').src = rows[4][1].trim();
-                if(rows[5]) document.getElementById('p2').src = rows[5][1].trim();
-                if(rows[6]) document.getElementById('p3').src = rows[6][1].trim();
-                if(rows[19]) { document.getElementById('quiz').innerText = rows[19][1].trim(); document.getElementById('quizLinkSide').href = rows[19][2].trim(); }
-                if(rows[16]) { document.getElementById('apps').innerText = rows[16][1].trim(); document.getElementById('downloadLinkSide').href = rows[16][2].trim(); }
-                if(rows[9]) document.getElementById('saLinkSide').href = rows[9][1].trim();
-                if(rows[11] && rows[11][1].trim() !== "") {
+                if(settings.p1) document.getElementById('p1').src = settings.p1.trim();
+                if(settings.p2) document.getElementById('p2').src = settings.p2.trim();
+                if(settings.p3) document.getElementById('p3').src = settings.p3.trim();
+                
+                if(settings.quizText) document.getElementById('quiz').innerText = settings.quizText.trim();
+                if(settings.quizLink) document.getElementById('quizLinkSide').href = settings.quizLink.trim();
+                
+                if(settings.appsText) document.getElementById('apps').innerText = settings.appsText.trim();
+                if(settings.appsLink) document.getElementById('downloadLinkSide').href = settings.appsLink.trim();
+                
+                if(settings.saLink) document.getElementById('saLinkSide').href = settings.saLink.trim();
+                if(settings.blood) document.getElementById('blood').innerText = settings.blood.trim();
+                if(settings.sajar) document.getElementById('sajar').innerText = settings.sajar.trim();
+                if(settings.buss) document.getElementById('buss').innerText = settings.buss.trim();
+
+                if(settings.noticeText && settings.noticeText.trim() !== "") {
                     document.getElementById('noticeBar').style.display = 'flex';
-                    document.getElementById('noticeContent').innerText = rows[11][1].trim();
+                    document.getElementById('noticeContent').innerText = settings.noticeText.trim();
                 } else {
                     document.getElementById('noticeBar').style.display = 'none';
                 }
-                if(rows[15]) document.getElementById('blood').innerText = rows[15][1].trim();
-                if(rows[17]) document.getElementById('sajar').innerText = rows[17][1].trim();
-                if(rows[18]) document.getElementById('buss').innerText = rows[18][1].trim();
 
-                if(rows[12]) { 
-                    document.getElementById('bottomBtn1Text').innerText = rows[12][1].trim(); 
-                    document.getElementById('bottomBtn1').href = rows[12][2].trim(); 
-                    if(rows[12][3]) document.querySelector('#bottomBtn1 i').className = rows[12][3].trim();
-                }
-                if(rows[13]) { 
-                    document.getElementById('bottomBtn2Text').innerText = rows[13][1].trim(); 
-                    document.getElementById('bottomBtn2').href = rows[13][2].trim(); 
-                    if(rows[13][3]) document.querySelector('#bottomBtn2 i').className = rows[13][3].trim();
-                }
-                if(rows[14]) { 
-                    document.getElementById('bottomBtn3Text').innerText = rows[14][1].trim(); 
-                    document.getElementById('bottomBtn3').href = rows[14][2].trim(); 
-                    if(rows[14][3]) document.querySelector('#bottomBtn3 i').className = rows[14][3].trim();
+                // বটম নেভিগেশন সেটিংস
+                if(settings.bottomBtn1Text) document.getElementById('bottomBtn1Text').innerText = settings.bottomBtn1Text.trim(); 
+                if(settings.bottomBtn1Link) document.getElementById('bottomBtn1').href = settings.bottomBtn1Link.trim(); 
+                if(settings.bottomBtn1Icon) {
+                    let icon1 = document.querySelector('#bottomBtn1 i');
+                    if(icon1) icon1.className = settings.bottomBtn1Icon.trim();
                 }
 
-                if(rows[20] && rows[20][1] && rows[20][1].trim() !== "") {
+                if(settings.bottomBtn2Text) document.getElementById('bottomBtn2Text').innerText = settings.bottomBtn2Text.trim(); 
+                if(settings.bottomBtn2Link) document.getElementById('bottomBtn2').href = settings.bottomBtn2Link.trim(); 
+                if(settings.bottomBtn2Icon) {
+                    let icon2 = document.querySelector('#bottomBtn2 i');
+                    if(icon2) icon2.className = settings.bottomBtn2Icon.trim();
+                }
+
+                if(settings.bottomBtn3Text) document.getElementById('bottomBtn3Text').innerText = settings.bottomBtn3Text.trim(); 
+                if(settings.bottomBtn3Link) document.getElementById('bottomBtn3').href = settings.bottomBtn3Link.trim(); 
+                if(settings.bottomBtn3Icon) {
+                    let icon3 = document.querySelector('#bottomBtn3 i');
+                    if(icon3) icon3.className = settings.bottomBtn3Icon.trim();
+                }
+
+                // ফুটার ব্যানার
+                if(settings.footerBannerImg && settings.footerBannerImg.trim() !== "") {
                     document.getElementById('footerBannerLink').style.display = 'block';
-                    document.getElementById('footerBannerImg').src = rows[20][1].trim();
-                    if(rows[20][2]) document.getElementById('footerBannerLink').href = rows[20][2].trim();
+                    document.getElementById('footerBannerImg').src = settings.footerBannerImg.trim();
+                    if(settings.footerBannerLink) document.getElementById('footerBannerLink').href = settings.footerBannerLink.trim();
                 }
 
-                if(rows[21] && rows[21][1]) document.getElementById('chitoshiInfo1').innerText = rows[21][1].trim();
-                if(rows[22] && rows[22][1]) document.getElementById('chitoshiInfo2').innerText = rows[22][1].trim();
-                if(rows[23] && rows[23][1]) document.getElementById('chitoshiInfo3').innerText = rows[23][1].trim();
-                if(rows[24] && rows[24][1]) document.getElementById('chitoshiInfo4').innerText = rows[24][1].trim();
+                // চিতোষী সেবা তথ্যের ৪টি বক্স
+                if(settings.chitoshiInfo1) document.getElementById('chitoshiInfo1').innerText = settings.chitoshiInfo1.trim();
+                if(settings.chitoshiInfo2) document.getElementById('chitoshiInfo2').innerText = settings.chitoshiInfo2.trim();
+                if(settings.chitoshiInfo3) document.getElementById('chitoshiInfo3').innerText = settings.chitoshiInfo3.trim();
+                if(settings.chitoshiInfo4) document.getElementById('chitoshiInfo4').innerText = settings.chitoshiInfo4.trim();
 
-            } catch(e){}
+            } catch(e){ console.log("Apply settings error:", e); }
         }
 
         async function fetchPosts() {
@@ -359,7 +370,6 @@
             document.getElementById('loader').style.display='none';
         }
 
-        // রক্তদাতার তালিকা ব্যাকগ্রাউন্ডে প্রি-লোড করে রাখার ফাংশন (এতে বাটনে ক্লিক করলেই সাথে সাথে ওপেন হবে)
         async function fetchDonorsBackground() {
             try {
                 const res = await fetch(`${SCRIPT_URL}?action=getAllUsers`);
@@ -382,7 +392,6 @@
             filterAndRender();
         }
 
-        // DOM Injection অপ্টিমাইজড করা হয়েছে স্পীডের জন্য
         function render(posts) {
             const f = document.getElementById('feed');
             if(posts.length === 0) {
@@ -430,7 +439,6 @@
             
             try {
                 await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
-                // পোস্ট করার পর লোকাল ক্যাশ ক্লিয়ার করে রিলোড করা হচ্ছে যাতে নতুন পোস্ট সামনে আসে
                 localStorage.removeItem('cachedPosts');
                 location.reload();
             } catch(e) {
@@ -446,7 +454,6 @@
             document.getElementById('feed').style.display = 'none';
             document.getElementById('loadMoreBtn').style.display = 'none';
             
-            // যদি আগে থেকে ক্যাশে ডাটা থাকে তবে সাথে সাথে দেখাবে, কোনো লোডিং লেট নেই!
             if(allDonors.length > 0) {
                 renderBloodList(allDonors);
             } else {
@@ -479,7 +486,6 @@
             listDiv.innerHTML = htmlString;
         }
 
-        // সার্চ ফিল্টারিং আরো দ্রুত করা হয়েছে 
         function filterBlood() {
             const query = document.getElementById('bloodSearch').value.toLowerCase().trim();
             if(!query) { renderBloodList(allDonors); return; }

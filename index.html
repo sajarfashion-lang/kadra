@@ -16,7 +16,7 @@
         .header-left { display: flex; align-items: center; gap: 8px; }
         .logo-box { display: flex; align-items: center; gap: 5px; }
         .logo-box img { height: 35px; width: 35px; object-fit: contain; background: #fff; border-radius: 6px; padding: 2px; }
-        .header-seba-btn { background: rgba(255, 255, 255, 0.2); color: yellow; text-decoration: none; padding: 6px 12px; border-radius: 20px; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 5px; border: 1px solid rgba(255,255,255,0.4); }
+        .header-seba-btn { background: rgba(255, 255, 255, 0.2); color: yellow; text-decoration: none; padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 5px; border: 1px solid rgba(255,255,255,0.4); cursor: pointer; }
 
         /* নোটিশ স্টাইল */
         .notice-bar { background: #fff8e1; border-bottom: 1px solid #ffe082; padding: 8px 10px; display: none; align-items: center; gap: 10px; overflow: hidden; }
@@ -34,6 +34,26 @@
         .sub-nav a { color: white; text-decoration: none; font-size: 12px; padding: 6px 15px; border-radius: 20px; border: 1px solid #444; white-space: nowrap; cursor: pointer; }
         .sub-nav a.active { background: var(--fb); border-color: var(--fb); }
 
+        /* মূল পেজের মেনু অপশন স্টাইল */
+        .app-menu-container { margin-bottom: 15px; display: flex; flex-direction: column; gap: 12px; }
+        .app-menu-item { background: #fff; border-radius: 14px; padding: 15px 18px; display: flex; align-items: center; justify-content: space-between; text-decoration: none; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 10px rgba(0,0,0,0.02); transition: transform 0.2s; }
+        .app-menu-item:active { transform: scale(0.98); }
+        .app-menu-left { display: flex; align-items: center; gap: 15px; }
+        
+        .app-menu-icon { width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+        .icon-local { background: #e6f7f4; color: #14b8a6; }
+        .icon-blood { background: #fff1f2; color: #f43f5e; }
+        .icon-emergency { background: #fffbeb; color: #f59e0b; }
+        .icon-edu { background: #eff6ff; color: #3b82f6; }
+        .icon-quiz { background: #fae8ff; color: #d946ef; }
+        .icon-org { background: #f0fdf4; color: #16a34a; }
+        .icon-business { background: #fff7ed; color: #ea580c; }
+        .icon-shop { background: #e0f2fe; color: #0284c7; }
+
+        .app-menu-details h3 { font-size: 16px; color: #1e293b; font-weight: 600; margin-bottom: 2px; }
+        .app-menu-details p { font-size: 13px; color: #64748b; }
+        .app-menu-arrow { color: #cbd5e1; font-size: 14px; }
+
         /* সাইডবার */
         .sidebar { position: fixed; top: 0; left: -300px; width: 280px; height: 100%; background: white; z-index: 2000; transition: 0.3s; box-shadow: 2px 0 8px rgba(0,0,0,0.2); display: flex; flex-direction: column; }
         .sidebar.active { left: 0; }
@@ -43,7 +63,9 @@
         
         .menu-item { display: flex; align-items: center; padding: 15px 20px; color: #333; border-bottom: 1px solid #eee; cursor: pointer; text-decoration: none; font-weight: 600; }
         .menu-item i { width: 25px; font-size: 16px; color: var(--primary); }
-        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; z-index: 1500; }
+        
+        /* ওভারলে ব্যাকগ্রাউন্ড */
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; z-index: 1500; }
         .overlay.active { display: block; }
 
         /* মেইন কন্টেন্ট */
@@ -60,6 +82,26 @@
         .blood-card { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #eee; }
         .blood-grp { background: var(--red); color: white; padding: 4px 8px; border-radius: 5px; font-weight: bold; }
         .call-btn { color: white; background: #25d366; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border-radius: 50%; text-decoration: none; }
+
+        /* একনজরে চিতোষী মডাল (Popup) স্টাইল - ডিফল্ট অবস্হায় সম্পূর্ণ হাইড রাখা হয়েছে */
+        .chitoshi-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9); background: white; width: 92%; max-width: 450px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 2500; display: none !important; overflow: hidden; transition: 0.2s ease-in-out; max-height: 85vh; flex-direction: column; }
+        /* একটিভ হলে মডাল ডিসপ্লে ফ্লেক্স হবে */
+        .chitoshi-modal.active { display: flex !important; transform: translate(-50%, -50%) scale(1); }
+        .modal-banner { width: 100%; height: 160px; object-fit: cover; background: #f0f2f5; flex-shrink: 0; }
+        
+        /* ডাইনামিক স্ক্রলিং কন্টেইনার */
+        .modal-scroll-content { padding: 20px; overflow-y: auto; flex: 1; scrollbar-width: thin; }
+        .modal-body h2 { color: var(--dark); font-size: 20px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        
+        /* বিবরণ বড় হলে স্ক্রল করার জন্য আলাদা স্টাইল */
+        .modal-desc-box { max-height: 150px; overflow-y: auto; margin-bottom: 15px; padding-right: 5px; scrollbar-width: thin; }
+        .modal-desc { color: #4a5568; font-size: 14px; line-height: 1.6; text-align: justify; white-space: pre-line; }
+        
+        .modal-info-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
+        .modal-info-item { display: flex; align-items: center; gap: 10px; font-size: 14px; color: #333; background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0; }
+        .modal-info-item i { color: var(--primary); font-size: 16px; width: 20px; text-align: center; }
+        .modal-footer { padding: 15px 20px; background: #f8fafc; border-top: 1px solid #eee; flex-shrink: 0; }
+        .modal-close-btn { width: 100%; background: var(--primary); color: white; border: none; padding: 12px; font-size: 15px; font-weight: 600; border-radius: 10px; cursor: pointer; }
 
         /* আরও দেখুন বাটন */
         .load-more-btn { display: block; width: 100%; background: #fff; color: var(--primary); border: 2px solid var(--primary); text-align: center; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 15px; margin: 15px 0; transition: 0.2s; }
@@ -95,7 +137,7 @@
                 <b id="siteName">স্বাগতম</b>
             </div>
         </div>
-        <a href="seba.html" class="header-seba-btn"><i class="fas fa-th-large"></i> সেবা👈</a>
+        <div onclick="openChitoshiModal()" class="header-seba-btn"><i class="fas fa-eye"></i> <span id="headerSebaText">একনজরে চিতোষী</span></div>
         <div class="header-right">
             <div onclick="handleAuthClick()" style="font-size: 28px; cursor: pointer;" id="headerUserBtn"><i class="fas fa-user-circle"></i></div>
         </div>
@@ -122,7 +164,7 @@
         <a onclick="filter('প্রোডাক্ট', this)">প্রোডাক্ট</a>
     </nav>
 
-    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+    <div class="overlay" id="overlay" onclick="closeAllDrawers()"></div>
     
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header" id="sideProfile">
@@ -131,21 +173,131 @@
         </div>
         <div class="sidebar-menu">
             <div class="menu-item" onclick="handleAuthClickSide()"><i class="fas fa-user-shield"></i> প্রোফাইল / লগইন</div>
-            <div class="menu-item" onclick="showBloodList()"><i class="fas fa-tint"></i> <span id="blood">লিঙ্ক ১</span></div>
-            <a id="quizLinkSide" href="#" target="_blank" class="menu-item"><i class="fas fa-brain"></i> <span id="quiz">লিঙ্ক ১</span></a>
-            <a href="sa.html" class="menu-item"><i class="fas fa-hand-holding-heart"></i> ইসলামিক ও সামাজিক সংগঠন</a>
-            <a href="sc.html" class="menu-item"><i class="fas fa-school"></i> শিক্ষা প্রতিষ্ঠান</a>
-            <a href="sb.html" class="menu-item"><i class="fas fa-hospital"></i> <span id="buss">লিঙ্ক ১</span></a>
-            <a id="saLinkSide" href="#" target="_blank" class="menu-item"><i class="fas fa-shopping-bag"></i><span id="sajar">লিঙ্ক ১</span></a>
-            <div class="menu-item" onclick="location.reload()"><i class="fas fa-home"></i> হোম</div>
-            <a id="downloadLinkSide" href="#" target="_blank" class="menu-item" style="color: #28a745;"><i class="fas fa-download"></i> <span id="apps">লিঙ্ক ১</span></a>
-            <a href="card.html" target="_blank" class="menu-item" style="color: #28a745;"><i class="fas fa-phone-alt"></i> হেল্পলাইন</a>
+            <div class="menu-item" onclick="location.reload()"><i class="fas fa-home"></i> হোম পেজ</div>
+            <a id="downloadLinkSide" href="#" target="_blank" class="menu-item" style="color: #28a745;"><i class="fas fa-download"></i> <span id="apps">অফিসিয়াল অ্যাপস</span></a>
             <div class="menu-item" id="logoutBtnSide" style="display:none; color: var(--red);" onclick="logout()"><i class="fas fa-sign-out-alt"></i> লগ আউট</div>
         </div>
     </aside>
 
+    <div class="chitoshi-modal" id="chitoshiModal">
+        <img id="modalBannerImg" class="modal-banner" src="https://via.placeholder.com/450x180" alt="Chitoshi Banner">
+        
+        <div class="modal-scroll-content">
+            <h2 id="mTitle"><i class="fas fa-info-circle"></i> চিতোষী সেবা পোর্টালে স্বাগতম</h2>
+            
+            <div class="modal-desc-box">
+                <p id="mDesc" class="modal-desc">লোড হচ্ছে...</p>
+            </div>
+            
+            <div class="modal-info-list">
+                <div class="modal-info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div><strong>ঠিকানা:</strong> <span id="mAddress">লোড হচ্ছে...</span></div>
+                </div>
+                <div class="modal-info-item">
+                    <i class="fas fa-phone-alt"></i>
+                    <div><strong>জরুরি যোগাযোগ:</strong> <span id="mContact">লোড হচ্ছে...</span></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="modal-footer">
+            <button class="modal-close-btn" onclick="closeChitoshiModal()">বন্ধ করুন</button>
+        </div>
+    </div>
+
     <main class="main-content">
-        <!-- প্রোফাইল কার্ড -->
+        
+        <div class="app-menu-container" id="mainMenuGrid">
+            <a href="seba.html" class="app-menu-item">
+                <div class="app-menu-left">
+                    <div class="app-menu-icon icon-local"><i class="fas fa-wrench"></i></div>
+                    <div class="app-menu-details">
+                        <h3>লোকাল সেবা</h3>
+                        <p>ডেলিভারি, ইলেকট্রিক, পাইপ ফিটার</p>
+                    </div>
+                </div>
+                <div class="app-menu-arrow"><i class="fas fa-chevron-right"></i></div>
+            </a>
+            
+            <div class="app-menu-item" onclick="showBloodList()" style="cursor: pointer;">
+                <div class="app-menu-left">
+                    <div class="app-menu-icon icon-blood"><i class="fas fa-heartbeat"></i></div>
+                    <div class="app-menu-details">
+                        <h3><span id="mainBloodText">রক্তদান</span></h3>
+                        <p>ডোনার খুঁজুন ও সাহায্য করুন</p>
+                    </div>
+                </div>
+                <div class="app-menu-arrow"><i class="fas fa-chevron-right"></i></div>
+            </div>
+            
+            <a href="card.html" class="app-menu-item">
+                <div class="app-menu-left">
+                    <div class="app-menu-icon icon-emergency"><i class="fas fa-phone-alt"></i></div>
+                    <div class="app-menu-details">
+                        <h3>জরুরি যোগাযোগ</h3>
+                        <p>চেয়ারম্যান, মেম্বার ও সেবা</p>
+                    </div>
+                </div>
+                <div class="app-menu-arrow"><i class="fas fa-chevron-right"></i></div>
+            </a>
+            
+            <a href="sc.html" class="app-menu-item">
+                <div class="app-menu-left">
+                    <div class="app-menu-icon icon-edu"><i class="fas fa-graduation-cap"></i></div>
+                    <div class="app-menu-details">
+                        <h3>শিক্ষা প্রতিষ্ঠান</h3>
+                        <p>স্কুল, মাদ্রাসা ও কলেজ</p>
+                    </div>
+                </div>
+                <div class="app-menu-arrow"><i class="fas fa-chevron-right"></i></div>
+            </a>
+
+            <a id="mainQuizLink" href="#" target="_blank" class="app-menu-item">
+                <div class="app-menu-left">
+                    <div class="app-menu-icon icon-quiz"><i class="fas fa-brain"></i></div>
+                    <div class="app-menu-details">
+                        <h3><span class="quiz-txt-main">কুইজ খেলুন</span></h3>
+                        <p>মেধা যাচাই করুন ও পুরষ্কার জিতুন</p>
+                    </div>
+                </div>
+                <div class="app-menu-arrow"><i class="fas fa-chevron-right"></i></div>
+            </a>
+
+            <a href="sa.html" class="app-menu-item">
+                <div class="app-menu-left">
+                    <div class="app-menu-icon icon-org"><i class="fas fa-hand-holding-heart"></i></div>
+                    <div class="app-menu-details">
+                        <h3>সামাজিক সংগঠন</h3>
+                        <p>ইসলামিক ও মানবতার কল্যাণে আমরা</p>
+                    </div>
+                </div>
+                <div class="app-menu-arrow"><i class="fas fa-chevron-right"></i></div>
+            </a>
+
+            <a href="sb.html" class="app-menu-item">
+                <div class="app-menu-left">
+                    <div class="app-menu-icon icon-business"><i class="fas fa-store"></i></div>
+                    <div class="app-menu-details">
+                        <h3><span class="buss-txt-main">ব্যবসা প্রতিষ্ঠান</span></h3>
+                        <p>স্থানীয় সকল ব্যবসায়ের বিবরণ ও তথ্য</p>
+                    </div>
+                </div>
+                <div class="app-menu-arrow"><i class="fas fa-chevron-right"></i></div>
+            </a>
+
+            <a id="mainShopLink" href="#" target="_blank" class="app-menu-item">
+                <div class="app-menu-left">
+                    <div class="app-menu-icon icon-shop"><i class="fas fa-shopping-bag"></i></div>
+                    <div class="app-menu-details">
+                        <h3><span class="shop-txt-main">কেনাকাটা</span></h3>
+                        <p>অনলাইন শপিং এবং সেরা প্রোডাক্টস</p>
+                    </div>
+                </div>
+                <div class="app-menu-arrow"><i class="fas fa-chevron-right"></i></div>
+            </a>
+        </div>
+
         <div id="profile-box" style="display:none;" class="card">
             <div style="text-align: center; padding: 10px;">
                 <img id="uPic" src="" style="width:80px; height:80px; border-radius:50%; border:3px solid var(--primary); object-fit:cover; margin-bottom:10px;">
@@ -155,22 +307,20 @@
             </div>
         </div>
 
-        <!-- পোস্ট তৈরির বক্স -->
         <div id="post-box" style="display:none;" class="card">
             <textarea id="pTxt" placeholder="আপনার কিছু লিখুন..." rows="3" style="width:100%; padding:12px; border:1px solid #eee; border-radius:10px; outline:none; resize:none;"></textarea>
             <input type="text" id="pImg" placeholder="ছবির লিঙ্ক (ঐচ্ছিক)" style="width:100%; padding:10px; margin-top:10px; border:1px solid #eee; border-radius:8px;">
             <div style="display:flex; gap:10px; margin-top:10px;">
                 <select id="pCat" style="flex:1; padding:10px; border-radius:8px; border:1px solid #eee;">
-                    <option value="শিক্ষা">শিক্ষা</option><option value="ইসলামিক">ইসলামিক</option><option value="মানবিক">মানবিক</option><option value="প্রোডাক্ট">প্রোডাক্ট</option>
+                    <option value="শিক্ষা">শিক্ষা</option><option value="ইসলামিক">Islamic</option><option value="মানবিক">মানবিক</option><option value="প্রোডাক্ট">প্রোডাক্ট</option>
                 </select>
                 <button id="submitPostBtn" onclick="addPost()" style="background:var(--fb); color:white; border:none; padding:10px 25px; border-radius:8px; font-weight:600; cursor:pointer;">পোস্ট করুন</button>
             </div>
         </div>
 
-        <!-- রক্তদাতা খোঁজার বক্স -->
         <div id="blood-box" style="display:none;" class="card">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-                <h3>রক্তদাতা খুঁজুন</h3>
+                <h3><span id="searchBloodTitle">রক্তদাতা খুঁজুন</span></h3>
                 <button onclick="closeBlood()" style="border:none; background:none; font-size:24px; cursor:pointer;">&times;</button>
             </div>
             <div class="input-box">
@@ -182,15 +332,12 @@
 
         <div id="loader" style="text-align:center; padding:20px; display:none;"><i class="fas fa-spinner fa-spin"></i></div>
         
-        <!-- মূল ফিড কন্টেইনার -->
         <div id="feed"></div>
 
-        <!-- আরও দেখুন বাটন -->
         <button id="loadMoreBtn" class="load-more-btn" onclick="loadMorePosts()" style="display:none;">আরও দেখুন <i class="fas fa-chevron-down"></i></button>
 
-        <!-- চিতোষী সেবা তথ্য সেকশন -->
         <div class="chitoshi-info-box">
-            <h3><i class="fas fa-info-circle"></i> চিতোষী সেবা তথ্য ও হেল্পলাইন</h3>
+            <h3><i class="fas fa-info-circle"></i> <span id="infoBoxTitle">চিতোষী সেবা তথ্য ও হেল্পলাইন</span></h3>
             <div class="chitoshi-grid">
                 <div class="chitoshi-item"><i class="fas fa-ambulance"></i> <span id="chitoshiInfo1">লোড হচ্ছে...</span></div>
                 <div class="chitoshi-item"><i class="fas fa-user-md"></i> <span id="chitoshiInfo2">লোড হচ্ছে...</span></div>
@@ -199,13 +346,11 @@
             </div>
         </div>
 
-        <!-- ফুটার ব্যানার -->
         <a id="footerBannerLink" href="#" target="_blank" class="footer-banner-container">
             <img id="footerBannerImg" src="" alt="Footer Advertisement">
         </a>
     </main>
 
-    <!-- বটম মেনু -->
     <nav class="bottom-nav">
         <a href="#" class="nav-item" id="bottomBtn1"><i></i><span id="bottomBtn1Text">লোড হচ্ছে...</span></a>
         <a href="#" class="nav-item" id="bottomBtn2"><i></i><span id="bottomBtn2Text">লোড হচ্ছে...</span></a>
@@ -224,7 +369,6 @@
         let currentCategory = 'হোম';
         let searchTimeout;
 
-        // DOM Caching - যেন ব্রাউজারকে বারবার এলিমেন্ট খুঁজতে না হয় (গতি অনেক বাড়ে)
         const dom = {
             feed: document.getElementById('feed'),
             loader: document.getElementById('loader'),
@@ -242,14 +386,14 @@
             headerUserBtn: document.getElementById('headerUserBtn'),
             sidebar: document.getElementById('sidebar'),
             overlay: document.getElementById('overlay'),
-            catNavLinks: document.querySelectorAll('#catNav a')
+            catNavLinks: document.querySelectorAll('#catNav a'),
+            mainMenuGrid: document.getElementById('mainMenuGrid'),
+            chitoshiModal: document.getElementById('chitoshiModal')
         };
 
         window.onload = () => { 
             updateUI(); 
             loadCachedData(); 
-            
-            // সব নেটওয়ার্ক যেন প্যারালালে রকেটের মতো একসাথে রান করে
             Promise.all([fetchSettings(), fetchPosts(), fetchDonorsBackground()]).catch(e => console.log("Fetch error:", e));
         };
 
@@ -308,7 +452,9 @@
 
         function applySettings(settings) {
             try {
-                if(settings.mainLogo) document.getElementById('mainLogo').src = settings.mainLogo.trim();
+                if(settings.mainLogo) {
+                    document.getElementById('mainLogo').src = settings.mainLogo.trim();
+                }
                 if(settings.siteName) document.getElementById('siteName').innerText = settings.siteName.trim();
                 if(settings.bannerImg) {
                     document.getElementById('bannerDiv').style.display = 'block';
@@ -318,16 +464,36 @@
                 if(settings.p2) document.getElementById('p2').src = settings.p2.trim();
                 if(settings.p3) document.getElementById('p3').src = settings.p3.trim();
                 
-                if(settings.quizText) document.getElementById('quiz').innerText = settings.quizText.trim();
-                if(settings.quizLink) document.getElementById('quizLinkSide').href = settings.quizLink.trim();
+                if(settings.quizText) {
+                    const mainQuizText = document.querySelector('.quiz-txt-main');
+                    if(mainQuizText) mainQuizText.innerText = settings.quizText.trim();
+                }
+                if(settings.quizLink) {
+                    document.getElementById('mainQuizLink').href = settings.quizLink.trim();
+                }
                 
                 if(settings.appsText) document.getElementById('apps').innerText = settings.appsText.trim();
                 if(settings.appsLink) document.getElementById('downloadLinkSide').href = settings.appsLink.trim();
                 
-                if(settings.saLink) document.getElementById('saLinkSide').href = settings.saLink.trim();
-                if(settings.blood) document.getElementById('blood').innerText = settings.blood.trim();
-                if(settings.sajar) document.getElementById('sajar').innerText = settings.sajar.trim();
-                if(settings.buss) document.getElementById('buss').innerText = settings.buss.trim();
+                if(settings.saLink) {
+                    document.getElementById('mainShopLink').href = settings.saLink.trim();
+                }
+                
+                if(settings.sajar) {
+                    const mainShopTxt = document.querySelector('.shop-txt-main');
+                    if(mainShopTxt) mainShopTxt.innerText = settings.sajar.trim();
+                }
+                
+                if(settings.buss) {
+                    const mainBussTxt = document.querySelector('.buss-txt-main');
+                    if(mainBussTxt) mainBussTxt.innerText = settings.buss.trim();
+                }
+
+                if(settings.blood) {
+                    const bloodTxt = settings.blood.trim();
+                    document.getElementById('mainBloodText').innerText = bloodTxt;
+                    document.getElementById('searchBloodTitle').innerText = bloodTxt + " খুঁজুন";
+                }
 
                 const noticeBar = document.getElementById('noticeBar');
                 if(settings.noticeText && settings.noticeText.trim() !== "") {
@@ -335,6 +501,24 @@
                     document.getElementById('noticeContent').innerText = settings.noticeText.trim();
                 } else {
                     noticeBar.style.display = 'none';
+                }
+
+                if(settings.chitoshiModalImg) {
+                    document.getElementById('modalBannerImg').src = settings.chitoshiModalImg.trim();
+                } else if(settings.mainLogo) {
+                    document.getElementById('modalBannerImg').src = settings.mainLogo.trim();
+                }
+
+                if(settings.chitoshiModalTitle) {
+                    document.getElementById('mTitle').innerHTML = `<i class="fas fa-info-circle"></i> ${settings.chitoshiModalTitle.trim()}`;
+                } else if(settings.siteName) {
+                    document.getElementById('mTitle').innerHTML = `<i class="fas fa-info-circle"></i> ${settings.siteName.trim()} তথ্য`;
+                }
+
+                if(settings.chitoshiModalDesc) {
+                    document.getElementById('mDesc').innerText = settings.chitoshiModalDesc.trim();
+                } else {
+                    document.getElementById('mDesc').innerText = "আমাদের লক্ষ্য প্রতিটি মানুষের দোরগোড়ায় জরুরি সেবা পৌঁছে দেওয়া।";
                 }
 
                 if(settings.bottomBtn1Text) document.getElementById('bottomBtn1Text').innerText = settings.bottomBtn1Text.trim(); 
@@ -367,10 +551,39 @@
 
                 if(settings.chitoshiInfo1) document.getElementById('chitoshiInfo1').innerText = settings.chitoshiInfo1.trim();
                 if(settings.chitoshiInfo2) document.getElementById('chitoshiInfo2').innerText = settings.chitoshiInfo2.trim();
-                if(settings.chitoshiInfo3) document.getElementById('chitoshiInfo3').innerText = settings.chitoshiInfo3.trim();
-                if(settings.chitoshiInfo4) document.getElementById('chitoshiInfo4').innerText = settings.chitoshiInfo4.trim();
+                
+                if(settings.chitoshiInfo3) {
+                    document.getElementById('chitoshiInfo3').innerText = settings.chitoshiInfo3.trim();
+                    document.getElementById('mContact').innerText = settings.chitoshiInfo3.trim();
+                }
+                if(settings.chitoshiInfo4) {
+                    document.getElementById('chitoshiInfo4').innerText = settings.chitoshiInfo4.trim();
+                    document.getElementById('mAddress').innerText = settings.chitoshiInfo4.trim();
+                }
+                if(settings.infoBoxTitle) {
+                    document.getElementById('infoBoxTitle').innerText = settings.infoBoxTitle.trim();
+                }
 
             } catch(e){ console.log("Apply settings error:", e); }
+        }
+
+        // মডাল কন্ট্রোল ফাংশনস (লক সমস্যা দূর করার জন্য ক্লাস মডিফাই করা হয়েছে)
+        function openChitoshiModal() {
+            dom.chitoshiModal.classList.add('active');
+            dom.overlay.classList.add('active');
+        }
+
+        function closeChitoshiModal() {
+            dom.chitoshiModal.classList.remove('active');
+            if(!dom.sidebar.classList.contains('active')) {
+                dom.overlay.classList.remove('active');
+            }
+        }
+
+        function closeAllDrawers() {
+            dom.sidebar.classList.remove('active');
+            dom.chitoshiModal.classList.remove('active');
+            dom.overlay.classList.remove('active');
         }
 
         async function fetchPosts() {
@@ -402,6 +615,12 @@
             displayedPosts = filtered.slice(0, postLimit);
             render(displayedPosts);
             dom.loadMoreBtn.style.display = filtered.length > postLimit ? 'block' : 'none';
+            
+            if(currentCategory === 'হোম') {
+                dom.mainMenuGrid.style.display = 'flex';
+            } else {
+                dom.mainMenuGrid.style.display = 'none';
+            }
         }
 
         function loadMorePosts() {
@@ -415,7 +634,6 @@
                 return;
             }
             
-            // Optimization: String concatenation performs 10x faster than repeating innerHTML +=
             let htmlString = "";
             const total = posts.length;
             for (let i = 0; i < total; i++) {
@@ -467,9 +685,10 @@
         }
 
         function showBloodList() {
-            toggleMenu(); 
+            if(dom.sidebar.classList.contains('active')) toggleMenu(); 
             dom.bloodBox.style.display = 'block'; 
             dom.feed.style.display = 'none';
+            dom.mainMenuGrid.style.display = 'none';
             dom.loadMoreBtn.style.display = 'none';
             
             if(allDonors.length > 0) {
@@ -504,7 +723,6 @@
             dom.bloodList.innerHTML = htmlString;
         }
 
-        // Debouncing Mechanism - টাইপ করার সময় সার্চবক্স যেন হ্যাং না করে
         function debouncedFilterBlood() {
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(filterBlood, 200);
@@ -526,7 +744,13 @@
 
         function logout() { localStorage.clear(); location.reload(); }
         function toggleMenu() { dom.sidebar.classList.toggle('active'); dom.overlay.classList.toggle('active'); }
-        function closeBlood() { dom.bloodBox.style.display='none'; dom.feed.style.display='block'; filterAndRender(); }
+        
+        function closeBlood() { 
+            dom.bloodBox.style.display='none'; 
+            dom.feed.style.display='block'; 
+            if(currentCategory === 'হোম') dom.mainMenuGrid.style.display = 'flex';
+            filterAndRender(); 
+        }
         
         function filter(cat, el) { 
             document.querySelectorAll('#catNav a').forEach(a => a.classList.remove('active')); 

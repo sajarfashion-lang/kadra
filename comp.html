@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>কম্পিউটার ও মাইক্রোসফট অফিস শিক্ষা</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Noto+Serif+Bengali:wght@400;700&display=swap');
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Noto Serif Bengali', serif;
+            background-color: #f4f7f6;
+            padding: 15px;
+            padding-bottom: 40px;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #27ae60;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 14px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 20px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            border-bottom: 3px solid #27ae60;
+            padding-bottom: 8px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border: 2px solid #e6dfd5;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: transform 0.1s ease, background-color 0.2s;
+        }
+
+        .card:active {
+            transform: scale(0.97);
+            background-color: #e8f8f0;
+            border-color: #27ae60;
+        }
+
+        .card-icon {
+            font-size: 32px;
+            color: #27ae60;
+            width: 50px;
+            text-align: center;
+        }
+
+        /* অফিস অ্যাপের জন্য আলাদা কালার কোড */
+        .icon-word { color: #2b579a; }
+        .icon-excel { color: #217346; }
+        .icon-ppt { color: #b7472a; }
+        .icon-key { color: #e67e22; }
+
+        .card-info {
+            flex: 1;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 4px;
+        }
+
+        .card-desc {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .shortcut-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .shortcut-card {
+            background: white;
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+        .shortcut-card:active {
+            background-color: #e8f8f0;
+            border-color: #27ae60;
+        }
+
+        .key-badge {
+            font-family: 'Poppins', sans-serif;
+            background: #2c3e50;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+        .key-text {
+            font-size: 13px;
+            color: #333;
+            font-weight: bold;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <a href="index.html" class="back-btn" onclick="playAudio(event, 'হোম মেনু')"><i class="fas fa-arrow-left"></i> মেইন মেনু</a>
+
+        <div class="section-title"><i class="fas fa-desktop"></i> কম্পিউটার বেসিক শিক্ষা</div>
+        <div class="grid-container">
+            <div class="card" onclick="playVoice('কম্পিউটার কি? কম্পিউটার হলো একটি আধুনিক ইলেকট্রনিক যন্ত্র, যা তথ্য গ্রহণ করে এবং খুব দ্রুত হিসাব-নিকাশ করতে পারে।')">
+                <div class="card-icon"><i class="fas fa-laptop"></i></div>
+                <div class="card-info">
+                    <div class="card-title">কম্পিউটার কি?</div>
+                    <div class="card-desc">কম্পিউটার হলো একটি ইলেকট্রনিক যন্ত্র, যা তথ্য গ্রহণ করে এবং খুব দ্রুত নির্ভুলভাবে হিসাব করতে পারে।</div>
+                </div>
+            </div>
+
+            <div class="card" onclick="playVoice('ইনপুট ডিভাইস কি? যে সব যন্ত্র দিয়ে কম্পিউটারের ভেতরে তথ্য পাঠানো হয়, তাকে ইনপুট ডিভাইস বলে। যেমন: কীবোর্ড এবং মাউস।')">
+                <div class="card-icon"><i class="fas fa-keyboard"></i></div>
+                <div class="card-info">
+                    <div class="card-title">ইনপুট ডিভাইস (Input)</div>
+                    <div class="card-desc">যার মাধ্যমে কম্পিউটারে তথ্য পাঠানো হয়। যেমন: <b>Keyboard, Mouse, Scanner</b>।</div>
+                </div>
+            </div>
+
+            <div class="card" onclick="playVoice('আউটপুট ডিভাইস কি? কম্পিউটার প্রসেসিং করার পর যে সব যন্ত্রের মাধ্যমে ফলাফল দেখায়, তাকে আউটপুট ডিভাইস বলে। যেমন: মনিটর এবং প্রিন্টার।')">
+                <div class="card-icon"><i class="fas fa-print"></i></div>
+                <div class="card-info">
+                    <div class="card-title">আউটপুট ডিভাইস (Output)</div>
+                    <div class="card-desc">যার মাধ্যমে কম্পিউটার ফলাফল প্রদর্শন করে। যেমন: <b>Monitor, Printer, Speaker</b>।</div>
+                </div>
+            </div>
+
+            <div class="card" onclick="playVoice('সি পি ইউ কি? সি পি ইউ এর পূর্ণরূপ হলো সেন্ট্রাল প্রসেসিং ইউনিট। একে কম্পিউটারের মস্তিষ্ক বা ব্রেন বলা হয়।')">
+                <div class="card-icon"><i class="fas fa-microchip"></i></div>
+                <div class="card-info">
+                    <div class="card-title">CPU কি?</div>
+                    <div class="card-desc">CPU-এর পূর্ণরূপ <b>Central Processing Unit</b>। একে কম্পিউটারের মস্তিষ্ক বা ব্রেন বলা হয়।</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-title"><i class="fas fa-file-invoice"></i> মাইক্রোসফট অফিস শিক্ষা</div>
+        <div class="grid-container">
+            <div class="card" onclick="playVoice('মাইক্রোসফট ওয়ার্ড কি? এটি একটি লেখালেখি করার সফটওয়্যার। এর মাধ্যমে চিঠি, প্রশ্ন, বায়োডাটা এবং যেকোনো ডকুমেন্ট তৈরি করা হয়।')">
+                <div class="card-icon icon-word"><i class="fas fa-file-word"></i></div>
+                <div class="card-info">
+                    <div class="card-title" style="color:#2b579a;">MS Word (লেখালেখি)</div>
+                    <div class="card-desc">এর মাধ্যমে যেকোনো ধরনের চিঠি, প্রশ্ন, নোটিশ, বায়োডাটা বা ডকুমেন্ট টাইপ ও ডিজাইন করা হয়।</div>
+                </div>
+            </div>
+
+            <div class="card" onclick="playVoice('মাইক্রোসফট এক্সেল কি? এটি একটি হিসাব-নিকাশ করার স্প্রেডশীট সফটওয়্যার। এর মাধ্যমে স্কুলের রেজাল্ট শীট, অফিসের স্যালারি শীট এবং জটিল হিসাব সহজে করা যায়।')">
+                <div class="card-icon icon-excel"><i class="fas fa-file-excel"></i></div>
+                <div class="card-info">
+                    <div class="card-title" style="color:#217346;">MS Excel (হিসাব-নিকাশ)</div>
+                    <div class="card-desc">গাণিতিক হিসাবের সফটওয়্যার। এর মাধ্যমে স্কুলের রেজাল্ট শীট, সেলারি শীট ও চার্ট তৈরি করা হয়।</div>
+                </div>
+            </div>
+
+            <div class="card" onclick="playVoice('মাইক্রোসফট পাওয়ারপয়েন্ট কি? এটি একটি প্রেজেন্টেশন সফটওয়্যার। এর মাধ্যমে স্লাইড তৈরি করে যেকোনো বিষয় সুন্দরভাবে মানুষের সামনে প্রদর্শন বা ক্লাস নেওয়া যায়।')">
+                <div class="card-icon icon-ppt"><i class="fas fa-file-powerpoint"></i></div>
+                <div class="card-info">
+                    <div class="card-title" style="color:#b7472a;">MS PowerPoint (প্রেজেন্টেশন)</div>
+                    <div class="card-desc">এর মাধ্যমে চমৎকার স্লাইড তৈরি করে মাল্টিমিডিয়া প্রজেক্টরের সাহায্যে ক্লাস বা মিটিংয়ে উপস্থাপন করা হয়।</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-title"><i class="fas fa-bolt"></i> প্রয়োজনীয় কীবোর্ড শর্টকাট</div>
+        <div class="shortcut-grid">
+            <div class="shortcut-card" onclick="playVoice('কন্ট্রোল প্লাস এ চাপলে সব একসাথে সিলেক্ট হয়।')">
+                <span class="key-badge">Ctrl + A</span>
+                <span class="key-text">সব সিলেক্ট করা</span>
+            </div>
+            <div class="shortcut-card" onclick="playVoice('কন্ট্রোল প্লাস সি চাপলে কপি করা হয়।')">
+                <span class="key-badge">Ctrl + C</span>
+                <span class="key-text">কপি (Copy) করা</span>
+            </div>
+            <div class="shortcut-card" onclick="playVoice('কন্ট্রোল প্লাস ভি চাপলে কপি করা জিনিস পেস্ট বা বসানো হয়।')">
+                <span class="key-badge">Ctrl + V</span>
+                <span class="key-text">পেস্ট (Paste) করা</span>
+            </div>
+            <div class="shortcut-card" onclick="playVoice('কন্ট্রোল প্লাস এস চাপলে ফাইলটি কম্পিউটারে সেভ বা সংরক্ষণ করা হয়।')">
+                <span class="key-badge">Ctrl + S</span>
+                <span class="key-text">সেভ (Save) করা</span>
+            </div>
+            <div class="shortcut-card" onclick="playVoice('কন্ট্রোল প্লাস জেড চাপলে ভুল করে কাটা বা ডিলিট হওয়া জিনিস আগের অবস্থায় ফিরিয়ে আনা হয়।')">
+                <span class="key-badge">Ctrl + Z</span>
+                <span class="key-text">আগের অবস্থায় ফেরা</span>
+            </div>
+            <div class="shortcut-card" onclick="playVoice('কন্ট্রোল প্লাস পি চাপলে যেকোনো ডকুমেন্ট প্রিন্ট বা কাগজের পাতায় বের করা হয়।')">
+                <span class="key-badge">Ctrl + P</span>
+                <span class="key-text">প্রিন্ট (Print) করা</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var currentAudio = null;
+
+        // ভয়েস প্লে করার ফাংশন
+        function playVoice(text) {
+            if (currentAudio) { currentAudio.pause(); }
+
+            var audioUrl = "https://translate.google.com/translate_tts?ie=UTF-8&tl=bn&client=tw-ob&q=" + encodeURIComponent(text);
+            currentAudio = new Audio(audioUrl);
+            currentAudio.play().catch(function(error) {
+                console.log("ভয়েস প্লে করতে সমস্যা হয়েছে:", error);
+            });
+        }
+
+        // মেইন মেনু বাটনের একক ভয়েস এবং রিডাইরেকশন
+        function playAudio(event, text) {
+            if (event && event.currentTarget) {
+                event.preventDefault();
+                var url = event.currentTarget.getAttribute('href');
+            }
+            if (currentAudio) { currentAudio.pause(); }
+            
+            var audioUrl = "https://translate.google.com/translate_tts?ie=UTF-8&tl=bn&client=tw-ob&q=" + encodeURIComponent(text);
+            currentAudio = new Audio(audioUrl);
+            currentAudio.onended = function() { if (url) window.location.href = url; };
+            currentAudio.onerror = function() { if (url) window.location.href = url; };
+            currentAudio.play().catch(() => { if (url) window.location.href = url; });
+        }
+    </script>
+</body>
+</html>

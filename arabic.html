@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আরবি শিক্ষা - আদর্শ লিপি</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Serif+Bengali:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Noto Serif Bengali', serif;
+            margin: 0;
+            padding: 10px;
+            background-color: #fdfbf7;
+            color: #2c2520;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .container { max-width: 600px; margin: 0 auto; }
+        
+        .back-btn {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #8a2be2;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .section-title {
+            text-align: center;
+            color: #008080;
+            font-size: 18px;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            border-bottom: 2px dashed #008080;
+            padding-bottom: 5px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border: 2px solid #e6dfd5;
+            border-radius: 12px;
+            padding: 15px 10px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: transform 0.1s ease, background-color 0.2s;
+        }
+
+        .card:active {
+            transform: scale(0.95);
+            background-color: #e6f2f2;
+            border-color: #008080;
+        }
+
+        .arabic-letter {
+            font-family: 'Amiri', serif;
+            font-size: 52px;
+            color: #008080;
+            direction: rtl;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .word { font-size: 16px; color: #2c2520; font-weight: bold; display: block; margin-bottom: 4px; }
+        .meaning { font-size: 12px; color: #666; display: block; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <a href="index.html" class="back-btn" onclick="playOnlineVoice(event, 'মেইন মেনু')">⬅ মেইন মেনু</a>
+
+        <div class="section-title">আরবি হরফ ও শব্দার্থ (২৯টি)</div>
+        <div class="grid-container">
+            <div class="card" onclick="playOnlineVoice(null, 'আলিফ, আলিফুন তে আসাদুন, আসাদুন মানে সিংহ')">
+                <span class="arabic-letter">ا</span><span class="word">আলিফ (أسد)</span><span class="meaning">আসাদুন - সিংহ</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'বা, বাউন তে বাইতুন, বাইতুন মানে ঘর')">
+                <span class="arabic-letter">ب</span><span class="word">বা (بيت)</span><span class="meaning">বাইতুন - ঘর</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'তা, তাউন তে তাজুন, তাজুন মানে মুকুট')">
+                <span class="arabic-letter">ت</span><span class="word">তা (تاج)</span><span class="meaning">তাজুন - মুকুট</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'সা, সাউন তে সামারুন, সামারুন মানে ফল')">
+                <span class="arabic-letter">ث</span><span class="word">সা (ثمر)</span><span class="meaning">সামারুন - ফল</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'জীম, জীমুন তে জামালুন, জামালুন মানে উট')">
+                <span class="arabic-letter">ج</span><span class="word">জীম (جمل)</span><span class="meaning">জামালুন - উট</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'হা, হাউন তে হাদিকাতুন, হাদিকাতুন মানে বাগান')">
+                <span class="arabic-letter">ح</span><span class="word">হা (حديقة)</span><span class="meaning">হাদিকাতুন - বাগান</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'খা, খাউন তে খুবজুন, খুবজুন মানে রুটি')">
+                <span class="letter arabic-letter">خ</span><span class="word">খা (خبজ)</span><span class="meaning">খুবজুন - রুটি</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'দাল, দালুন তে দিউকোন, দিউকোন মানে মোরগ')">
+                <span class="arabic-letter">د</span><span class="word">দাল (ديك)</span><span class="meaning">দিউকোন - মোরগ</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'জাল, জালুন তে জাহাবুন, জাহাবুন মানে সোনা')">
+                <span class="arabic-letter">ذ</span><span class="word">জাল (ذهب)</span><span class="meaning">জাহাবুন - সোনা</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'র, রউন তে রাজুলুন, রাজুলুন মানে মানুষ')">
+                <span class="arabic-letter">ر</span><span class="word">র (رجل)</span><span class="meaning">রাজুলুন - মানুষ</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'যা, যাউন তে জাহরাতুন, জাহরাতুন মানে ফুল')">
+                <span class="arabic-letter">ز</span><span class="word">যা (زهرة)</span><span class="meaning">জাহরাতুন - ফুল</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'সীন, সীনুন তে সামাকুন, সামাকুন মানে মাছ')">
+                <span class="arabic-letter">س</span><span class="word">সীন (سمك)</span><span class="meaning">সামাকুন - মাছ</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'শীন, শীনুন তে শামসুন, শামসুন মানে সূর্য')">
+                <span class="arabic-letter">ش</span><span class="word">শীন (شمس)</span><span class="meaning">শামসুন - সূর্য</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ছদ, ছদুন তে ছাবুনুন, ছাবুনুন মানে সাবান')">
+                <span class="arabic-letter">ص</span><span class="word">ছদ (صابون)</span><span class="meaning">ছাবুনুন - সাবান</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'দদ, দদুন তে দিয়াউন, দিয়াউন মানে আলো')">
+                <span class="arabic-letter">ض</span><span class="word">দদ (ضياء)</span><span class="meaning">দিয়াউন - আলো</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ত, তউন তে তিফ্লুন, তিফ্লুন মানে শিশু')">
+                <span class="arabic-letter">ط</span><span class="word">ত (طفল)</span><span class="meaning">তিফ্লুন - শিশু</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'জ, জউন তে জিললুন, জিললুন মানে ছায়া')">
+                <span class="arabic-letter">ظ</span><span class="word">জ (ظل)</span><span class="meaning">জিললুন - ছায়া</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'আইন, আইনুন তে আইনুন, আইনুন মানে চোখ')">
+                <span class="arabic-letter">ع</span><span class="word">আইন (عين)</span><span class="meaning">আইনুন - চোখ</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'গাইন, গাইনুন তে গুরাবুন, গুরাবুন মানে কাক')">
+                <span class="arabic-letter">غ</span><span class="word">গাইন (غراب)</span><span class="meaning">গুরাবুন - কাক</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ফা, ফাউন তে ফীলুন, ফীলুন মানে হাতি')">
+                <span class="arabic-letter">ف</span><span class="word">ফা (فيل)</span><span class="meaning">ফীলুন - হাতি</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'কফ, কফুন তে কলামুন, কলামুন মানে কলম')">
+                <span class="arabic-letter">ق</span><span class="word">কফ (قلم)</span><span class="meaning">কলামুন - কলম</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'কাফ, কাফুন তে কিতাবুন, কিতাবুন মানে বই')">
+                <span class="arabic-letter">ك</span><span class="word">কাফ (كتاب)</span><span class="meaning">কিতাবুন - বই</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, '自动 লাম, লামুন তে লাবানুন, লাবানুন মানে দুধ')">
+                <span class="arabic-letter">ل</span><span class="word">লাম (لبن)</span><span class="meaning">লাবানুন - দুধ</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'মীম, মীমুন তে মাউন, মাউন মানে পানি')">
+                <span class="arabic-letter">م</span><span class="word">মীম (ماء)</span><span class="meaning">মাউন - পানি</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'নুন, নুনুন তে নাজমুন্, নাজমুন্ মানে তারকা')">
+                <span class="arabic-letter">ن</span><span class="word">নুন (نجم)</span><span class="meaning">নাজমুন্ - তারকা</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ওয়াও, ওয়াওউন তে ওয়ালাদুন, ওয়ালাদুন মানে ছেলে')">
+                <span class="arabic-letter">و</span><span class="word">ওয়াও (ولد)</span><span class="meaning">ওয়ালাদুন - ছেলে</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'হা, হাউন তে হিলালুন, হিলালুন মানে নতুন চাঁদ')">
+                <span class="arabic-letter">ه</span><span class="word">হা (هلال)</span><span class="meaning">হিলালুন - নতুন চাঁদ</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'লাম আলিফ, লা মানে না')">
+                <span class="arabic-letter">لا</span><span class="word">লাম আলিফ</span><span class="meaning">লা - না</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'হামজাহ, চিহ্ন বিশেষ')">
+                <span class="arabic-letter">ء</span><span class="word">হামজাহ</span><span class="meaning">চিহ্ন বিশেষ</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'য়া, য়াউন তে ইয়াদুন, ইয়াদুন মানে হাত')">
+                <span class="arabic-letter">ي</span><span class="word">য়া (يد)</span><span class="meaning">ইয়াদুন - হাত</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentAudio = null;
+
+        // গুগল টিটিএস অনলাইন ভয়েস প্লে করার মূল ফাংশন
+        function playOnlineVoice(event, text) {
+            // যদি মেইন মেনু ব্যাক বাটনে ক্লিক করা হয়, আগে ভয়েস শেষ হবে তারপর পেজ রিডাইরেক্ট হবে
+            if (event && event.currentTarget) {
+                event.preventDefault();
+                var redirectUrl = event.currentTarget.getAttribute('href');
+            }
+
+            // আগের চলমান কোনো অডিও থাকলে তা বন্ধ করবে
+            if (currentAudio) {
+                currentAudio.pause();
+            }
+
+            // Google TTS থেকে সরাসরি বাংলা কণ্ঠের ইউআরএল জেনারেট
+            let audioUrl = "https://translate.google.com/translate_tts?ie=UTF-8&tl=bn&client=tw-ob&q=" + encodeURIComponent(text);
+            
+            currentAudio = new Audio(audioUrl);
+            
+            // অডিও শেষ হলে অ্যাকশন (যদি রিডাইরেক্ট লিংক থাকে)
+            currentAudio.onended = function() {
+                if (redirectUrl) { window.location.href = redirectUrl; }
+            };
+            
+            // নেটওয়ার্ক বা অন্য কোনো সমস্যার কারণে অডিও ফেইল হলে যেন লিংক আটকে না থাকে
+            currentAudio.onerror = function() {
+                if (redirectUrl) { window.location.href = redirectUrl; }
+            };
+            
+            currentAudio.play().catch(function(error) {
+                console.log("ভয়েস অটো-প্লে ব্লকেড বা নেটওয়ার্ক এরর:", error);
+                if (redirectUrl) { window.location.href = redirectUrl; }
+            });
+        }
+    </script>
+</body>
+</html>

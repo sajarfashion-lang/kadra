@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>বাংলা শিক্ষা - আদর্শ লিপি</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Noto Serif Bengali', serif;
+            margin: 0;
+            padding: 10px;
+            background-color: #fdfbf7;
+            color: #2c2520;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .container { max-width: 600px; margin: 0 auto; }
+        
+        .back-btn {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #8a2be2;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .section-title {
+            text-align: center;
+            color: #ff4500;
+            font-size: 18px;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            border-bottom: 2px dashed #ffa500;
+            padding-bottom: 5px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border: 2px solid #e6dfd5;
+            border-radius: 12px;
+            padding: 15px 10px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: transform 0.1s ease, background-color 0.2s;
+        }
+
+        .card:active {
+            transform: scale(0.95);
+            background-color: #f0e6ff;
+            border-color: #8a2be2;
+        }
+
+        .letter {
+            font-size: 45px;
+            color: #ff4500;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .word { font-size: 16px; color: #2c2520; font-weight: bold; display: block; margin-bottom: 4px; }
+        .meaning { font-size: 12px; color: #666; display: block; }
+
+        .poem-box {
+            background-color: #ffffff;
+            border-left: 5px solid #8a2be2;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 0 12px 12px 0;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .poem-box:active { background-color: #f0e6ff; }
+        .poem-title { font-size: 16px; color: #ff4500; font-weight: bold; margin-bottom: 3px; }
+        .poem-author { font-size: 12px; color: #666; font-style: italic; margin-bottom: 8px; }
+        .poem-text { font-size: 14px; color: #2c2520; line-height: 1.6; white-space: pre-line; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <a href="index.html" class="back-btn" onclick="playOnlineVoice(event, 'মেইন মেনু')">⬅ মেইন মেনু</a>
+
+        <div class="section-title">বাংলা স্বরবর্ণ (১১টি)</div>
+        <div class="grid-container">
+            <div class="card" onclick="playOnlineVoice(null, 'অ, অজগর, অজগরটি আসছে তেরে')">
+                <span class="letter">অ</span><span class="word">অজগর</span><span class="meaning">অজগরটি আসছে তেরে</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'আ, আম, আমটি আমি খাব পেড়ে')">
+                <span class="letter">আ</span><span class="word">আম</span><span class="meaning">আমটি আমি খাব পেড়ে</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ই, ইঁদুর, ইঁদুর ছানা ভয়ে মরে')">
+                <span class="letter">ই</span><span class="word">ইঁদুর</span><span class="meaning">ইঁদুর ছানা ভয়ে মরে</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ঈ, ঈগল, ঈগল পাখি পাছে ধরে')">
+                <span class="letter">ঈ</span><span class="word">ঈগল</span><span class="meaning">ঈগল পাখি পাছে ধরে</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'উ, উট, উট চলেছে মুখটি তুলে')">
+                <span class="letter">উ</span><span class="word">উট</span><span class="meaning">উট চলেছে মুখটি তুলে</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ঊ, ঊর্মি, ঊর্মি দোলে সাগর কোলে')">
+                <span class="letter">ঊ</span><span class="word">ঊর্মি</span><span class="meaning">ঊর্মি দোলে সাগর কোলে</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ঋ, ঋষি, ঋষি মশাই বসেন ধ্যানে')">
+                <span class="letter">ঋ</span><span class="word">ঋষি</span><span class="meaning">ঋষি মশাই বসেন ধ্যানে</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'এ, একতারা, একতারাটি বাজে বেশ')">
+                <span class="letter">এ</span><span class="word">একতারা</span><span class="meaning">একতারাটি বাজে বেশ</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ঐ, ঐরাবত, ঐরাবতটি শান্ত অতি')">
+                <span class="letter">ঐ</span><span class="word">ঐরাবত</span><span class="meaning">ঐরাবতটি শান্ত অতি</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ও, ওল, ওল খেও না ধরবে গলা')">
+                <span class="letter">ও</span><span class="word">ওল</span><span class="meaning">ওল খেও না ধরবে গলা</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ঔ, ঔষধ, ঔষধ খেতে মিছে বলা')">
+                <span class="letter">ঔ</span><span class="word">ঔষধ</span><span class="meaning">ঔষধ খেতে মিছে বলা</span>
+            </div>
+        </div>
+
+        <div class="section-title">বাংলা ব্যঞ্জনবর্ণ (৩৯টি)</div>
+        <div class="grid-container">
+            <div class="card" onclick="playOnlineVoice(null, 'ক, কাক, কাক ডাকে গাছে গাছে')">
+                <span class="letter">ক</span><span class="word">কাক</span><span class="meaning">কাক ডাকে গাছে গাছে</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'খ, খরগোশ, খরগোশটি লাফিয়ে চলে')">
+                <span class="letter">খ</span><span class="word">খরগোশ</span><span class="meaning">খরগোশটি লাফিয়ে চলে</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'গ, গরু, গরু মোদের দুধ দেয়')">
+                <span class="letter">গ</span><span class="word">গরু</span><span class="meaning">গরু মোদের দুধ দেয়</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ঘ, ঘোড়া, ঘোড়া ছোটে আলপথ দিয়ে')">
+                <span class="letter">ঘ</span><span class="word">ঘোড়া</span><span class="meaning">ঘোড়া ছোটে আলপথ দিয়ে</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ঙ, ব্যাঙ, ব্যাঙ ডাকে বর্ষাকালে')">
+                <span class="letter">ঙ</span><span class="word">ব্যাঙ</span><span class="meaning">ব্যাঙ ডাকে বর্ষাকালে</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'চ, চোখ, চোখ দিয়ে আমরা দেখি')">
+                <span class="letter">চ</span><span class="word">চোখ</span><span class="meaning">চোখ দিয়ে আমরা দেখি</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ছ, ছাতা, ছাতা লাগে বৃষ্টি হলে')">
+                <span class="letter">ছ</span><span class="word">ছাতা</span><span class="meaning">ছাতা লাগে বৃষ্টি হলে</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'জ, জাহাজ, জাহাজ ভাসে সাগর জলে')">
+                <span class="letter">জ</span><span class="word">জাহাজ</span><span class="meaning">জাহাজ ভাসে সাগর জলে</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ঝ, ঝাড়ু, ঝাড়ু দিয়ে ঘর সাফ করো')">
+                <span class="letter">ঝ</span><span class="word">ঝাড়ু</span><span class="meaning">ঝাড়ু দিয়ে ঘর সাফ করো</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ঞ, মিঞা, মিঞা ভাই গান গায়')">
+                <span class="letter">ঞ</span><span class="word">মিঞা</span><span class="meaning">মিঞা ভাই গান গায়</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ট, টমেটো, টমেটো দেখতে ভারী সুন্দর')">
+                <span class="letter">ট</span><span class="word">টমেটো</span><span class="meaning">টমেটো দেখতে ভারী সুন্দর</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ঠ, ঠাকুমা, ঠাকুমার ঝুলি গল্পের খনি')">
+                <span class="letter">ঠ</span><span class="word">ঠাকুমা</span><span class="meaning">ঠাকুমার ঝুলি গল্পের খনি</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ড, ডাব, ডাবের জল মিষ্টি বড়')">
+                <span class="letter">ড</span><span class="word">ডাব</span><span class="meaning">ডাবের জল মিষ্টি বড়</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ঢ, ঢোল, ঢোল বাজে তাক ধুম ধুম')">
+                <span class="letter">ঢ</span><span class="word">ঢোল</span><span class="meaning">ঢোল বাজে তাক ধুম ধুম</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ণ, হরিণ, হরিণ থাকে সুন্দরবনে')">
+                <span class="letter">ণ</span><span class="word">হরিণ</span><span class="meaning">হরিণ থাকে সুন্দরবনে</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ত, তলোয়ার, তলোয়ার ঝলে বীরের হাতে')">
+                <span class="letter">ত</span><span class="word">তলোয়ার</span><span class="meaning">তলোয়ার ঝলে বীরের হাতে</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'থ, থালা, থালা ভরা ভাত আছে')">
+                <span class="letter">থ</span><span class="word">থালা</span><span class="meaning">থালা ভরা ভাত আছে</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'দ, দোয়াত, দোয়াত্তে কালি আছে')">
+                <span class="letter">দ</span><span class="word">দোয়াত</span><span class="meaning">দোয়াত্তে কালি আছে</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ধ, ধান, ধান পেকেছে মাঠের পরে')">
+                <span class="letter">ধ</span><span class="word">ধান</span><span class="meaning">ধান পেকেছে মাঠের পরে</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ন, নদী, নদী চলে আপন বেগে')">
+                <span class="letter">ন</span><span class="word">নদী</span><span class="meaning">নদী চলে আপন বেগে</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'প, পাখি, পাখি গায় মধুর গান')">
+                <span class="letter">প</span><span class="word">পাখি</span><span class="meaning">পাখি গায় মধুর গান</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ফ, ফুল, ফুল ফুটেছে বাগানে')">
+                <span class="letter">ফ</span><span class="word">ফুল</span><span class="meaning">ফুল ফুটেছে বাগানে</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ব, বই, বই পড়লে জ্ঞান বাড়ে')">
+                <span class="letter">ব</span><span class="word">বই</span><span class="meaning">বই পড়লে জ্ঞান বাড়ে</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ভ, ভালুক, ভালুক নাচে মন্থর গতিতে')">
+                <span class="letter">ভ</span><span class="word">ভালুক</span><span class="meaning">ভালুক নাচে মন্থর গতিতে</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ম, ময়ূর, ময়ূর নাচে পেখম তুলে')">
+                <span class="letter">ম</span><span class="word">ময়ূর</span><span class="meaning">ময়ূর নাচে পেখম তুলে</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'য, যাতা, যাতা ঘোরে হাতের জোরে')">
+                <span class="letter">য</span><span class="word">যাতা</span><span class="meaning">যাতা ঘোরে হাতের জোরে</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'র, রাজহাঁস, রাজহাঁসটির গলা বড়')">
+                <span class="letter">র</span><span class="word">রাজহাঁস</span><span class="meaning">রাজহাঁসটির গলা বড়</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ল, লেবু, লেবুর রসে ভিটামিন আছে')">
+                <span class="letter">ল</span><span class="word">লেবু</span><span class="meaning">লেবুর রসে ভিটামিন আছে</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ব, বাঁশি, বাঁশির সুরে মন ভোলে')">
+                <span class="letter">ব</span><span class="word">বাঁশি</span><span class="meaning">বাঁশির সুরে মন ভোলে</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'শ, শাপলা, শাপলা মোদের জাতীয় ফুল')">
+                <span class="letter">শ</span><span class="word">শাপলা</span><span class="meaning">শাপলা মোদের জাতীয় ফুল</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ষ, ষাঁড়, ষাঁড়টি এলো তেড়ে ভাই')">
+                <span class="letter">ষ</span><span class="word">ষাঁড়</span><span class="meaning">ষাঁড়টি এলো তেড়ে ভাই</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'স, সিংহ, সিংহ হলো বনের রাজা')">
+                <span class="letter">স</span><span class="word">সিংহ</span><span class="meaning">সিংহ হলো বনের রাজা</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'হ, হাঁস, হাঁস চলেছে পুকুর পানে')">
+                <span class="letter">হ</span><span class="word">হাঁস</span><span class="meaning">হাঁস চলেছে পুকুর পানে</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ড়, পাহাড়, পাহাড় চূড়া মেঘের দেশে')">
+                <span class="letter">ড়</span><span class="word">পাহাড়</span><span class="meaning">পাহাড় চূড়া মেঘের দেশে</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ঢ়, আষাঢ়, আষাঢ় মাসে বৃষ্টি নামে')">
+                <span class="letter">ঢ়</span><span class="word">আষাঢ়</span><span class="meaning">আষাঢ় মাসে বৃষ্টি নামে</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'য়, ময়না, ময়না পাখি কথা কয়')">
+                <span class="letter">য়</span><span class="word">ময়না</span><span class="meaning">ময়না পাখি কথা কয়</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ৎ, মৎস্য, মৎস্য ধরি নদীর জলে')">
+                <span class="letter">ৎ</span><span class="word">মৎস্য</span><span class="meaning">মৎস্য ধরি নদীর জলে</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ং, সংবাদ, সংবাদ পড়ি প্রতিদিন')">
+                <span class="letter">ং</span><span class="word">সংবাদ</span><span class="meaning">সংবাদ পড়ি প্রতিদিন</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ঃ, দুঃখ, দুঃখী জনের পাশে দাঁড়াও')">
+                <span class="letter">ঃ</span><span class="word">দুঃখ</span><span class="meaning">দুঃখী জনের পাশে দাঁড়াও</span>
+            </div>
+            <div class="card" onclick="playOnlineVoice(null, 'ঁ, চাঁদ, চাঁদ উঠেছে গগন কোণে')">
+                <span class="letter">ঁ</span><span class="word">চাঁদ</span><span class="meaning">চাঁদ উঠেছে গগন কোণে</span>
+            </div>
+        </div>
+
+        <div class="section-title">ছোটদের মিষ্টি ছড়া (বাংলা)</div>
+        
+        <div class="poem-box" onclick="playOnlineVoice(null, 'আতা গাছে তোতা পাখি, ডালিম গাছে মৌ। এত ডাকি তবু কথা, কও না কেন বউ?')">
+            <div class="poem-title">১. আতা গাছে তোতা পাখি</div>
+            <div class="poem-author">সংগৃহীত</div>
+            <div class="poem-text">আতা গাছে তোতা পাখি, ডালিম গাছে মৌ।
+            এত ডাকি তবু কথা, কও না কেন বউ?</div>
+        </div>
+
+        <div class="poem-box" onclick="playOnlineVoice(null, 'হাট্টিমাটিম টিম, তারা মাঠে পাড়ে ডিম। তাদের খাবলী খাড়া দুটো শিং, তারা হাট্টিমাটিম টিম।')">
+            <div class="poem-title">২. ) হাট্টিমাটিম টিম</div>
+            <div class="poem-author">সংগৃহীত</div>
+            <div class="poem-text">হাট্টিমাটিম টিম, তারা মাঠে পাড়ে ডিম।
+            তাদের খাড়া দুটো শিং, তারা হাট্টিমাটিম টিম।</div>
+        </div>
+
+        <div class="poem-box" onclick="playOnlineVoice(null, 'ভোর হলো দোর খোল, খুকুমণি ওঠ রে! ঐ ডাকে জুঁই-শাখে, ফুল-খুকী ছোট রে! খুলী হাল তুলী পাল, ঐ তরী চলল! এই বার এই বার, খুকু চোখ চাইল!')">
+            <div class="poem-title">৩. ভোর হলো দোর খোল</div>
+            <div class="poem-author">কাজী নজরুল ইসলাম</div>
+            <div class="poem-text">ভোর হলো দোর খোল, খুকুমণি ওঠ রে!
+            ঐ ডাকে জুঁই-শাখে, ফুল-খুকী ছোট রে!
+            খুলী হাল তুলী পাল, ঐ তরী চলল!
+            এই বার এই বার, খুকু চোখ চাইল!</div>
+        </div>
+
+        <div class="poem-box" onclick="playOnlineVoice(null, 'আমাদের ছোট নদী চলে বাঁকে বাঁকে, বৈশাখ মাসে তার হাঁটু জল থাকে। পার হয়ে যায় গোরু, পার হয় গাড়ি, দুই ধার উঁচু তার, ঢালু তার পাড়ি।')">
+            <div class="poem-title">৪. আমাদের ছোট নদী</div>
+            <div class="poem-author">রবীন্দ্রনাথ ঠাকুর</div>
+            <div class="poem-text">আমাদের ছোট নদী চলে বাঁকে বাঁকে,
+            বৈশাখ মাসে তার হাঁটু জল থাকে।
+            পার হয়ে যায় গোরু, পার হয় গাড়ি,
+            দুই ধার উঁচু তার, ঢালু তার পাড়ি।</div>
+        </div>
+
+    </div>
+
+    <script>
+        let currentAudio = null;
+
+        // গুগল টিটিএস অনলাইন ভয়েস প্লে করার কোর ফাংশন
+        function playOnlineVoice(event, text) {
+            // যদি মেইন মেনু লিংকে ক্লিক করা হয়, আগে ভয়েস শেষ হবে তারপর পেজ রিডাইরেক্ট হবে
+            if (event && event.currentTarget) {
+                event.preventDefault();
+                var redirectUrl = event.currentTarget.getAttribute('href');
+            }
+
+            // আগের চলতে থাকা কোনো অডিও থাকলে তা বন্ধ করবে
+            if (currentAudio) {
+                currentAudio.pause();
+            }
+
+            // Google TTS থেকে সরাসরি বাংলা ভয়েস ইউআরএল জেনারেট
+            let audioUrl = "https://translate.google.com/translate_tts?ie=UTF-8&tl=bn&client=tw-ob&q=" + encodeURIComponent(text);
+            
+            currentAudio = new Audio(audioUrl);
+            
+            // অডিও শেষ হলে অ্যাকশন (যদি লিংক থাকে)
+            currentAudio.onended = function() {
+                if (redirectUrl) { window.location.href = redirectUrl; }
+            };
+            
+            // নেটওয়ার্ক সমস্যার কারণে অডিও ফেইল হলে যেন লিংক আটকে না থাকে
+            currentAudio.onerror = function() {
+                if (redirectUrl) { window.location.href = redirectUrl; }
+            };
+            
+            currentAudio.play().catch(function(error) {
+                console.log("ভয়েস অটো-প্লে ব্লকেড বা নেটওয়ার্ক এরর:", error);
+                if (redirectUrl) { window.location.href = redirectUrl; }
+            });
+        }
+    </script>
+</body>
+</html>

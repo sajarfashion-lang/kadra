@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>অংক শিক্ষা - রিডিং অ্যান্ড লার্নিং</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;700&family=Poppins:wght@400;600&display=swap');
+
+        body {
+            font-family: 'Noto Serif Bengali', serif;
+            margin: 0;
+            padding: 10px;
+            background-color: #fdfbf7;
+            color: #2c2520;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .container { max-width: 600px; margin: 0 auto; }
+        
+        .back-btn {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #8a2be2;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .section-title {
+            text-align: center;
+            color: #8a2be2;
+            font-size: 18px;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            border-bottom: 2px dashed #8a2be2;
+            padding-bottom: 5px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border: 2px solid #e6dfd5;
+            border-radius: 12px;
+            padding: 15px 10px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: transform 0.1s ease, background-color 0.2s;
+        }
+
+        .card:active {
+            transform: scale(0.95);
+            background-color: #f0e6ff;
+            border-color: #8a2be2;
+        }
+
+        .num-big {
+            font-size: 50px;
+            color: #8a2be2;
+            font-weight: bold;
+            display: block;
+        }
+
+        .word { font-size: 16px; color: #2c2520; font-weight: bold; display: block; margin-bottom: 4px; }
+        .meaning { font-family: 'Poppins', sans-serif; font-size: 12px; color: #666; display: block; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <a href="index.html" class="back-btn" onclick="playOnlineVoice(event, 'মেইন মেনু', 'bn')">⬅ মেইন মেনু</a>
+
+        <div class="section-title">সংখ্যা ও গণনা (১ - ১০)</div>
+        <div class="grid-container">
+            <div class="card" onclick="playCombinedVoice('১, এক', 'One')">
+                <span class="num-big">১</span><span class="word">এক (1)</span><span class="meaning">One</span>
+            </div>
+            <div class="card" onclick="playCombinedVoice('২, দুই', 'Two')">
+                <span class="num-big">২</span><span class="word">দুই (2)</span><span class="meaning">Two</span>
+            </div>
+            <div class="card" onclick="playCombinedVoice('৩, তিন', 'Three')">
+                <span class="num-big">৩</span><span class="word">তিন (3)</span><span class="meaning">Three</span>
+            </div>
+            <div class="card" onclick="playCombinedVoice('৪, চার', 'Four')">
+                <span class="num-big">৪</span><span class="word">চার (4)</span><span class="meaning">Four</span>
+            </div>
+            <div class="card" onclick="playCombinedVoice('৫, পাঁচ', 'Five')">
+                <span class="num-big">৫</span><span class="word">পাঁচ (5)</span><span class="meaning">Five</span>
+            </div>
+            <div class="card" onclick="pushCombinedVoice('৬, ছয়', 'Six')">
+                <div class="card" onclick="playCombinedVoice('৬, ছয়', 'Six')">
+                    <span class="num-big">৬</span><span class="word">ছয় (6)</span><span class="meaning">Six</span>
+                </div>
+            </div>
+            <div class="card" onclick="playCombinedVoice('৭, সাত', 'Seven')">
+                <span class="num-big">৭</span><span class="word">সাত (7)</span><span class="meaning">Seven</span>
+            </div>
+            <div class="card" onclick="playCombinedVoice('৮, আট', 'Eight')">
+                <span class="num-big">৮</span><span class="word">আট (8)</span><span class="meaning">Eight</span>
+            </div>
+            <div class="card" onclick="playCombinedVoice('৯, নয়', 'Nine')">
+                <span class="num-big">৯</span><span class="word">নয় (9)</span><span class="meaning">Nine</span>
+            </div>
+            <div class="card" onclick="playCombinedVoice('১০, দশ', 'Ten')">
+                <span class="num-big">১০</span><span class="word">দশ (10)</span><span class="meaning">Ten</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentAudio = null;
+
+        // সিঙ্গেল ভয়েস প্লে করার জন্য ফাংশন (যেমন: ব্যাক বাটন)
+        function playOnlineVoice(event, text, lang) {
+            if (event && event.currentTarget) {
+                event.preventDefault();
+                var redirectUrl = event.currentTarget.getAttribute('href');
+            }
+
+            if (currentAudio) { currentAudio.pause(); }
+
+            let langCode = (lang === 'en') ? 'en' : 'bn';
+            let audioUrl = "https://translate.google.com/translate_tts?ie=UTF-8&tl=" + langCode + "&client=tw-ob&q=" + encodeURIComponent(text);
+            
+            currentAudio = new Audio(audioUrl);
+            
+            currentAudio.onended = function() {
+                if (redirectUrl) { window.location.href = redirectUrl; }
+            };
+            currentAudio.onerror = function() {
+                if (redirectUrl) { window.location.href = redirectUrl; }
+            };
+            
+            currentAudio.play().catch(function() {
+                if (redirectUrl) { window.location.href = redirectUrl; }
+            });
+        }
+
+        // সংখ্যা ও গণনা কার্ডের জন্য স্পেশাল ফাংশন (আগে বাংলা বলবে, তারপর ইংরেজি বলবে)
+        function playCombinedVoice(bnText, enText) {
+            if (currentAudio) { currentAudio.pause(); }
+
+            // ১. প্রথমে বাংলা ভয়েস লিংক তৈরি
+            let bnUrl = "https://translate.google.com/translate_tts?ie=UTF-8&tl=bn&client=tw-ob&q=" + encodeURIComponent(bnText);
+            // ২. তারপর ইংরেজি ভয়েস লিংক তৈরি
+            let enUrl = "https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=" + encodeURIComponent(enText);
+
+            currentAudio = new Audio(bnUrl);
+            currentAudio.play().then(() => {
+                // বাংলা বলা শেষ হলে স্বয়ংক্রিয়ভাবে ইংরেজি উচ্চারণ শুরু হবে
+                currentAudio.onended = function() {
+                    currentAudio = new Audio(enUrl);
+                    currentAudio.play();
+                };
+            }).catch(error => {
+                console.log("অডিও প্লে করতে সমস্যা হয়েছে:", error);
+            });
+        }
+    </script>
+</body>
+</html>
